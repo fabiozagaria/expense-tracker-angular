@@ -2,11 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Expense } from '../../type/spesa';
 import { SpesaService } from '../../services/spesa-service';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-aggiungi-spesa',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './aggiungi-spesa.html',
   styleUrl: './aggiungi-spesa.css',
 })

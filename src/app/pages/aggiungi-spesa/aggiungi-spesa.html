@@ -81,6 +81,8 @@
           <option value="Regali">Regali</option>
           <option value="Rate">Rate</option>
           <option value="Prestito">Prestito</option>
+          <option value="Salute">Salute</option>
+          <option value="Trasporti">Trasporti</option>
         </select>
         <button class="btn btn-info m-2" type="button" role="button" disabled>Aggiungi Nuova Categoria</button>
 
@@ -126,7 +128,7 @@
     <button class="btn btn-primary m-2 p-1" type="submit">Aggiungi</button>
 
     @if (noticeSuccessAddedExpense()) {
-      <span class="valid-feedback d-block fs-4">Spesa Aggiunta! Yeeeee!</span>
+      <span class="valid-feedback d-block fs-4">Spesa Aggiunta!</span>
     }
   </form>
   <button class="btn btn-primary" [routerLink]="['/riepilogo']" routerLinkActive="active" >Vai a Riepilogo</button>

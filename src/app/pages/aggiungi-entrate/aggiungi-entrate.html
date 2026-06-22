@@ -2,7 +2,7 @@
   <div>
     <form
           [formGroup]="formEntrate"
-          (ngSubmit)="onSubmit()"
+          //(ngSubmit)="onSubmit()"
           class="d-flex flex-column
           justify-content-between gap-2 p-2 m-2
           align-items-center w-75">
@@ -20,7 +20,8 @@
       id="entrata"
       step="0.01"
       placeholder="Inserisci una entrata"
-      [class.is-invalid]="isInvalidField('entrate')">
+      //[class.is-invalid]="isInvalidField('entrate')"
+      >
 
       
       </div>

@@ -16,7 +16,7 @@ export class AggiungiEntrate {
     ])
   });
 
-  protected isInvalidField(fieldName: keyof typeof this.formEntrate.controls): boolean {
+ /* protected isInvalidField(fieldName: keyof typeof this.formEntrate.controls): boolean {
 
-  }
+  }*/
 }

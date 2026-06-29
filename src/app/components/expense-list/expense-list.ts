@@ -2,10 +2,11 @@ import { Component, inject, input, output, signal } from '@angular/core';
 import { Expense, UpdateExpenseEvent } from '../../type/spesa';
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { SpesaService } from '../../services/spesa-service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-expense-list',
-  imports: [CurrencyPipe, UpperCasePipe],
+  imports: [CurrencyPipe, UpperCasePipe, RouterLink],
   templateUrl: './expense-list.html',
   styleUrl: './expense-list.css',
 })

@@ -3,6 +3,7 @@ import { HomePage } from './pages/home-page/home-page';
 import { AggiungiSpesa } from './pages/aggiungi-spesa/aggiungi-spesa';
 import { RiepilogoSpesa } from './pages/riepilogo-spesa/riepilogo-spesa';
 import { AggiungiEntrate } from './pages/aggiungi-entrate/aggiungi-entrate';
+import { DettaglioSpesa } from './pages/dettaglio-spesa/dettaglio-spesa';
 
 export const routes: Routes = [
   {
@@ -24,5 +25,11 @@ export const routes: Routes = [
     path: 'aggiungi-entrate',
     component: AggiungiEntrate,
     title: 'Aggiungi Entrate | Gestionale Spese'
+  },
+  {
+    path: 'dettaglio/:id',
+    component: DettaglioSpesa,
+    title: 'Dettaglio Spesa | Gestionale Spese'
+
   }
 ];

@@ -61,7 +61,8 @@
     <button type="button" class="btn btn-danger"
     (click)="removeExpense()">Elimina
     </button>
-    <button type="button" class="btn btn-primary">Dettaglio
+    <button type="button" class="btn btn-primary"
+    [routerLink]="['/dettaglio', ex.id]">Dettaglio
 
     </button>
   </div>

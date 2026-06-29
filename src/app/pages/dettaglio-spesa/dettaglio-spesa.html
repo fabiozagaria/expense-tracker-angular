@@ -1,0 +1,46 @@
+<section class="container">
+  <h2>Dettaglio Spesa</h2>
+
+  @if (spesa(); as expense) {
+    <div class="card w-75 m-2">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+          <div>
+            <h4 class="card-title mb-2">{{ expense.title }}</h4>
+            <h6 class="card-subtitle mb-3 text-body-secondary">
+              {{ expense.categoria | uppercase }}
+            </h6>
+          </div>
+
+          <span class="fs-4 text-danger">
+            {{ expense.importo | currency:'EUR' }}
+          </span>
+        </div>
+
+        <dl class="row mb-0">
+          <dt class="col-sm-3">Data</dt>
+          <dd class="col-sm-9">{{ expense.data | date:'dd/MM/yyyy' }}</dd>
+
+          <dt class="col-sm-3">Descrizione</dt>
+          <dd class="col-sm-9">
+            {{ expense.descrizione ? expense.descrizione : 'Nessuna descrizione!' }}
+          </dd>
+
+          <dt class="col-sm-3">ID</dt>
+          <dd class="col-sm-9 text-body-secondary">{{ expense.id }}</dd>
+        </dl>
+      </div>
+    </div>
+  } @else {
+    <p class="invalid-feedback d-block fs-4">
+      Nessuna spesa trovata!
+    </p>
+  }
+
+  <button
+    type="button"
+    class="btn btn-primary m-2"
+    [routerLink]="['/riepilogo']">
+    Torna al Riepilogo
+  </button>
+</section>

@@ -9,12 +9,6 @@ export class SpesaService {
   readonly allExpense = this._allExpense.asReadonly();
   
 
-  
-
-  private setExpenses(expenseArr: Expense[]): void {
-    this._allExpense.set(expenseArr);
-
-  }
 
   public addExpense(expense: Expense): void {
     this._allExpense.update(prev => [...prev, expense])
@@ -31,6 +25,16 @@ export class SpesaService {
       )
     )
 
+  }
+
+  public getSpesaByID(id: string): Expense {
+    const spesaTrovata = this._allExpense().find(spesa => spesa.id === id);
+
+    if(!spesaTrovata) {
+      throw new Error("Errore: Id non trovato");
+    }
+
+    return spesaTrovata;
   }
   
 

@@ -2,7 +2,6 @@
   <div>
     <form
           [formGroup]="formEntrate"
-          //(ngSubmit)="onSubmit()"
           class="d-flex flex-column
           justify-content-between gap-2 p-2 m-2
           align-items-center w-75">
@@ -14,13 +13,12 @@
         Entrata (Stipendio ecc):
         </label>
       <input 
-      formControlName="entrate"
+      formControlName="entrata"
       class="form-control m-2"
       type="number" 
       id="entrata"
       step="0.01"
       placeholder="Inserisci una entrata"
-      //[class.is-invalid]="isInvalidField('entrate')"
       >
 
       

@@ -1,20 +1,30 @@
-# Expense Tracker — Gestionale Spese
+# Expense Tracker — Applicazione Angular
 
-Applicazione Angular per registrare e consultare le spese personali. Il progetto mette al centro form reattivi, stato con Signals, componenti riutilizzabili e routing.
+Applicazione frontend per registrare, consultare e modificare spese personali. Il progetto applica Reactive Forms, Signals, routing e comunicazione tra componenti in un caso d'uso concreto.
 
-[Demo live](https://gestionale-spese.vercel.app/)
+[Demo online](https://gestionale-spese.vercel.app/)
+
+## Competenze dimostrate
+
+- modellazione tipizzata del dominio `Expense`;
+- form reattivi e validazione dei dati;
+- stato centralizzato con Angular Signals;
+- separazione tra pagine, componenti e service;
+- comunicazione padre-figlio tramite input e output;
+- routing statico e dinamico;
+- gestione di operazioni di creazione, modifica ed eliminazione.
 
 ## Funzionalità implementate
 
-- inserimento di una spesa tramite Reactive Forms;
-- validazione dei campi e messaggi di errore;
-- stato centralizzato con Angular Signals;
-- riepilogo delle spese tramite card riutilizzabili;
+- inserimento di una nuova spesa;
+- validazione di titolo, importo, categoria, descrizione e data;
+- elenco riepilogativo delle spese;
 - modifica inline di titolo e descrizione;
 - eliminazione di una spesa;
-- pagina di dettaglio tramite rotta dinamica;
-- struttura iniziale del form per le entrate;
-- navigazione tra le sezioni tramite Angular Router.
+- pagina di dettaglio tramite identificativo;
+- navigazione tra home, inserimento, riepilogo e dettaglio.
+
+È presente anche la struttura iniziale del form per le entrate, non ancora collegata a uno stato persistente.
 
 ## Tecnologie
 
@@ -24,33 +34,18 @@ Applicazione Angular per registrare e consultare le spese personali. Il progetto
 - Angular Reactive Forms
 - Angular Router
 - Bootstrap 5
-- Vitest
+- Vitest come test runner configurato
 
 ## Architettura
 
-```text
-src/app
-├── components
-│   └── expense-list
-├── layout
-├── pages
-│   ├── aggiungi-entrate
-│   ├── aggiungi-spesa
-│   ├── dettaglio-spesa
-│   ├── home-page
-│   └── riepilogo-spesa
-├── services
-│   └── spesa-service.ts
-├── type
-│   └── spesa.ts
-└── app.routes.ts
-```
+- `SpesaService`: mantiene lo stato reattivo e applica le operazioni sui dati;
+- `pages`: orchestrano i diversi casi d'uso;
+- `ExpenseList`: visualizza una spesa ed emette gli eventi di modifica o eliminazione;
+- `type/spesa.ts`: definisce i tipi del dominio.
 
-`SpesaService` rappresenta la fonte centrale dello stato. Le pagine orchestrano i casi d'uso, mentre `ExpenseList` visualizza una singola spesa ed emette eventi di modifica o eliminazione.
+## Persistenza attuale
 
-## Persistenza
-
-I dati sono mantenuti in memoria: ricaricando la pagina vengono persi. Non sono ancora presenti backend, database o autenticazione.
+I dati sono mantenuti in memoria. Un aggiornamento della pagina azzera lo stato: non sono ancora presenti `localStorage`, backend o database.
 
 ## Avvio in locale
 
@@ -60,31 +55,26 @@ I dati sono mantenuti in memoria: ricaricando la pagina vengono persi. Non sono 
 - npm
 
 ```bash
-git clone https://github.com/fabiozagaria/gestionale-spese.git
-cd gestionale-spese
+git clone https://github.com/fabiozagaria/expense-tracker-angular.git
+cd expense-tracker-angular
 npm install
 npm start
 ```
 
 L'applicazione sarà disponibile su `http://localhost:4200`.
 
-## Validazione delle spese
+## Sviluppi successivi
 
-Il form controlla titolo, importo, categoria, descrizione e data. Gli errori vengono mostrati soltanto quando necessario, mantenendo la logica di validazione nel componente e il template leggibile.
+- completamento del flusso delle entrate;
+- persistenza locale;
+- filtri, ordinamento, totali e statistiche;
+- integrazione con backend Spring Boot e MySQL;
+- autenticazione e gestione utenti.
 
-## Roadmap
+## Stato
 
-- completare il flusso delle entrate;
-- aggiungere persistenza locale;
-- introdurre filtri, ordinamento e totali;
-- integrare grafici e statistiche;
-- collegare un backend Spring Boot con MySQL;
-- aggiungere utenti e autenticazione.
-
-## Stato del progetto
-
-Progetto portfolio in evoluzione. Le funzionalità dichiarate sopra corrispondono allo stato attuale del codice; la roadmap indica soltanto sviluppi futuri.
+Progetto portfolio in evoluzione. Le funzionalità elencate come implementate corrispondono allo stato attuale del codice.
 
 ## Autore
 
-Sviluppato da [Fabio Zagaria](https://github.com/fabiozagaria).
+Fabio Zagaria — Junior Backend Developer con competenze Angular.

@@ -1,30 +1,25 @@
-# Expense Tracker — Applicazione Angular
+# Expense Tracker
 
-Applicazione frontend per registrare, consultare e modificare spese personali. Il progetto applica Reactive Forms, Signals, routing e comunicazione tra componenti in un caso d'uso concreto.
+Applicazione per la gestione delle spese personali, sviluppata come progetto full stack in evoluzione.
 
-[Demo online](https://gestionale-spese.vercel.app/)
+Il frontend Angular comunica tramite API REST con un backend Spring Boot. Il progetto è pensato per consolidare la gestione dello stato, i form reattivi, la comunicazione HTTP e la separazione delle responsabilità.
 
-## Competenze dimostrate
+## Stato attuale
 
-- modellazione tipizzata del dominio `Expense`;
-- form reattivi e validazione dei dati;
-- stato centralizzato con Angular Signals;
-- separazione tra pagine, componenti e service;
-- comunicazione padre-figlio tramite input e output;
-- routing statico e dinamico;
-- gestione di operazioni di creazione, modifica ed eliminazione.
+Il frontend è in fase di integrazione con il backend.
 
-## Funzionalità implementate
+Sono presenti:
 
-- inserimento di una nuova spesa;
+- form reattivo per l'inserimento delle spese;
 - validazione di titolo, importo, categoria, descrizione e data;
-- elenco riepilogativo delle spese;
-- modifica inline di titolo e descrizione;
-- eliminazione di una spesa;
-- pagina di dettaglio tramite identificativo;
-- navigazione tra home, inserimento, riepilogo e dettaglio.
+- stato applicativo gestito con Angular Signals;
+- client HTTP dedicato alle operazioni REST;
+- pagina di riepilogo delle spese;
+- eliminazione delle spese;
+- routing per la pagina di dettaglio;
+- struttura iniziale per la gestione delle entrate.
 
-È presente anche la struttura iniziale del form per le entrate, non ancora collegata a uno stato persistente.
+La modifica delle spese, il caricamento diretto del dettaglio e la gestione completa degli stati asincroni sono ancora in lavorazione.
 
 ## Tecnologie
 
@@ -33,21 +28,40 @@ Applicazione frontend per registrare, consultare e modificare spese personali. I
 - Angular Signals
 - Angular Reactive Forms
 - Angular Router
+- Angular HttpClient
+- RxJS
 - Bootstrap 5
-- Vitest come test runner configurato
+- Vitest
+- Spring Boot e MySQL per il backend
 
-## Architettura
+## Architettura frontend
 
-- `ExpenseService`: mantiene lo stato reattivo e applica le operazioni sui dati;
-- `pages`: orchestrano i diversi casi d'uso;
-- `ExpenseList`: visualizza una spesa ed emette gli eventi di modifica o eliminazione;
-- `type/expense.ts`: definisce i tipi del dominio.
+- `pages`: orchestrano i casi d'uso dell'applicazione;
+- `components`: contengono gli elementi riutilizzabili dell'interfaccia;
+- `ExpenseApiService`: gestisce le richieste HTTP verso il backend;
+- `ExpenseService`: mantiene lo stato reattivo e coordina le operazioni sui dati;
+- `type/expense.ts`: definisce il modello `Expense` e i tipi delle richieste.
 
-## Persistenza attuale
+## API
 
-I dati sono mantenuti in memoria. Un aggiornamento della pagina azzera lo stato: non sono ancora presenti `localStorage`, backend o database.
+Il frontend utilizza attualmente il seguente endpoint locale:
 
-## Avvio in locale
+```text
+http://localhost:8080/api/expenses
+```
+
+Il client HTTP prevede le operazioni:
+
+- `GET /api/expenses`
+- `GET /api/expenses/{id}`
+- `POST /api/expenses`
+- `PUT /api/expenses/{id}`
+- `PATCH /api/expenses/{id}`
+- `DELETE /api/expenses/{id}`
+
+Per utilizzare le funzionalità collegate ai dati è necessario avviare anche il backend.
+
+## Avvio del frontend
 
 ### Requisiti
 
@@ -61,20 +75,27 @@ npm install
 npm start
 ```
 
-L'applicazione sarà disponibile su `http://localhost:4200`.
+L'applicazione sarà disponibile su:
 
-## Sviluppi successivi
+```text
+http://localhost:4200
+```
 
-- completamento del flusso delle entrate;
-- persistenza locale;
-- filtri, ordinamento, totali e statistiche;
-- integrazione con backend Spring Boot e MySQL;
-- autenticazione e gestione utenti.
+## Prossimi sviluppi
 
-## Stato
+- completare l'integrazione CRUD con il backend;
+- gestire caricamento, errori e conferme delle operazioni asincrone;
+- completare il dettaglio tramite chiamata API;
+- configurare gli endpoint per gli ambienti di sviluppo e produzione;
+- completare il flusso delle entrate;
+- aggiungere filtri, ordinamento, totali e statistiche;
+- ampliare la copertura dei test;
+- integrare autenticazione e gestione utenti.
 
-Progetto portfolio in evoluzione. Le funzionalità elencate come implementate corrispondono allo stato attuale del codice.
+## Stato del progetto
+
+Progetto portfolio in sviluppo attivo. Il frontend non è ancora considerato completo.
 
 ## Autore
 
-Fabio Zagaria — Junior Backend Developer con competenze Angular.
+Fabio Zagaria — Junior Full Stack Developer orientato al backend Java e Spring Boot.

@@ -14,16 +14,16 @@
         (input)="editTitle.set($any($event.target).value)"
       />
 
-      <label class="form-label" for="edit-descrizione">
+      <label class="form-label" for="edit-description">
         Descrizione
       </label>
 
       <textarea
-        id="edit-descrizione"
+        id="edit-description"
         class="form-control mb-2"
         rows="3"
-        [value]="editDescrizione()"
-        (input)="editDescrizione.set($any($event.target).value)"
+        [value]="editDescription()"
+        (input)="editDescription.set($any($event.target).value)"
       ></textarea>
 
       <div class="d-flex gap-2">
@@ -47,9 +47,9 @@
   <div class="card d-flex justify-content-around align-items-start" >
   <div class="card-body">
     <h4 class="card-title">{{ex.title}}</h4>
-    <h5 class="card-subtitle mb-2 text-body-secondary">{{ex.importo | currency:'EUR'}}</h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary">{{ex.categoria | uppercase}}</h6>
-    <p class="card-text">{{ex.descrizione ? ex.descrizione : 'Nessuna descrizione!'}}</p>
+    <h5 class="card-subtitle mb-2 text-body-secondary">{{ex.amount | currency:'EUR'}}</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">{{ex.category | uppercase}}</h6>
+    <p class="card-text">{{ex.description ? ex.description : 'Nessuna descrizione!'}}</p>
     
   </div>
 
@@ -62,7 +62,7 @@
     (click)="removeExpense()">Elimina
     </button>
     <button type="button" class="btn btn-primary"
-    [routerLink]="['/dettaglio', ex.id]">Dettaglio
+    [routerLink]="['/expenses', ex.id]">Dettaglio
 
     </button>
   </div>

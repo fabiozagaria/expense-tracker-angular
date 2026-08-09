@@ -1,22 +1,22 @@
 <section class="container">
   <div>
     <form
-          [formGroup]="formEntrate"
+          [formGroup]="incomeForm"
           class="d-flex flex-column
           justify-content-between gap-2 p-2 m-2
           align-items-center w-75">
           
       <div class="form-control w-50 m-3">
         <label 
-        for="entrata"
+        for="income"
         class="form-label m-2">
         Entrata (Stipendio ecc):
         </label>
       <input 
-      formControlName="entrata"
+      formControlName="income"
       class="form-control m-2"
       type="number" 
-      id="entrata"
+      id="income"
       step="0.01"
       placeholder="Inserisci una entrata"
       >

@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
-import { Expense, UpdateExpenseEvent } from '../../type/spesa';
+import { Expense, UpdateExpenseEvent } from '../../type/expense';
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
-import { SpesaService } from '../../services/spesa-service';
+import { ExpenseApiService } from '../../services/expense-api.service';
 import { RouterLink } from "@angular/router";
 
 @Component({
@@ -18,13 +18,13 @@ export class ExpenseList {
 
     protected isEditing = signal(false);
     protected editTitle = signal('');
-    protected editDescrizione = signal('');
+    protected editDescription = signal('');
 
     protected startEdit(): void {
       const currentExpense = this.expense();
 
       this.editTitle.set(currentExpense.title);
-      this.editDescrizione.set(currentExpense.descrizione);
+      this.editDescription.set(currentExpense.description);
       this.isEditing.set(true);
     }
 
@@ -35,7 +35,7 @@ export class ExpenseList {
         id: currentExpense.id,
         patch: {
           title: this.editTitle(),
-          descrizione: this.editDescrizione()
+          description: this.editDescription()
         }
       });
 

@@ -3,30 +3,30 @@
 <section class="container">
   <h2>Aggiungi Spesa</h2>
   <form 
-        [formGroup]="formSpesa"
+        [formGroup]="expenseForm"
         (ngSubmit)="onSubmit()"
          class="d-flex flex-column justify-content-between gap-2 p-2 m-2 align-items-center w-75" >
     <div class="d-flex gap-2 justify-content-between align-items-start m-2 p-2 w-100">
         <div class="form-control w-50 m-3">
-          <label for="importo" class="form-label m-2">
+          <label for="amount" class="form-label m-2">
           Importo:
           </label>
           <input 
-          formControlName="importo"
+          formControlName="amount"
           class="form-control m-2" 
           type="number" 
           step="0.01" 
-          id="importo" 
+          id="amount" 
           placeholder="Inserisci l'importo"
-          [class.is-invalid]="isInvalidField('importo')">
+          [class.is-invalid]="isInvalidField('amount')">
 
-          @if (isInvalidField('importo')) {
+          @if (isInvalidField('amount')) {
               <div class="invalid-feedback d-block">
-                @if (hasFieldError('importo', 'required')) {
+                @if (hasFieldError('amount', 'required')) {
                   <span>L'importo è obbligatorio.</span>
               }    
 
-                @if (hasFieldError('importo', 'min')) {
+                @if (hasFieldError('amount', 'min')) {
                   <span>L'importo deve essere maggiore di zero.</span>
                 }
               </div>
@@ -65,71 +65,71 @@
 
     </div>
     <div class="input-group">
-        <label class="form-label m-2" for="categoria">
+        <label class="form-label m-2" for="category">
           Categoria:
         </label>
         <select 
-        formControlName="categoria" 
+        formControlName="category" 
         class="form-select m-2" 
-        name="categoria" 
-        id="categoria"
-        [class.is-invalid]="isInvalidField('categoria')">
+        name="category" 
+        id="category"
+        [class.is-invalid]="isInvalidField('category')">
         
           <option value="">Scegli Categoria</option>
-          <option value="Alimentari">Alimentari</option>
-          <option value="Auto">Auto</option>
-          <option value="Regali">Regali</option>
-          <option value="Rate">Rate</option>
-          <option value="Prestito">Prestito</option>
-          <option value="Salute">Salute</option>
-          <option value="Trasporti">Trasporti</option>
+          <option value="groceries">Alimentari</option>
+          <option value="car">Auto</option>
+          <option value="gifts">Regali</option>
+          <option value="installments">Rate</option>
+          <option value="loan">Prestito</option>
+          <option value="health">Salute</option>
+          <option value="transport">Trasporti</option>
         </select>
         <button class="btn btn-info m-2" type="button" role="button" disabled>Aggiungi Nuova Categoria</button>
 
-        @if (hasFieldError('categoria', 'required')) {
+        @if (hasFieldError('category', 'required')) {
           <span class="invalid-feedback d-block">Categoria Obbligatoria! Citrullo!</span>
         }
     </div>
     <div class="input-group">
-      <label class="form-label m-2" for="descrizione">
+      <label class="form-label m-2" for="description">
         Descrizione:
       </label>
       <textarea 
-      formControlName="descrizione" 
+      formControlName="description" 
       class="form-control" 
-      name="descrizione" 
-      id="descrizione" 
+      name="description" 
+      id="description" 
       cols="10" 
       rows="3" 
       placeholder="(Opzionale, Max: 30 char)"
-      [class.is-invalid]="isInvalidField('descrizione')"></textarea>
+      [class.is-invalid]="isInvalidField('description')"></textarea>
 
-      @if (hasFieldError('descrizione', 'maxlength')) {
+      @if (hasFieldError('description', 'maxlength')) {
         <span class="invalid-feedback d-block">Limite caratteri superato! E che devi scrivere?? O.O</span>
       }
     </div>
     <div class="input-group">
-      <label class="form-label m-2" for="data">
+      <label class="form-label m-2" for="date">
         Data Spesa: 
       </label>
       <input 
-      formControlName="data"
+      formControlName="date"
       class="form-control m-2"
       type="date"
-      name="data" 
-      id="data"
-      [class.is-invalid]="isInvalidField('data')">
+      name="date" 
+      id="date"
+      [class.is-invalid]="isInvalidField('date')">
 
-      @if (hasFieldError('data', 'required')) {
+      @if (hasFieldError('date', 'required')) {
         <span class="invalid-feedback d-block">Data Obbligatoria direi no?!</span>
 
       }
     </div>
     <button class="btn btn-primary m-2 p-1" type="submit">Aggiungi</button>
 
-    @if (noticeSuccessAddedExpense()) {
-      <span class="valid-feedback d-block fs-4">Spesa Aggiunta!</span>
+  @if (expenseAddedNoticeVisible()) {
+      <span class="valid-feedback d-block fs-4">Spesa aggiunta!</span>
     }
   </form>
-  <button class="btn btn-primary" [routerLink]="['/riepilogo']" routerLinkActive="active" >Vai a Riepilogo</button>
+  <button class="btn btn-primary" [routerLink]="['/summary']" routerLinkActive="active" >Vai a Riepilogo</button>
 </section>

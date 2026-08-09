@@ -8,5 +8,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home-page.css',
 })
 export class HomePage {
-  protected title = signal('Gestore Di Spese');
+  protected title = signal('Gestore di Spese');
 }

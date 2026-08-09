@@ -38,10 +38,10 @@ Applicazione frontend per registrare, consultare e modificare spese personali. I
 
 ## Architettura
 
-- `SpesaService`: mantiene lo stato reattivo e applica le operazioni sui dati;
+- `ExpenseService`: mantiene lo stato reattivo e applica le operazioni sui dati;
 - `pages`: orchestrano i diversi casi d'uso;
 - `ExpenseList`: visualizza una spesa ed emette gli eventi di modifica o eliminazione;
-- `type/spesa.ts`: definisce i tipi del dominio.
+- `type/expense.ts`: definisce i tipi del dominio.
 
 ## Persistenza attuale
 

@@ -1,5 +1,5 @@
 {
-  "name": "gestionale-spese",
+  "name": "expense-tracker",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:gestionale-spese": "node dist/gestionale-spese/server/server.mjs"
+    "serve:ssr:expense-tracker": "node dist/expense-tracker/server/server.mjs"
   },
   "private": true,
   "packageManager": "npm@10.9.2",

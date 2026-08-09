@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
-import { ExpenseList } from '../../components/expense-list/expense-list';
-import { ExpenseService } from '../../services/expense-service';
-import { Expense } from '../../type/expense';
+import { ExpenseList } from '../expense-list/expense-list';
+import { ExpenseService } from '../expense-service';
+import { Expense } from '../expense';
 
 
 @Component({

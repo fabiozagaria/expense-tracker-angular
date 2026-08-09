@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { CreateExpenseRequest, Expense, ExpensePatch, ExpensesList, UpdateExpenseEvent } from '../type/expense';
+import { CreateExpenseRequest, Expense, ExpensePatch, ExpensesList, UpdateExpenseEvent } from './expense';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 

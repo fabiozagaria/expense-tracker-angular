@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { ExpenseApiService } from './expense-api.service';
+import { ExpenseApiService } from './expense-api-service';
 import { finalize, Observable } from 'rxjs';
-import { CreateExpenseRequest, ExpensesList, Expense } from '../type/expense';
+import { CreateExpenseRequest, ExpensesList, Expense } from './expense';
 import fa from '@angular/common/locales/fa';
 
 @Injectable({

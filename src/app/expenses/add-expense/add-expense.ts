@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CreateExpenseRequest, Expense } from '../../type/expense';
-import { ExpenseService } from '../../services/expense-service';
+import { CreateExpenseRequest, Expense } from '../expense';
+import { ExpenseService } from '../expense-service';
 import { RouterLink } from '@angular/router';
 import 'tslib';
 

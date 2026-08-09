@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomePage } from './pages/home-page/home-page';
-import { AddExpense } from './pages/add-expense/add-expense';
-import { ExpenseSummary } from './pages/expense-summary/expense-summary';
-import { AddIncome } from './pages/add-income/add-income';
-import { ExpenseDetail } from './pages/expense-detail/expense-detail';
+import { HomePage } from './home/home-page/home-page';
+import { AddExpense } from './expenses/add-expense/add-expense';
+import { ExpenseSummary } from './expenses/expense-summary/expense-summary';
+import { AddIncome } from './income/add-income/add-income';
+import { ExpenseDetail } from './expenses/expense-detail/expense-detail';
 
 export const routes: Routes = [
   {

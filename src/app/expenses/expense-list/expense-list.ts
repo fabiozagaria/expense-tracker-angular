@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
-import { Expense, UpdateExpenseEvent } from '../../type/expense';
+import { Expense, UpdateExpenseEvent } from '../expense';
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
-import { ExpenseApiService } from '../../services/expense-api.service';
+import { ExpenseApiService } from '../expense-api-service';
 import { RouterLink } from "@angular/router";
 
 @Component({

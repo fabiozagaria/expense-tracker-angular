@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ExpenseService } from '../../services/expense-service';
+import { ExpenseService } from '../expense-service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Expense } from '../../type/expense';
+import { Expense } from '../expense';
 import { CurrencyPipe, DatePipe, UpperCasePipe } from '@angular/common';
 
 @Component({

@@ -1,24 +1,81 @@
 <header class="mb-4 p-1">
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" [routerLink]="['/']" routerLinkActive="active" >Gestore Spese</a>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" [routerLink]="['/']" routerLinkActive="active" >Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/add-expense']" routerLinkActive="active" >Aggiungi Spesa</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link " [routerLink]="['/summary']" routerLinkActive="active" >Riepilogo</a>
-        </li>
-      </ul>
-      
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" aria-label="Navigazione principale">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand fw-bold" [routerLink]="['/']">
+        Gestore Spese
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#main-navbar"
+        aria-controls="main-navbar"
+        aria-expanded="false"
+        aria-label="Apri o chiudi la navigazione">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="main-navbar">
+        <ul class="navbar-nav align-items-lg-center gap-lg-2 me-auto mb-3 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/']"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              ariaCurrentWhenActive="page">
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/dashboard']"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page">
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="btn btn-outline-danger btn-sm"
+              [routerLink]="['/summary']"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page">
+              Spese
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="btn btn-outline-success btn-sm"
+              [routerLink]="['/add-income']"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page">
+              Entrate
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/add-transaction']"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page">
+              Aggiungi
+            </a>
+          </li>
+        </ul>
+
+        <div class="d-grid d-lg-flex">
+          <a
+            class="btn btn-primary"
+            [routerLink]="['/login']"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page">
+            Login
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 </header>

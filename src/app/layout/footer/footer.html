@@ -1,33 +1,49 @@
-<footer class="bg-dark text-light mt-3 py-4 ">
+<footer class="bg-dark text-light mt-5 py-5">
   <div class="container">
-    <div class="row align-items-center gy-3">
-      <div class="col-md-6">
-        <h5 class="mb-1">Gestore di Spese</h5>
-        <p class="mb-0 text-secondary">
+    <div class="row gy-4">
+      <div class="col-12 col-lg-5">
+        <h2 class="h5 mb-2">Gestore Spese</h2>
+        <p class="mb-0 text-secondary col-lg-9">
           Tieni sotto controllo entrate, uscite e risparmi.
         </p>
       </div>
 
-      <div class="col-md-6">
-        <ul class="nav justify-content-md-end">
-          <li class="nav-item">
-            <a class="nav-link px-2 text-light" [routerLink]="['/']" routerLinkActive="active" >Home</a>
+      <div class="col-6 col-md-4 col-lg-3">
+        <h2 class="h6 text-uppercase text-secondary mb-3">Navigazione</h2>
+        <ul class="list-unstyled d-grid gap-2 mb-0">
+          <li>
+            <a class="link-light link-offset-2" [routerLink]="['/']">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link px-2 text-light" [routerLink]="['/add-expense']" routerLinkActive="active" >Spese</a>
+          <li>
+            <a class="link-light link-offset-2" [routerLink]="['/dashboard']">Dashboard</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link px-2 text-light" [routerLink]="['/summary']" routerLinkActive="active" >Report</a>
+          <li>
+            <a class="link-light link-offset-2" [routerLink]="['/summary']">Spese</a>
+          </li>
+          <li>
+            <a class="link-light link-offset-2" [routerLink]="['/add-income']">Entrate</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-3">
+        <h2 class="h6 text-uppercase text-secondary mb-3">Area personale</h2>
+        <ul class="list-unstyled d-grid gap-2 mb-0">
+          <li>
+            <a class="link-light link-offset-2" [routerLink]="['/add-transaction']">Aggiungi movimento</a>
+          </li>
+          <li>
+            <a class="link-light link-offset-2" [routerLink]="['/login']">Login</a>
           </li>
         </ul>
       </div>
     </div>
 
-    <hr class="border-secondary my-3" />
+    <hr class="border-secondary my-4">
 
     <div class="d-flex flex-column flex-md-row justify-content-between gap-2 small text-secondary">
       <span>&copy; 2026 Gestore di Spese</span>
-      <span>Creato da fabiozagaria (su GitHub) con Angular e Bootstrap</span>
+      <span>Realizzato con Angular e Bootstrap - Spring Boot e MySQL</span>
     </div>
   </div>
 </footer>

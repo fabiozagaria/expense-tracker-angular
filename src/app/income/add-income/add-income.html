@@ -1,28 +1,102 @@
-<section class="container">
-  <div>
-    <form
-          [formGroup]="incomeForm"
-          class="d-flex flex-column
-          justify-content-between gap-2 p-2 m-2
-          align-items-center w-75">
-          
-      <div class="form-control w-50 m-3">
-        <label 
-        for="income"
-        class="form-label m-2">
-        Entrata (Stipendio ecc):
-        </label>
-      <input 
-      formControlName="income"
-      class="form-control m-2"
-      type="number" 
-      id="income"
-      step="0.01"
-      placeholder="Inserisci una entrata"
-      >
-
-      
+<section class="container py-4 py-lg-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-9 col-xl-8">
+      <div class="mb-4">
+        <span class="badge text-bg-success mb-2">Nuova entrata</span>
+        <h1 class="display-6 fw-bold mb-2">Aggiungi un'entrata</h1>
+        <p class="text-body-secondary mb-0">
+          Inserisci i dettagli dello stipendio, rimborso o altro movimento in entrata.
+        </p>
       </div>
-    </form>
+
+      <form class="card border-0 shadow-sm" [formGroup]="incomeForm">
+        <div class="card-body p-4 p-lg-5">
+          <div class="row g-4">
+            <div class="col-12 col-md-7">
+              <label class="form-label" for="income-title">Titolo</label>
+              <input
+                class="form-control form-control-lg"
+                id="income-title"
+                type="text"
+                formControlName="title"
+                placeholder="Es. Stipendio agosto"
+                [class.is-invalid]="incomeForm.controls.title.invalid && incomeForm.controls.title.touched">
+              <div class="invalid-feedback">Inserisci un titolo da 3 a 30 caratteri.</div>
+            </div>
+
+            <div class="col-12 col-md-5">
+              <label class="form-label" for="income-amount">Importo</label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text">€</span>
+                <input
+                  class="form-control"
+                  id="income-amount"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  formControlName="amount"
+                  placeholder="0,00"
+                  [class.is-invalid]="incomeForm.controls.amount.invalid && incomeForm.controls.amount.touched">
+                <div class="invalid-feedback">Inserisci un importo maggiore di zero.</div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="income-category">Categoria</label>
+              <select
+                class="form-select form-select-lg"
+                id="income-category"
+                formControlName="category"
+                [class.is-invalid]="incomeForm.controls.category.invalid && incomeForm.controls.category.touched">
+                <option value="">Scegli una categoria</option>
+                <option [value]="IncomeCategory.Salary">Stipendio</option>
+                <option [value]="IncomeCategory.Freelance">Lavoro autonomo</option>
+                <option [value]="IncomeCategory.Bonus">Bonus</option>
+                <option [value]="IncomeCategory.Refund">Rimborso</option>
+                <option [value]="IncomeCategory.Investment">Investimenti</option>
+                <option [value]="IncomeCategory.Gift">Regalo</option>
+                <option [value]="IncomeCategory.Rental">Affitto</option>
+                <option [value]="IncomeCategory.Other">Altro</option>
+              </select>
+              <div class="invalid-feedback">Seleziona una categoria.</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="income-date">Data</label>
+              <input
+                class="form-control form-control-lg"
+                id="income-date"
+                type="date"
+                formControlName="date"
+                [class.is-invalid]="incomeForm.controls.date.invalid && incomeForm.controls.date.touched">
+              <div class="invalid-feedback">Seleziona una data.</div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="income-description">Descrizione</label>
+              <textarea
+                class="form-control"
+                id="income-description"
+                rows="4"
+                maxlength="100"
+                formControlName="description"
+                placeholder="Aggiungi una nota facoltativa"
+                [class.is-invalid]="incomeForm.controls.description.invalid && incomeForm.controls.description.touched"></textarea>
+              <div class="form-text">Massimo 100 caratteri.</div>
+              <div class="invalid-feedback">La descrizione supera i 100 caratteri.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer bg-white d-flex flex-column flex-sm-row justify-content-end gap-2 p-4">
+          <a class="btn btn-outline-secondary" [routerLink]="['/add-transaction']">
+            Annulla
+          </a>
+          <button class="btn btn-success" type="submit" [disabled]="incomeForm.invalid">
+            Aggiungi entrata
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </section>

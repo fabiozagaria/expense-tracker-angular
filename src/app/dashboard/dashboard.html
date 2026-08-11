@@ -1,0 +1,104 @@
+<section class="container py-4 py-lg-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+      <span class="badge text-bg-primary mb-2">Panoramica</span>
+      <h1 class="display-6 fw-bold mb-1">Dashboard</h1>
+      <p class="text-body-secondary mb-0">
+        Il resoconto completo di saldo, entrate e spese.
+      </p>
+    </div>
+
+    <a class="btn btn-primary btn-lg" [routerLink]="['/add-transaction']">
+      Aggiungi movimento
+    </a>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div class="col-12 col-md-4">
+      <article class="card h-100 border-0 shadow-sm">
+        <div class="card-body p-4">
+          <p class="text-body-secondary mb-2">Saldo disponibile</p>
+          <h2 class="display-6 fw-bold mb-2">€ 0,00</h2>
+          <span class="badge text-bg-secondary">Dati dimostrativi</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <article class="card h-100 border-success-subtle shadow-sm">
+        <div class="card-body d-flex flex-column p-4">
+          <p class="text-success fw-semibold mb-2">Entrate</p>
+          <h2 class="display-6 fw-bold mb-3">€ 0,00</h2>
+          <a class="btn btn-outline-success mt-auto" [routerLink]="['/add-income']">
+            Gestisci entrate
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <article class="card h-100 border-danger-subtle shadow-sm">
+        <div class="card-body d-flex flex-column p-4">
+          <p class="text-danger fw-semibold mb-2">Spese</p>
+          <h2 class="display-6 fw-bold mb-3">€ 0,00</h2>
+          <a class="btn btn-outline-danger mt-auto" [routerLink]="['/summary']">
+            Visualizza spese
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white d-flex flex-column flex-sm-row justify-content-between gap-2 py-3">
+      <h2 class="h4 mb-0">Ultimi movimenti</h2>
+      <span class="text-body-secondary">Entrate e spese</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Descrizione</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Tipo</th>
+            <th scope="col" class="text-end">Importo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5" class="py-5 text-center text-body-secondary">
+              Nessun movimento disponibile.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3">
+      <h2 class="h4 mb-0">Azioni rapide</h2>
+    </div>
+    <div class="list-group list-group-flush">
+      <a
+        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3"
+        [routerLink]="['/add-expense']">
+        <span>Aggiungi una nuova spesa</span>
+        <span class="badge text-bg-danger rounded-pill">Uscita</span>
+      </a>
+      <a
+        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3"
+        [routerLink]="['/add-income']">
+        <span>Aggiungi una nuova entrata</span>
+        <span class="badge text-bg-success rounded-pill">Entrata</span>
+      </a>
+      <a
+        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3"
+        [routerLink]="['/summary']">
+        <span>Consulta il riepilogo delle spese</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>

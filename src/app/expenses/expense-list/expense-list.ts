@@ -1,7 +1,6 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { Expense, UpdateExpenseEvent } from '../expense';
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
-import { ExpenseApiService } from '../expense-api-service';
 import { RouterLink } from "@angular/router";
 
 @Component({
@@ -11,9 +10,8 @@ import { RouterLink } from "@angular/router";
   styleUrl: './expense-list.css',
 })
 export class ExpenseList {
-  
     expense = input.required<Expense>();
-    onRemove = output<string>();
+    onRemove = output<number>();
     onUpdate = output<UpdateExpenseEvent>();
 
     protected isEditing = signal(false);

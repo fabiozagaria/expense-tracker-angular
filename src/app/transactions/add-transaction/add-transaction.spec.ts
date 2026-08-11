@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { HomePage } from './home-page';
+import { AddTransaction } from './add-transaction';
 
-describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
+describe('AddTransaction', () => {
+  let component: AddTransaction;
+  let fixture: ComponentFixture<AddTransaction>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePage],
+      imports: [AddTransaction],
       providers: [provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomePage);
+    fixture = TestBed.createComponent(AddTransaction);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

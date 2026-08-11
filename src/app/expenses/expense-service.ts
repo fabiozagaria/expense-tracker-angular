@@ -35,10 +35,15 @@ export class ExpenseService {
             );
   }
 
-  getExpenseById(id: number): Expense {
-    return this.expenses().find(
+  getExpenseById(id: number): Expense | undefined {
+      let expense = this.expenses().find(
       expense => expense.id == id
-    )
+    );
+    if (expense !== undefined) {
+      return expense;
+    }
+
+    return undefined;
   }
 
   addExpense(request: CreateExpenseRequest): void {

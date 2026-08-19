@@ -21,7 +21,7 @@ export class ExpenseSummary implements OnInit {
 
 
   removeExpense(id: number): void {
-    this.expenseService.removeExpense(id);
+    this.expenseService.removeExpenseById(id);
 
   }
 

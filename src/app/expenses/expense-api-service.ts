@@ -24,19 +24,19 @@ export class ExpenseApiService {
     return this.http.post<Expense>(this.apiUrl, expense);
   }
 
-  public putExpense(expense: CreateExpenseRequest, id: number): Observable<Expense> {
+  public putExpense(expense: Expense): Observable<Expense> {
     return this.http.put<Expense>(
-      `${this.apiUrl}/${id}`,
+      `${this.apiUrl}/${expense.id}`,
       expense
     );
 
     
   }
 
-  public patchExpense(patchExpense: ExpensePatch, id: number): Observable<Expense> {
+  public patchExpense(patchRequest: UpdateExpenseEvent): Observable<Expense> {
       return this.http.patch<Expense>(
-        `${this.apiUrl}/${id}`,
-        patchExpense
+        `${this.apiUrl}/${patchRequest.id}`,
+        patchRequest.patch
       );
     }
 

@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ExpenseApiService } from './expense-api-service';
 import { finalize, Observable } from 'rxjs';
-import { CreateExpenseRequest, ExpensesList, Expense } from './expense';
+import { CreateExpenseRequest, ExpensesList, Expense, UpdateExpenseEvent } from './expense';
 import fa from '@angular/common/locales/fa';
 
 @Injectable({
@@ -10,7 +10,7 @@ import fa from '@angular/common/locales/fa';
 export class ExpenseService {
   private expenseApiService = inject(ExpenseApiService);
 
-  protected expenses = signal<ExpensesList>([]);
+  private expenses = signal<ExpensesList>([]);
   loading = signal(false);
   error = signal<string | null>(null);
 
@@ -67,7 +67,35 @@ export class ExpenseService {
         )
   }
 
-  removeExpense(id: number): void {
+  putExpense(request: Expense): void {
+    this.expenseApiService.putExpense(request)
+    .subscribe(
+      {
+        next: response => {
+            this.expenses.update(
+              prev => 
+              prev.map( exp => exp.id == response.id ? response : exp)
+            );
+          },
+      }
+    )
+  }
+
+  patchExpense(patch: UpdateExpenseEvent): void {
+    this.expenseApiService.patchExpense(patch)
+    .subscribe(
+      {
+        next: response => {
+            this.expenses.update(
+              prev => 
+              prev.map( exp => exp.id == response.id ? response : exp)
+            );
+          },
+      }
+    )
+  }
+
+  removeExpenseById(id: number): void {
     this.expenseApiService.deleteExpense(id)
         .subscribe(
           {

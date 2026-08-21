@@ -94,6 +94,7 @@
                 class="form-control form-control-lg"
                 id="expense-date"
                 type="date"
+                [max] = "maxDate"
                 formControlName="date"
                 [class.is-invalid]="isInvalidField('date')">
 

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CreateExpenseRequest, ExpenseCategory } from '../expense';
 import { ExpenseService } from '../expense-service';
 import { RouterLink } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class AddExpense {
 
   protected readonly ExpenseCategory = ExpenseCategory;
   protected readonly expenseAddedNoticeVisible = signal(false);
+  protected maxDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
   protected readonly expenseForm = new FormGroup({
     title: new FormControl<string>('', [

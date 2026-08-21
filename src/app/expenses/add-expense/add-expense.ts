@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CreateExpenseRequest, ExpenseCategory } from '../expense';
 import { ExpenseService } from '../expense-service';
 import { RouterLink } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { MaxValidationError, ValidationError } from '@angular/forms/signals';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class AddExpense {
 
   protected readonly ExpenseCategory = ExpenseCategory;
   protected readonly expenseAddedNoticeVisible = signal(false);
-  protected maxDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+  protected readonly maxDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
   protected readonly expenseForm = new FormGroup({
     title: new FormControl<string>('', [
@@ -54,6 +55,20 @@ export class AddExpense {
 
     return control.hasError(errorName) && control.touched;
   }
+
+  protected hasFutureDate(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if(!value) return null
+
+    const today: string = new Date().toLocaleDateString('en-CA');
+
+    if(value > today) { 
+      return { futureDate: true };
+    } else {
+      return null;
+    }
+  }
+  
 
   protected onSubmit(): void {
     if (this.expenseForm.invalid) {

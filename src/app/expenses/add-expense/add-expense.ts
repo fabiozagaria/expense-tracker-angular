@@ -38,6 +38,7 @@ export class AddExpense {
     ]),
     date: new FormControl<string>('', [
       Validators.required,
+      this.hasFutureDate,
     ]),
   });
 

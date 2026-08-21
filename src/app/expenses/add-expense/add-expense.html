@@ -101,6 +101,10 @@
               @if (hasFieldError('date', 'required')) {
                 <div class="invalid-feedback">Seleziona una data.</div>
               }
+
+              @if (hasFieldError('date', 'futureDate')) {
+                <div class="invalid-feedback">Seleziona una data odierna o passata</div>
+              }
             </div>
 
             <div class="col-12">

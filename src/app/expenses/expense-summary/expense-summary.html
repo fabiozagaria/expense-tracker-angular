@@ -2,6 +2,7 @@
   <h2>Riepilogo Spese</h2>
   @for (expense of expenseList(); track expense.id) {
     <app-expense-list 
+    
     [expense]="expense"
     (onRemove)="removeExpense($event)"
     (onUpdate)="updateExpense($event)"

@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core
 import { ExpenseList } from '../expense-list/expense-list';
 import { ExpenseService } from '../expense-service';
 import { Expense, UpdateExpenseEvent } from '../expense';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -18,6 +19,8 @@ export class ExpenseSummary implements OnInit {
   ngOnInit(): void {
     this.expenseService.loadExpenses();
   }
+
+  
 
 
   removeExpense(id: number): void {

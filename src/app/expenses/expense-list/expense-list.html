@@ -1,7 +1,9 @@
 @let ex = expense();
 
 @if (isEditing()) {
-  <div class="card-body">
+  <form class="card-body"
+  [formGroup]="summeryForm"
+  >
       <label class="form-label" for="edit-title">
         Titolo
       </label>
@@ -10,9 +12,11 @@
         id="edit-title"
         class="form-control mb-2"
         type="text"
+        formControlName="title"
         [value]="editTitle()"
         (input)="editTitle.set($any($event.target).value)"
       />
+     
 
       <label class="form-label" for="edit-description">
         Descrizione
@@ -22,13 +26,14 @@
         id="edit-description"
         class="form-control mb-2"
         rows="3"
+        formControlName="description"
         [value]="editDescription()"
         (input)="editDescription.set($any($event.target).value)"
       ></textarea>
 
       <div class="d-flex gap-2">
         <button
-          type="button"
+          type="submit"
           class="btn btn-success"
           (click)="saveEdit()">
           Salva
@@ -41,7 +46,7 @@
           Annulla
         </button>
       </div>
-    </div>
+    </form>
 
 } @else {
   <div class="card d-flex justify-content-around align-items-start" >

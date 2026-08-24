@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { ExpenseList } from '../expense-list/expense-list';
 import { ExpenseService } from '../expense-service';
-import { Expense } from '../expense';
+import { Expense, UpdateExpenseEvent } from '../expense';
 
 
 @Component({
@@ -23,6 +23,10 @@ export class ExpenseSummary implements OnInit {
   removeExpense(id: number): void {
     this.expenseService.removeExpenseById(id);
 
+  }
+
+  updateExpense(patch: UpdateExpenseEvent): void {
+    this.expenseService.patchExpense(patch);
   }
 
   

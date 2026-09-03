@@ -1,11 +1,16 @@
 <section class="home m-3 p-2">
   <div class="hero d-flex flex-column gap-3 justify-content-around align-items-center">
     <h1>{{title()}}</h1>
-    <p>Benvenuto nella HomePage di <strong>Gestore di Spese!</strong></p>
-    <p>Controlla entrate e spese da un unico spazio semplice e ordinato.</p>
+    <p>Benvenuto in <strong>Gestore Spese!</strong></p>
+    <p>Registra una spesa o consulta quelle già salvate.</p>
 
-    <a class="btn btn-primary btn-lg px-4" [routerLink]="['/dashboard']">
-      Apri la Dashboard
-    </a>
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      <a class="btn btn-primary btn-lg px-4" [routerLink]="['/add-expense']">
+        Aggiungi una spesa
+      </a>
+      <a class="btn btn-outline-secondary btn-lg px-4" [routerLink]="['/summary']">
+        Vedi le spese
+      </a>
+    </div>
   </div>
 </section>

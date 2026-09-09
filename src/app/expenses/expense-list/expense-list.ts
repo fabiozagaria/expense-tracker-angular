@@ -43,15 +43,20 @@ export class ExpenseList {
     }
 
     protected saveEdit(): void {
+      if(this.summeryForm.invalid) {
+        return;
+      }
+
       const currentExpense = this.expense();
+      const formValue = this.summeryForm.getRawValue();
 
       this.onUpdate.emit({
         id: currentExpense.id,
-        patch: currentExpense
-      }
-      );
-
-      this.isEditing.set(false);
+        patch: {
+          title: formValue.title ?? '',
+          description: formValue.description ?? ''
+        }
+      })
     }
 
     protected cancelEdit(): void {

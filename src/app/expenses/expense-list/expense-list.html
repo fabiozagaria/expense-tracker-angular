@@ -13,8 +13,7 @@
         class="form-control mb-2"
         type="text"
         formControlName="title"
-        [value]="editTitle()"
-        (input)="editTitle.set($any($event.target).value)"
+        
       />
      
 
@@ -27,8 +26,7 @@
         class="form-control mb-2"
         rows="3"
         formControlName="description"
-        [value]="editDescription()"
-        (input)="editDescription.set($any($event.target).value)"
+        
       ></textarea>
 
       <div class="d-flex gap-2">

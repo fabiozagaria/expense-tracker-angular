@@ -1,39 +1,24 @@
 <footer class="bg-dark text-light mt-5 py-5">
   <div class="container">
     <div class="row gy-4">
-      <div class="col-12 col-lg-5">
+      <div class="col-12 col-lg-6">
         <h2 class="h5 mb-2">Gestore Spese</h2>
         <p class="mb-0 text-secondary col-lg-9">
-          Tieni sotto controllo entrate, uscite e risparmi.
+          Registra e consulta le tue spese in modo semplice e ordinato.
         </p>
       </div>
 
-      <div class="col-6 col-md-4 col-lg-3">
+      <div class="col-12 col-lg-6">
         <h2 class="h6 text-uppercase text-secondary mb-3">Navigazione</h2>
         <ul class="list-unstyled d-grid gap-2 mb-0">
           <li>
             <a class="link-light link-offset-2" [routerLink]="['/']">Home</a>
           </li>
           <li>
-            <a class="link-light link-offset-2" [routerLink]="['/dashboard']">Dashboard</a>
-          </li>
-          <li>
             <a class="link-light link-offset-2" [routerLink]="['/summary']">Spese</a>
           </li>
           <li>
-            <a class="link-light link-offset-2" [routerLink]="['/add-income']">Entrate</a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="col-6 col-md-4 col-lg-3">
-        <h2 class="h6 text-uppercase text-secondary mb-3">Area personale</h2>
-        <ul class="list-unstyled d-grid gap-2 mb-0">
-          <li>
-            <a class="link-light link-offset-2" [routerLink]="['/add-transaction']">Aggiungi movimento</a>
-          </li>
-          <li>
-            <a class="link-light link-offset-2" [routerLink]="['/login']">Login</a>
+            <a class="link-light link-offset-2" [routerLink]="['/add-expense']">Aggiungi spesa</a>
           </li>
         </ul>
       </div>
@@ -42,8 +27,8 @@
     <hr class="border-secondary my-4">
 
     <div class="d-flex flex-column flex-md-row justify-content-between gap-2 small text-secondary">
-      <span>&copy; 2026 Gestore di Spese</span>
-      <span>Realizzato con Angular e Bootstrap - Spring Boot e MySQL</span>
+      <span>&copy; 2026 Gestore Spese · v0.3.0</span>
+      <span>Angular · Spring Boot · MySQL</span>
     </div>
   </div>
 </footer>

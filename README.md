@@ -1,6 +1,11 @@
 # Gestionale Spese — Frontend Angular
 
-Frontend del progetto full stack **Gestionale Spese**, pensato per registrare, consultare e organizzare entrate e uscite personali.
+![Versione](https://img.shields.io/badge/versione-0.3.0-blue)
+![Stato](https://img.shields.io/badge/stato-in%20sviluppo-orange)
+
+**Versione attuale: 0.3.0 — verticale Expense full stack in sviluppo.**
+
+Frontend del progetto full stack **Gestionale Spese**, attualmente focalizzato sulla registrazione, consultazione e modifica delle spese personali.
 
 L'applicazione è sviluppata con Angular e comunica tramite API REST con un backend Spring Boot mantenuto in un repository separato.
 
@@ -11,16 +16,16 @@ L'applicazione è sviluppata con Angular e comunica tramite API REST con un back
 
 **In sviluppo attivo.**
 
-Il flusso delle spese è parzialmente collegato alle API. Dashboard, entrate, autenticazione e aggiornamento completo dei dati sono ancora in lavorazione. La demo pubblica mostra l'interfaccia, ma le operazioni che richiedono dati dipendono dal backend.
+Il verticale delle spese è collegato alle API per lettura, creazione e modifica. Dashboard, entrate, autenticazione e movimento generico non fanno parte della versione 0.3.0 e sono state rimosse dalla navigazione e dalle route pubbliche finché non saranno realmente implementate. La demo pubblica mostra l'interfaccia; le operazioni persistenti richiedono il backend.
 
 ## Funzionalità presenti
 
-- navigazione tra home, dashboard, login, movimenti, entrate e spese;
+- navigazione tra home, elenco spese, aggiunta e dettaglio;
 - form reattivo per l'inserimento delle spese;
 - validazione di titolo, importo, categoria, descrizione e data;
 - stato applicativo gestito con Angular Signals;
 - caricamento dell'elenco delle spese tramite API;
-- aggiunta e rimozione di una spesa;
+- aggiunta, modifica e rimozione di una spesa;
 - pagina di riepilogo e route di dettaglio;
 - gestione iniziale degli stati di caricamento ed errore;
 - client HTTP tipizzato per le operazioni REST previste.
@@ -66,7 +71,7 @@ Contratto REST previsto dal frontend:
 | `PATCH`  | `/api/expenses/{id}` | Aggiornamento parziale |
 | `DELETE` | `/api/expenses/{id}` | Eliminazione           |
 
-Il backend è ancora in fase iniziale: il contratto sopra descrive le chiamate già predisposte nel client, non endpoint tutti già disponibili.
+Il backend espone l'intero CRUD del dominio `Expense`. Alcune integrazioni frontend e la gestione completa degli stati UI sono ancora in consolidamento.
 
 ## Avvio locale
 
@@ -95,13 +100,21 @@ npm run build
 
 ## Prossimi sviluppi
 
-1. completare gli endpoint e il contratto dati del backend;
-2. collegare dettaglio, modifica completa e modifica parziale;
+1. completare e verificare l'editing inline con Reactive Forms;
+2. collegare e verificare tutti gli endpoint del verticale Expense;
 3. gestire in modo uniforme caricamento, errori e conferme;
-4. rendere dinamici dashboard, saldo, entrate e ultimi movimenti;
-5. configurare gli endpoint per sviluppo e produzione;
-6. ampliare test unitari e di integrazione;
-7. introdurre autenticazione e gestione utenti.
+4. configurare gli endpoint per sviluppo e produzione;
+5. ampliare test unitari e di integrazione;
+6. introdurre successivamente entrate, dashboard e autenticazione.
+
+## Versioning
+
+Il progetto segue [Semantic Versioning](https://semver.org/):
+
+- `0.x.y`: sviluppo attivo, API e funzionalità ancora soggette a cambiamenti;
+- incremento `PATCH` (`0.3.1`) per correzioni compatibili;
+- incremento `MINOR` (`0.4.0`) per nuove funzionalità durante lo sviluppo;
+- `1.0.0` quando l'MVP sarà stabile, verificato e distribuibile.
 
 ## Autore
 

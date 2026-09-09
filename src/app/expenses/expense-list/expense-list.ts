@@ -16,8 +16,7 @@ export class ExpenseList {
     onUpdate = output<UpdateExpenseEvent>();
 
     protected isEditing = signal(false);
-    protected editTitle = signal('');
-    protected editDescription = signal('');
+    
 
     protected readonly summeryForm = new FormGroup({
     title: new FormControl<string>('', 
@@ -48,11 +47,9 @@ export class ExpenseList {
 
       this.onUpdate.emit({
         id: currentExpense.id,
-        patch: {
-          title: this.editTitle(),
-          description: this.editDescription()
-        }
-      });
+        patch: currentExpense
+      }
+      );
 
       this.isEditing.set(false);
     }

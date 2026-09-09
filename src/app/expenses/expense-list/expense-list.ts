@@ -57,6 +57,8 @@ export class ExpenseList {
           description: formValue.description ?? ''
         }
       })
+
+      this.isEditing.set(false);
     }
 
     protected cancelEdit(): void {

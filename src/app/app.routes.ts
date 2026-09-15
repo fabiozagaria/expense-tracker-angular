@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomePage } from './home/home-page/home-page';
-import { AddExpense } from './expenses/add-expense/add-expense';
-import { ExpenseSummary } from './expenses/expense-summary/expense-summary';
-import { ExpenseDetail } from './expenses/expense-detail/expense-detail';
-import { VerifyEmail } from './verify-email/verify-email';
+import { HomePage } from './features/home/pages/home/home-page';
+import { AddExpense } from './features/expenses/pages/add-expense/add-expense';
+import { ExpenseSummary } from './features/expenses/pages/expense-summary/expense-summary';
+import { ExpenseDetail } from './features/expenses/pages/expense-detail/expense-detail';
+import { VerifyEmail } from './features/auth/pages/verify-email/verify-email';
 
 export const routes: Routes = [
   {
@@ -27,7 +27,7 @@ export const routes: Routes = [
     title: 'Dettaglio Spesa | Gestionale Spese'
   },
   {
-    path: 'verify-email/:token',
+    path: 'verify-email',
     component: VerifyEmail
   },
   {

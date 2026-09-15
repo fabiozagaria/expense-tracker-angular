@@ -3,6 +3,7 @@ import { HomePage } from './home/home-page/home-page';
 import { AddExpense } from './expenses/add-expense/add-expense';
 import { ExpenseSummary } from './expenses/expense-summary/expense-summary';
 import { ExpenseDetail } from './expenses/expense-detail/expense-detail';
+import { VerifyEmail } from './verify-email/verify-email';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,10 @@ export const routes: Routes = [
     path: 'expenses/:id',
     component: ExpenseDetail,
     title: 'Dettaglio Spesa | Gestionale Spese'
+  },
+  {
+    path: 'verify-email/:token',
+    component: VerifyEmail
   },
   {
     path: '**',

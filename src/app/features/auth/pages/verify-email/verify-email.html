@@ -1,1 +1,13 @@
-<p>verify-email works!</p>
+<section class="container py-5">
+  <h1>Verifica email</h1>
+
+  @if (state() === 'loading') {
+    <p>{{ message() }}</p>
+  } @else if (state() === 'success') {
+    <p class="text-success">{{ message() }}</p>
+  } @else {
+    <p class="text-danger">{{ message() }}</p>
+  }
+
+  <a routerLink="/" class="btn btn-primary">Torna alla home</a>
+</section>

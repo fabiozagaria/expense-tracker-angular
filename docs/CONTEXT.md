@@ -1,9 +1,9 @@
 # Contesto tecnico — Gestionale Spese Frontend
 
-Aggiornato: 2026-09-09
+Aggiornato: 2026-09-18
 
 ## Obiettivo corrente
-Completare il verticale Expense del Gestionale Spese mantenendo il frontend Angular allineato alla REST API Spring Boot.
+Mantenere il verticale Expense e il flusso di verifica email Angular allineati alla REST API Spring Boot.
 
 ## Stato osservato
 - Versione dichiarata: 0.3.0.
@@ -14,14 +14,16 @@ Completare il verticale Expense del Gestionale Spese mantenendo il frontend Angu
 - PATCH verificato anche nel caso descrizione con testo → stringa vuota; la lista si aggiorna dalla risposta del backend.
 - Deploy Vercel del commit frontend finale verificato con stato `success`.
 - Backend separato nel repository `expense-tracker-api`.
+- Pagina Angular `/verify-email?token=...` con client HTTP dedicato verso `POST /auth/verify-email`; stati UI espliciti per caricamento, successo, token assente ed errore.
 
 ## WIP / blocchi
 - Il frontend dell'editing inline è funzionalmente verificato.
+- La verifica email frontend è coperta da test del componente; resta da rieseguire il test manuale completo dopo ogni modifica del contratto backend.
 - Il verticale completo non è considerato stabile finché il backend non torna compilabile/avviabile dopo le modifiche sperimentali su `User`, relazione `owner` e Spring Security.
 - Mancano ancora test comportamentali automatici adeguati.
 
 ## Prossima azione
-Non ampliare il frontend. Attendere il ripristino del backend Expense e poi rieseguire una verifica end-to-end del verticale prima di proseguire con autenticazione o nuove feature.
+Eseguire una verifica manuale completa del link email: registrazione, ricezione del messaggio in Mailpit, conferma dal browser, login successivo e riuso del token rifiutato.
 
 ## Priorità tecniche successive
 - verificare `GET /api/expenses/{id}` dal backend invece del solo stato locale;

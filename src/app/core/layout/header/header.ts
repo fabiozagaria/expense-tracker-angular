@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { ExpenseService } from '../../../features/expenses/services/expense.service';
-import { IncomeService } from '../../../features/incomes/services/income.service';
+import { IncomeService } from '../../../features/income/services/income.service';
 
 @Component({
   selector: 'app-header',

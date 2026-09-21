@@ -1,0 +1,80 @@
+<section class="container py-4 py-lg-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-9 col-xl-8">
+      <div class="d-flex justify-content-between align-items-end gap-3 mb-4">
+        <div>
+          <span class="badge text-bg-success mb-2">Nuova entrata</span>
+          <h1 class="display-6 fw-bold mb-2">Aggiungi un'entrata</h1>
+          <p class="text-body-secondary mb-0">Registra stipendio, rimborso o un'altra entrata.</p>
+        </div>
+        <a class="btn btn-outline-primary" [routerLink]="['/dashboard']">Dashboard</a>
+      </div>
+
+      <form class="card border-0 shadow-sm" [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
+        <div class="card-body p-4 p-lg-5">
+          <div class="row g-4">
+            <div class="col-12 col-md-7">
+              <label class="form-label" for="income-title">Titolo</label>
+              <input id="income-title" class="form-control form-control-lg" formControlName="title"
+                     [class.is-invalid]="isInvalidField('title')" placeholder="Es. Stipendio">
+              @if (hasFieldError('title', 'required')) { <div class="invalid-feedback">Il titolo è obbligatorio.</div> }
+              @if (hasFieldError('title', 'minlength')) { <div class="invalid-feedback">Inserisci almeno 3 caratteri.</div> }
+              @if (hasFieldError('title', 'maxlength')) { <div class="invalid-feedback">Inserisci al massimo 15 caratteri.</div> }
+            </div>
+
+            <div class="col-12 col-md-5">
+              <label class="form-label" for="income-amount">Importo</label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text">€</span>
+                <input id="income-amount" class="form-control" type="number" min="0.01" step="0.01"
+                       formControlName="amount" [class.is-invalid]="isInvalidField('amount')">
+                @if (hasFieldError('amount', 'required')) { <div class="invalid-feedback">L'importo è obbligatorio.</div> }
+                @if (hasFieldError('amount', 'min')) { <div class="invalid-feedback">Inserisci un importo maggiore di zero.</div> }
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="income-category">Categoria</label>
+              <select id="income-category" class="form-select form-select-lg" formControlName="category"
+                      [class.is-invalid]="isInvalidField('category')">
+                <option value="">Scegli una categoria</option>
+                <option [value]="IncomeCategory.Salary">Stipendio</option>
+                <option [value]="IncomeCategory.Refund">Rimborso</option>
+                <option [value]="IncomeCategory.Gift">Regalo</option>
+                <option [value]="IncomeCategory.Bonus">Bonus</option>
+                <option [value]="IncomeCategory.Sale">Vendita</option>
+                <option [value]="IncomeCategory.Other">Altro</option>
+              </select>
+              @if (hasFieldError('category', 'required')) { <div class="invalid-feedback">Seleziona una categoria.</div> }
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="income-date">Data</label>
+              <input id="income-date" class="form-control form-control-lg" type="date" [max]="maxDate"
+                     formControlName="date" [class.is-invalid]="isInvalidField('date')">
+              @if (hasFieldError('date', 'required')) { <div class="invalid-feedback">Seleziona una data.</div> }
+              @if (hasFieldError('date', 'futureDate')) { <div class="invalid-feedback">La data non può essere futura.</div> }
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="income-description">Descrizione</label>
+              <textarea id="income-description" class="form-control" rows="4" maxlength="30"
+                        formControlName="description" [class.is-invalid]="isInvalidField('description')"></textarea>
+              <div class="form-text">Massimo 30 caratteri.</div>
+            </div>
+          </div>
+
+          @if (saved()) { <div class="alert alert-success mt-4 mb-0">Entrata aggiunta correttamente.</div> }
+          @if (saveError()) { <div class="alert alert-danger mt-4 mb-0">{{ saveError() }}</div> }
+        </div>
+
+        <div class="card-footer bg-white d-flex justify-content-end gap-2 p-4">
+          <a class="btn btn-outline-secondary" [routerLink]="['/add-transaction']">Annulla</a>
+          <button class="btn btn-success" type="submit" [disabled]="saving()">
+            {{ saving() ? 'Salvataggio…' : 'Aggiungi entrata' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

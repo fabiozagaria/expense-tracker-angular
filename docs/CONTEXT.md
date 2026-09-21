@@ -15,15 +15,17 @@ Completare e verificare localmente il verticale registrazione → verifica email
 - Deploy Vercel del commit frontend finale verificato con stato `success`.
 - Backend separato nel repository `expense-tracker-api`.
 - Pagina Angular `/verify-email?token=...` con client HTTP dedicato verso `POST /auth/verify-email`; stati UI espliciti per caricamento, successo, token assente ed errore.
+- La pagina di verifica è renderizzata solo sul client e il `POST` non parte durante SSR, evitando di consumare due volte il token monouso.
 - Pagine `/register` e `/login` con Reactive Forms e validazione allineata ai DTO backend.
 - Access token JWT in memoria, Bearer sulle richieste `/api/`, refresh automatico su 401 e cookie HttpOnly inviato con `withCredentials`.
 - Guard sulle route delle spese; il dettaglio interroga il backend anche dopo un accesso diretto.
-- Build Angular e 20 test passati; test backend di integrazione del flusso auth/Expense passato con MySQL e mail simulata.
+- 22 test Angular passati; test backend di integrazione del flusso auth/Expense passato con MySQL e mail simulata.
+- Gli errori di connessione nella verifica email mostrano un messaggio distinto dai token invalidi o scaduti.
 
 ## WIP / blocchi
 - Il frontend dell'editing inline è funzionalmente verificato.
-- Resta da eseguire il percorso manuale nel browser con Mailpit e i due server avviati.
-- Gli URL API e il link di verifica email sono ancora fissati su localhost: la demo pubblica non ha un backend pubblicato.
+- Resta da rieseguire il percorso manuale nel browser dopo la correzione della verifica email.
+- Gli URL API Angular sono ancora fissati su localhost; il link email backend è configurabile tramite `FRONTEND_URL` ma usa localhost come valore locale. La demo pubblica non ha un backend pubblicato.
 
 ## Prossima azione
 Eseguire il percorso manuale completo nel browser e verificare la scadenza/rotazione della sessione.

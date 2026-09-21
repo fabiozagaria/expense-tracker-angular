@@ -98,7 +98,7 @@ npm start
 Il frontend sarà disponibile su `http://localhost:4200`.
 
 Per le funzionalità collegate ai dati è necessario avviare anche il [backend Spring Boot](https://github.com/fabiozagaria/expense-tracker-api).
-Per provare la registrazione serve anche Mailpit (`docker compose up -d` nel repository backend); il link di verifica è visibile su `http://localhost:8025`. L'integrazione API è configurata per `http://localhost:8080` e richiede il frontend su `http://localhost:4200`.
+Per provare la registrazione, nel repository backend configurare `.env` e avviare `docker compose up --build -d`: partiranno API, MySQL e Mailpit. Il link di verifica è visibile su `http://localhost:8025`. L'integrazione API è configurata per `http://localhost:8080` e richiede il frontend su `http://localhost:4200`.
 
 ## Verifiche
 

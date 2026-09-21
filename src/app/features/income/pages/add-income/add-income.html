@@ -1,53 +1,40 @@
 <section class="container py-4 py-lg-5">
   <div class="row justify-content-center">
     <div class="col-12 col-lg-9 col-xl-8">
-      <div class="mb-4">
-        <span class="badge text-bg-success mb-2">Nuova entrata</span>
-        <h1 class="display-6 fw-bold mb-2">Aggiungi un'entrata</h1>
-        <p class="text-body-secondary mb-0">
-          Inserisci i dettagli dello stipendio, rimborso o altro movimento in entrata.
-        </p>
+      <div class="d-flex justify-content-between align-items-end gap-3 mb-4">
+        <div>
+          <span class="badge text-bg-success mb-2">Nuova entrata</span>
+          <h1 class="display-6 fw-bold mb-2">Aggiungi un'entrata</h1>
+          <p class="text-body-secondary mb-0">Inserisci i dettagli del movimento in entrata.</p>
+        </div>
+        <a class="btn btn-outline-primary" [routerLink]="['/dashboard']">Dashboard</a>
       </div>
 
-      <form class="card border-0 shadow-sm" [formGroup]="incomeForm">
+      <form class="card border-0 shadow-sm" [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
         <div class="card-body p-4 p-lg-5">
           <div class="row g-4">
             <div class="col-12 col-md-7">
               <label class="form-label" for="income-title">Titolo</label>
-              <input
-                class="form-control form-control-lg"
-                id="income-title"
-                type="text"
-                formControlName="title"
-                placeholder="Es. Stipendio agosto"
-                [class.is-invalid]="incomeForm.controls.title.invalid && incomeForm.controls.title.touched">
-              <div class="invalid-feedback">Inserisci un titolo da 3 a 30 caratteri.</div>
+              <input class="form-control form-control-lg" id="income-title" formControlName="title"
+                     [class.is-invalid]="incomeForm.controls.title.invalid && incomeForm.controls.title.touched">
+              <div class="invalid-feedback">Inserisci un titolo da 3 a 15 caratteri.</div>
             </div>
 
             <div class="col-12 col-md-5">
               <label class="form-label" for="income-amount">Importo</label>
               <div class="input-group input-group-lg">
                 <span class="input-group-text">€</span>
-                <input
-                  class="form-control"
-                  id="income-amount"
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  formControlName="amount"
-                  placeholder="0,00"
-                  [class.is-invalid]="incomeForm.controls.amount.invalid && incomeForm.controls.amount.touched">
+                <input class="form-control" id="income-amount" type="number" min="0.01" step="0.01"
+                       formControlName="amount"
+                       [class.is-invalid]="incomeForm.controls.amount.invalid && incomeForm.controls.amount.touched">
                 <div class="invalid-feedback">Inserisci un importo maggiore di zero.</div>
               </div>
             </div>
 
             <div class="col-12 col-md-6">
               <label class="form-label" for="income-category">Categoria</label>
-              <select
-                class="form-select form-select-lg"
-                id="income-category"
-                formControlName="category"
-                [class.is-invalid]="incomeForm.controls.category.invalid && incomeForm.controls.category.touched">
+              <select class="form-select form-select-lg" id="income-category" formControlName="category"
+                      [class.is-invalid]="incomeForm.controls.category.invalid && incomeForm.controls.category.touched">
                 <option value="">Scegli una categoria</option>
                 <option [value]="IncomeCategory.Salary">Stipendio</option>
                 <option [value]="IncomeCategory.Freelance">Lavoro autonomo</option>
@@ -63,37 +50,29 @@
 
             <div class="col-12 col-md-6">
               <label class="form-label" for="income-date">Data</label>
-              <input
-                class="form-control form-control-lg"
-                id="income-date"
-                type="date"
-                formControlName="date"
-                [class.is-invalid]="incomeForm.controls.date.invalid && incomeForm.controls.date.touched">
-              <div class="invalid-feedback">Seleziona una data.</div>
+              <input class="form-control form-control-lg" id="income-date" type="date" [max]="maxDate"
+                     formControlName="date"
+                     [class.is-invalid]="incomeForm.controls.date.invalid && incomeForm.controls.date.touched">
+              <div class="invalid-feedback">Seleziona una data odierna o passata.</div>
             </div>
 
             <div class="col-12">
               <label class="form-label" for="income-description">Descrizione</label>
-              <textarea
-                class="form-control"
-                id="income-description"
-                rows="4"
-                maxlength="100"
-                formControlName="description"
-                placeholder="Aggiungi una nota facoltativa"
-                [class.is-invalid]="incomeForm.controls.description.invalid && incomeForm.controls.description.touched"></textarea>
-              <div class="form-text">Massimo 100 caratteri.</div>
-              <div class="invalid-feedback">La descrizione supera i 100 caratteri.</div>
+              <textarea class="form-control" id="income-description" rows="4" maxlength="30"
+                        formControlName="description"
+                        [class.is-invalid]="incomeForm.controls.description.invalid && incomeForm.controls.description.touched"></textarea>
+              <div class="form-text">Massimo 30 caratteri.</div>
             </div>
           </div>
+
+          @if (saved()) { <div class="alert alert-success mt-4 mb-0">Entrata aggiunta correttamente.</div> }
+          @if (saveError()) { <div class="alert alert-danger mt-4 mb-0">{{ saveError() }}</div> }
         </div>
 
-        <div class="card-footer bg-white d-flex flex-column flex-sm-row justify-content-end gap-2 p-4">
-          <a class="btn btn-outline-secondary" [routerLink]="['/add-transaction']">
-            Annulla
-          </a>
-          <button class="btn btn-success" type="submit" [disabled]="incomeForm.invalid">
-            Aggiungi entrata
+        <div class="card-footer bg-white d-flex justify-content-end gap-2 p-4">
+          <a class="btn btn-outline-secondary" [routerLink]="['/add-transaction']">Annulla</a>
+          <button class="btn btn-success" type="submit" [disabled]="saving()">
+            {{ saving() ? 'Salvataggio…' : 'Aggiungi entrata' }}
           </button>
         </div>
       </form>

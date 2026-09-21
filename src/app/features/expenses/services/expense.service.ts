@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ExpenseApiService } from './expense-api.service';
-import { finalize } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import { CreateExpenseRequest, ExpensesList, Expense, UpdateExpenseEvent } from '../models/expense.model';
 
 @Injectable({
@@ -15,6 +15,11 @@ export class ExpenseService {
 
 
   public readonly expensesList = this.expenses.asReadonly();
+
+  public clearExpenses(): void {
+    this.expenses.set([]);
+    this.error.set(null);
+  }
 
   public loadExpenses(): void {
     this.loading.set(true);
@@ -38,25 +43,14 @@ export class ExpenseService {
     return this.expenses().find(expense => expense.id === id);
   }
 
-  addExpense(request: CreateExpenseRequest): void {
-    this.expenseApiService.postExpense(request)
-        .subscribe(
-        {
-          next: response => {
-            this.expenses.update(
-              prev => 
-              [...prev,
-                response
-              ]
-            );
-          },
-          error: () => {
-            this.error.set(
-              "Errore: Spesa non aggiunta"
-            );
-          }
-        }
-        )
+  public loadExpenseById(id: number): Observable<Expense> {
+    return this.expenseApiService.getExpense(id);
+  }
+
+  addExpense(request: CreateExpenseRequest): Observable<Expense> {
+    return this.expenseApiService.postExpense(request).pipe(
+      tap(response => this.expenses.update(previous => [...previous, response]))
+    );
   }
 
   putExpense(request: Expense): void {

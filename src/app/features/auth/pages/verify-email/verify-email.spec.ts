@@ -47,6 +47,7 @@ describe('VerifyEmail', () => {
     );
 
     request.flush(null);
+    fixture.detectChanges();
 
     expect(component).toBeTruthy();
     expect(fixture.nativeElement.textContent).toContain('Email verificata.');

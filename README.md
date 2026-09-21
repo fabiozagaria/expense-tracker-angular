@@ -16,7 +16,7 @@ L'applicazione è sviluppata con Angular e comunica tramite API REST con un back
 
 **In sviluppo attivo.**
 
-Il verticale delle spese è collegato alle API per lettura, creazione e modifica. Dashboard, entrate, autenticazione e movimento generico non fanno parte della versione 0.3.0 e sono state rimosse dalla navigazione e dalle route pubbliche finché non saranno realmente implementate. La demo pubblica mostra l'interfaccia; le operazioni persistenti richiedono il backend.
+Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica mostra l'interfaccia; le operazioni persistenti richiedono il backend. Dashboard, entrate e movimento generico restano fuori dalle route pubbliche.
 
 ## Funzionalità presenti
 
@@ -29,6 +29,9 @@ Il verticale delle spese è collegato alle API per lettura, creazione e modifica
 - pagina di riepilogo e route di dettaglio;
 - gestione iniziale degli stati di caricamento ed errore;
 - client HTTP tipizzato per le operazioni REST previste.
+- registrazione, verifica email e login con JWT per le spese personali;
+- rinnovo dell'access token tramite cookie HttpOnly e `POST /auth/refresh`;
+- logout e protezione delle route delle spese.
 
 ## Tecnologie
 
@@ -51,6 +54,9 @@ Il verticale delle spese è collegato alle API per lettura, creazione e modifica
 | `expense.ts`          | Definisce modello, categorie e tipi delle richieste                         |
 | Componenti `expenses` | Gestiscono form, lista, riepilogo e dettaglio                               |
 | `app.routes.ts`       | Definisce le rotte e i titoli delle pagine                                  |
+| `AuthService`         | Gestisce registrazione, login, refresh e logout con access token in memoria |
+| `authInterceptor`     | Aggiunge il Bearer alle API e riprova dopo un refresh riuscito             |
+| `authGuard`           | Protegge le rotte delle spese e ripristina la sessione dal cookie          |
 
 ## Integrazione con il backend
 
@@ -73,6 +79,8 @@ Contratto REST previsto dal frontend:
 
 Il backend espone l'intero CRUD del dominio `Expense`. Alcune integrazioni frontend e la gestione completa degli stati UI sono ancora in consolidamento.
 
+L'autenticazione locale usa `POST /auth/register`, `POST /auth/verify-email`, `POST /auth/login`, `POST /auth/refresh` e `POST /auth/logout`. Il backend restituisce l'access token nel corpo del login/refresh e conserva il refresh token in un cookie HttpOnly. Il frontend invia il cookie con `withCredentials` e protegge le rotte `/summary`, `/add-expense` e `/expenses/:id`.
+
 ## Avvio locale
 
 ### Requisiti
@@ -90,6 +98,7 @@ npm start
 Il frontend sarà disponibile su `http://localhost:4200`.
 
 Per le funzionalità collegate ai dati è necessario avviare anche il [backend Spring Boot](https://github.com/fabiozagaria/expense-tracker-api).
+Per provare la registrazione serve anche Mailpit (`docker compose up -d` nel repository backend); il link di verifica è visibile su `http://localhost:8025`. L'integrazione API è configurata per `http://localhost:8080` e richiede il frontend su `http://localhost:4200`.
 
 ## Verifiche
 
@@ -105,7 +114,8 @@ npm run build
 3. gestire in modo uniforme caricamento, errori e conferme;
 4. configurare gli endpoint per sviluppo e produzione;
 5. ampliare test unitari e di integrazione;
-6. introdurre successivamente entrate, dashboard e autenticazione.
+6. verificare manualmente il flusso completo nel browser e configurare gli URL per gli ambienti pubblici;
+7. introdurre successivamente entrate e dashboard.
 
 ## Versioning
 

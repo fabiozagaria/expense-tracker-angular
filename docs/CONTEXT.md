@@ -1,9 +1,9 @@
 # Contesto tecnico — Gestionale Spese Frontend
 
-Aggiornato: 2026-09-18
+Aggiornato: 2026-09-21
 
 ## Obiettivo corrente
-Mantenere il verticale Expense e il flusso di verifica email Angular allineati alla REST API Spring Boot.
+Completare e verificare localmente il verticale registrazione → verifica email → login → spese personali → refresh/logout.
 
 ## Stato osservato
 - Versione dichiarata: 0.3.0.
@@ -15,24 +15,26 @@ Mantenere il verticale Expense e il flusso di verifica email Angular allineati a
 - Deploy Vercel del commit frontend finale verificato con stato `success`.
 - Backend separato nel repository `expense-tracker-api`.
 - Pagina Angular `/verify-email?token=...` con client HTTP dedicato verso `POST /auth/verify-email`; stati UI espliciti per caricamento, successo, token assente ed errore.
+- Pagine `/register` e `/login` con Reactive Forms e validazione allineata ai DTO backend.
+- Access token JWT in memoria, Bearer sulle richieste `/api/`, refresh automatico su 401 e cookie HttpOnly inviato con `withCredentials`.
+- Guard sulle route delle spese; il dettaglio interroga il backend anche dopo un accesso diretto.
+- Build Angular e 20 test passati; test backend di integrazione del flusso auth/Expense passato con MySQL e mail simulata.
 
 ## WIP / blocchi
 - Il frontend dell'editing inline è funzionalmente verificato.
-- La verifica email frontend è coperta da test del componente; resta da rieseguire il test manuale completo dopo ogni modifica del contratto backend.
-- Il verticale completo non è considerato stabile finché il backend non torna compilabile/avviabile dopo le modifiche sperimentali su `User`, relazione `owner` e Spring Security.
-- Mancano ancora test comportamentali automatici adeguati.
+- Resta da eseguire il percorso manuale nel browser con Mailpit e i due server avviati.
+- Gli URL API e il link di verifica email sono ancora fissati su localhost: la demo pubblica non ha un backend pubblicato.
 
 ## Prossima azione
-Eseguire una verifica manuale completa del link email: registrazione, ricezione del messaggio in Mailpit, conferma dal browser, login successivo e riuso del token rifiutato.
+Eseguire il percorso manuale completo nel browser e verificare la scadenza/rotazione della sessione.
 
 ## Priorità tecniche successive
-- verificare `GET /api/expenses/{id}` dal backend invece del solo stato locale;
 - uniformare loading, errori e conferme;
 - separare configurazione sviluppo/produzione;
 - ampliare i test Angular.
 
 ## Limiti
-Dashboard, entrate e autenticazione non devono essere presentate come completate finché non sono realmente implementate e verificate.
+Dashboard ed entrate non fanno parte del verticale corrente. La verifica via browser e la configurazione di produzione dell'autenticazione restano aperte.
 
 ## Regola di sincronizzazione
 Quando cambia il contratto REST del backend, controllare modelli, service HTTP e form del frontend prima di aggiornare la documentazione pubblica. A fine sessione significativa aggiornare questo file insieme alla scheda Notion del progetto.

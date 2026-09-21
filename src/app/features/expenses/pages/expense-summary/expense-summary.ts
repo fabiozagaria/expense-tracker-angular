@@ -14,6 +14,8 @@ export class ExpenseSummary implements OnInit {
   private expenseService = inject(ExpenseService);
 
   protected expenseList = this.expenseService.expensesList;
+  protected loading = this.expenseService.loading;
+  protected error = this.expenseService.error;
 
   ngOnInit(): void {
     this.expenseService.loadExpenses();

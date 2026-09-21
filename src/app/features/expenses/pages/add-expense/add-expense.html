@@ -131,14 +131,17 @@
               Spesa aggiunta correttamente.
             </div>
           }
+          @if (saveError()) {
+            <div class="alert alert-danger mt-4 mb-0" role="alert">{{ saveError() }}</div>
+          }
         </div>
 
         <div class="card-footer bg-white d-flex flex-column flex-sm-row justify-content-end gap-2 p-4">
           <a class="btn btn-outline-secondary" [routerLink]="['/add-transaction']">
             Annulla
           </a>
-          <button class="btn btn-danger" type="submit">
-            Aggiungi spesa
+          <button class="btn btn-danger" type="submit" [disabled]="saving()">
+            {{ saving() ? 'Salvataggio…' : 'Aggiungi spesa' }}
           </button>
         </div>
       </form>

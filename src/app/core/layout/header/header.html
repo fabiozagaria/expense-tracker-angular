@@ -47,6 +47,14 @@
             </a>
           </li>
         </ul>
+        <div class="d-flex gap-2">
+          @if (auth.accessToken()) {
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">Esci</button>
+          } @else {
+            <a class="btn btn-outline-primary btn-sm" routerLink="/login">Accedi</a>
+            <a class="btn btn-primary btn-sm" routerLink="/register">Registrati</a>
+          }
+        </div>
       </div>
     </div>
   </nav>

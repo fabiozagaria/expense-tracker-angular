@@ -4,6 +4,7 @@ import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/route
 import { ExpenseDetail } from './expense-detail';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense, ExpenseCategory } from '../../models/expense.model';
+import { of } from 'rxjs';
 
 describe('ExpenseDetail', () => {
   let component: ExpenseDetail;
@@ -31,7 +32,7 @@ describe('ExpenseDetail', () => {
         },
         {
           provide: ExpenseService,
-          useValue: { getExpenseById: () => expense },
+          useValue: { loadExpenseById: () => of(expense) },
         },
       ],
     }).compileComponents();

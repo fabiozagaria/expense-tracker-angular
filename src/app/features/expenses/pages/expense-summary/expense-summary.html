@@ -1,5 +1,7 @@
 <section class="container">
   <h2>Riepilogo Spese</h2>
+  @if (loading()) { <p>Caricamento spese…</p> }
+  @if (error()) { <p class="alert alert-danger" role="alert">{{ error() }}</p> }
   @for (expense of expenseList(); track expense.id) {
     <app-expense-card
     
@@ -9,8 +11,8 @@
     ></app-expense-card>
 
   } @empty {
-    <p class="invalid-feedback d-block fs-2">
+    @if (!loading() && !error()) { <p class="invalid-feedback d-block fs-2">
       Nessuna spesa aggiunta! 
-    </p>
+    </p> }
   }
 </section>

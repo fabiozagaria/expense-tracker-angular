@@ -1,56 +1,31 @@
 <section class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-sm-10 col-md-8 col-lg-5">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4 p-lg-5">
-          <div class="text-center mb-4">
-            <span class="badge text-bg-primary mb-3">Area personale</span>
-            <h1 class="h2 fw-bold">Accedi</h1>
-            <p class="text-body-secondary mb-0">
-              Inserisci i tuoi dati per entrare nel gestionale.
-            </p>
-          </div>
-
-          <form>
-            <div class="mb-3">
-              <label class="form-label" for="login-email">Email</label>
-              <input
-                class="form-control form-control-lg"
-                id="login-email"
-                type="email"
-                autocomplete="email"
-                placeholder="nome@esempio.it"
-                required>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label" for="login-password">Password</label>
-              <input
-                class="form-control form-control-lg"
-                id="login-password"
-                type="password"
-                autocomplete="current-password"
-                placeholder="Inserisci la password"
-                required>
-            </div>
-
-            <div class="form-check mb-4">
-              <input class="form-check-input" id="remember-login" type="checkbox">
-              <label class="form-check-label" for="remember-login">Ricordami</label>
-            </div>
-
-            <a class="btn btn-primary btn-lg w-100" [routerLink]="['/dashboard']">
-              Accedi
-            </a>
-          </form>
-
-          <hr class="my-4">
-
-          <a class="btn btn-outline-secondary w-100" [routerLink]="['/']">
-            Torna alla Home
-          </a>
+  <div class="row justify-content-center"><div class="col-12 col-sm-10 col-md-8 col-lg-5">
+    <div class="card border-0 shadow-sm"><div class="card-body p-4 p-lg-5">
+      <h1 class="h2 fw-bold text-center mb-4">Accedi</h1>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="mb-3">
+          <label class="form-label" for="login-username">Username</label>
+          <input class="form-control" id="login-username" formControlName="username" autocomplete="username" required
+            [class.is-invalid]="form.controls.username.touched && form.controls.username.invalid">
+          @if (form.controls.username.touched && form.controls.username.invalid) {
+            <div class="invalid-feedback">Inserisci lo username.</div>
+          }
         </div>
-      </div>
-    </div>
-  </div>
+        <div class="mb-3">
+          <label class="form-label" for="login-password">Password</label>
+          <input class="form-control" id="login-password" type="password" formControlName="password"
+            autocomplete="current-password" required
+            [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid">
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <div class="invalid-feedback">Inserisci la password.</div>
+          }
+        </div>
+        @if (error()) { <p class="alert alert-danger" role="alert">{{ error() }}</p> }
+        <button class="btn btn-primary w-100" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Accesso in corso…' : 'Accedi' }}
+        </button>
+      </form>
+      <p class="text-center mt-4 mb-0">Non hai un account? <a routerLink="/register">Registrati</a></p>
+    </div></div>
+  </div></div>
 </section>

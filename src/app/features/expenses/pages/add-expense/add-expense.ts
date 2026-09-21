@@ -4,6 +4,7 @@ import { CreateExpenseRequest, ExpenseCategory } from '../../models/expense.mode
 import { ExpenseService } from '../../services/expense.service';
 import { RouterLink } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { finalize } from 'rxjs';
 
 
 @Component({
@@ -17,6 +18,8 @@ export class AddExpense {
 
   protected readonly ExpenseCategory = ExpenseCategory;
   protected readonly expenseAddedNoticeVisible = signal(false);
+  protected readonly saveError = signal('');
+  protected readonly saving = signal(false);
   protected readonly maxDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
   protected readonly expenseForm = new FormGroup({
@@ -90,14 +93,14 @@ export class AddExpense {
       date: formValue.date,
     };
 
-    this.expenseService.addExpense(newExpense);
-    this.showSuccessNotice();
-    this.expenseForm.reset({
-      title: '',
-      amount: null,
-      category: '',
-      description: '',
-      date: '',
+    this.saving.set(true);
+    this.saveError.set('');
+    this.expenseService.addExpense(newExpense).pipe(finalize(() => this.saving.set(false))).subscribe({
+      next: () => {
+        this.showSuccessNotice();
+        this.expenseForm.reset({ title: '', amount: null, category: '', description: '', date: '' });
+      },
+      error: () => this.saveError.set('Impossibile salvare la spesa. Riprova.'),
     });
   }
 

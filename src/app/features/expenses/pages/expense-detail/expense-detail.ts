@@ -12,6 +12,7 @@ import { CurrencyPipe, DatePipe, UpperCasePipe } from '@angular/common';
 })
 export class ExpenseDetail implements OnInit {
   expense = signal<Expense | undefined>(undefined)
+  loading = signal(true);
   constructor(
     private expenseService: ExpenseService,
     protected route: ActivatedRoute
@@ -19,11 +20,19 @@ export class ExpenseDetail implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    if(!id) {
-      throw new Error('Error: ID not found!')
+    if (!Number.isInteger(id) || id <= 0) {
+      this.loading.set(false);
+      return;
     }
-    const expense = this.expenseService.getExpenseById(id);
-    this.expense.set(expense);
+    this.expenseService.loadExpenseById(id).subscribe({
+      next: expense => {
+        this.expense.set(expense);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      },
+    });
     
   }
 }

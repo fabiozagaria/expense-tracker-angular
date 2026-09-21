@@ -34,7 +34,7 @@ export class Login {
       next: () => {
         const requested = this.route.snapshot.queryParamMap.get('returnUrl');
         const destination = requested?.startsWith('/') && !requested.startsWith('//')
-          ? requested : '/summary';
+          ? requested : '/dashboard';
         void this.router.navigateByUrl(destination);
       },
       error: (error: HttpErrorResponse) => this.error.set(

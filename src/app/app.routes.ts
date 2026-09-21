@@ -9,7 +9,7 @@ import { Register } from './features/auth/pages/register/register';
 import { authGuard } from './features/auth/services/auth.guard';
 import { Dashboard } from './features/dashboard/pages/dashboard/dashboard';
 import { AddTransaction } from './features/transactions/pages/add-transaction/add-transaction';
-import { AddIncome } from './features/incomes/pages/add-income/add-income';
+import { AddIncome } from './features/income/pages/add-income/add-income';
 
 export const routes: Routes = [
   {

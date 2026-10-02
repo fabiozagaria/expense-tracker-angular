@@ -135,3 +135,7 @@ Il progetto segue [Semantic Versioning](https://semver.org/):
 ## Autore
 
 Fabio Zagaria — Junior Backend Developer con competenze full stack.
+
+## Tema della pagina
+
+Il pulsante sole/luna nella navigazione alterna tema chiaro e scuro. Al primo accesso segue il dispositivo; la scelta manuale viene ricordata nel browser.

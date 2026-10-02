@@ -3,26 +3,60 @@
     <div class="container-fluid px-3">
       <a class="navbar-brand fw-bold" [routerLink]="['/']">Gestore Spese</a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar"
-              aria-controls="main-navbar" aria-expanded="false" aria-label="Apri o chiudi la navigazione">
+      <button
+        type="button"
+        class="theme-toggle"
+        (click)="theme.toggle()"
+        [attr.aria-pressed]="theme.dark()"
+        [attr.aria-label]="theme.dark() ? 'Attiva tema chiaro' : 'Attiva tema scuro'"
+        [title]="theme.dark() ? 'Attiva tema chiaro' : 'Attiva tema scuro'"
+      >
+        <span aria-hidden="true">{{ theme.dark() ? '☀' : '☾' }}</span>
+      </button>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#main-navbar"
+        aria-controls="main-navbar"
+        aria-expanded="false"
+        aria-label="Apri o chiudi la navigazione"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="main-navbar">
         <ul class="navbar-nav align-items-lg-center gap-lg-2 me-auto mb-3 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/']" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Home</a>
+            <a
+              class="nav-link"
+              [routerLink]="['/']"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              ariaCurrentWhenActive="page"
+              >Home</a
+            >
           </li>
           @if (auth.accessToken()) {
             <li class="nav-item">
-              <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active">Dashboard</a>
+              <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active"
+                >Dashboard</a
+              >
             </li>
             <li class="nav-item">
-              <a class="btn btn-outline-danger btn-sm" [routerLink]="['/summary']" routerLinkActive="active">Spese</a>
+              <a
+                class="btn btn-outline-danger btn-sm"
+                [routerLink]="['/summary']"
+                routerLinkActive="active"
+                >Spese</a
+              >
             </li>
             <li class="nav-item">
-              <a class="btn btn-primary btn-sm" [routerLink]="['/add-transaction']" routerLinkActive="active">
+              <a
+                class="btn btn-primary btn-sm"
+                [routerLink]="['/add-transaction']"
+                routerLinkActive="active"
+              >
                 Aggiungi movimento
               </a>
             </li>
@@ -30,7 +64,9 @@
         </ul>
         <div class="d-flex gap-2">
           @if (auth.accessToken()) {
-            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">Esci</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">
+              Esci
+            </button>
           } @else {
             <a class="btn btn-outline-primary btn-sm" routerLink="/login">Accedi</a>
             <a class="btn btn-primary btn-sm" routerLink="/register">Registrati</a>

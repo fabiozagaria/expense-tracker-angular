@@ -40,3 +40,7 @@ Dashboard ed entrate non fanno parte del verticale corrente. La verifica via bro
 
 ## Regola di sincronizzazione
 Quando cambia il contratto REST del backend, controllare modelli, service HTTP e form del frontend prima di aggiornare la documentazione pubblica. A fine sessione significativa aggiornare questo file insieme alla scheda Notion del progetto.
+
+
+## Tema UI — 2026-10-02
+Pulsante sole/luna accessibile nell’intestazione, tema coerente con i colori esistenti e scelta ricordata nel browser.

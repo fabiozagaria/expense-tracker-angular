@@ -1,3 +1,4 @@
+import { ThemeService } from '../../theme.service';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
@@ -11,6 +12,7 @@ import { IncomeService } from '../../../features/income/services/income.service'
   styleUrl: './header.css',
 })
 export class Header {
+  readonly theme = inject(ThemeService);
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly expenses = inject(ExpenseService);

@@ -3,9 +3,9 @@
 ![Versione](https://img.shields.io/badge/versione-0.3.0-blue)
 ![Stato](https://img.shields.io/badge/stato-in%20sviluppo-orange)
 
-**Versione attuale: 0.3.0 — verticale Expense full stack in sviluppo.**
+**Versione attuale: 0.3.0 — applicazione full stack in consolidamento.**
 
-Frontend del progetto full stack **Gestionale Spese**, attualmente focalizzato sulla registrazione, consultazione e modifica delle spese personali.
+Frontend del progetto full stack **Gestionale Spese**, con spese personali, inserimento entrate e dashboard.
 
 L'applicazione è sviluppata con Angular e comunica tramite API REST con un backend Spring Boot mantenuto in un repository separato.
 
@@ -14,9 +14,13 @@ L'applicazione è sviluppata con Angular e comunica tramite API REST con un back
 
 ## Stato del progetto
 
-**In sviluppo attivo.**
+**In consolidamento: funzionalità presenti, verifica completa nel browser ancora aperta.**
 
-Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica mostra l'interfaccia; le operazioni persistenti richiedono il backend. Dashboard, entrate e movimento generico restano fuori dalle route pubbliche.
+Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica mostra l'interfaccia; le operazioni persistenti richiedono il backend. Le route protette `/dashboard`, `/add-income` e `/add-transaction` sono presenti nel codice. Entrate e riepilogo devono essere verificati end-to-end prima di dichiararli consolidati.
+
+## Scopo e confine della versione
+
+Client Angular del prodotto full stack Expense Tracker: integra UI, form, chiamate REST e autenticazione con il backend. Il prossimo traguardo è un flusso riproducibile nel browser per autenticazione, spese, entrate e riepilogo; nuove funzionalità vengono scelte dopo questa verifica.
 
 ## Funzionalità presenti
 
@@ -31,7 +35,9 @@ Il verticale delle spese è collegato alle API. Registrazione, verifica email, l
 - client HTTP tipizzato per le operazioni REST previste.
 - registrazione, verifica email e login con JWT per le spese personali;
 - rinnovo dell'access token tramite cookie HttpOnly e `POST /auth/refresh`;
-- logout e protezione delle route delle spese.
+- logout e protezione delle route applicative;
+- form per inserire entrate e pagina di scelta del tipo di movimento;
+- dashboard con totale entrate, totale spese e saldo.
 
 ## Tecnologie
 
@@ -56,7 +62,7 @@ Il verticale delle spese è collegato alle API. Registrazione, verifica email, l
 | `app.routes.ts`       | Definisce le rotte e i titoli delle pagine                                  |
 | `AuthService`         | Gestisce registrazione, login, refresh e logout con access token in memoria |
 | `authInterceptor`     | Aggiunge il Bearer alle API e riprova dopo un refresh riuscito             |
-| `authGuard`           | Protegge le rotte delle spese e ripristina la sessione dal cookie          |
+| `authGuard`           | Protegge spese, entrate e dashboard e ripristina la sessione dal cookie |
 
 ## Integrazione con il backend
 
@@ -77,9 +83,9 @@ Contratto REST previsto dal frontend:
 | `PATCH`  | `/api/expenses/{id}` | Aggiornamento parziale |
 | `DELETE` | `/api/expenses/{id}` | Eliminazione           |
 
-Il backend espone l'intero CRUD del dominio `Expense`. Alcune integrazioni frontend e la gestione completa degli stati UI sono ancora in consolidamento.
+Il backend espone l'intero CRUD del dominio `Expense`, `GET`/`POST /api/incomes` e `GET /api/dashboard/summary`. Le entrate non hanno ancora update/delete. Alcune integrazioni frontend e la gestione completa degli stati UI sono ancora in consolidamento.
 
-L'autenticazione locale usa `POST /auth/register`, `POST /auth/verify-email`, `POST /auth/login`, `POST /auth/refresh` e `POST /auth/logout`. Il backend restituisce l'access token nel corpo del login/refresh e conserva il refresh token in un cookie HttpOnly. Il frontend invia il cookie con `withCredentials` e protegge le rotte `/summary`, `/add-expense` e `/expenses/:id`.
+L'autenticazione locale usa `POST /auth/register`, `POST /auth/verify-email`, `POST /auth/login`, `POST /auth/refresh` e `POST /auth/logout`. Il backend restituisce l'access token nel corpo del login/refresh e conserva il refresh token in un cookie HttpOnly. Il frontend invia il cookie con `withCredentials` e protegge le rotte `/summary`, `/add-expense`, `/expenses/:id`, `/dashboard`, `/add-income` e `/add-transaction`.
 
 ## Avvio locale
 
@@ -109,13 +115,13 @@ npm run build
 
 ## Prossimi sviluppi
 
-1. completare e verificare l'editing inline con Reactive Forms;
-2. collegare e verificare tutti gli endpoint del verticale Expense;
-3. gestire in modo uniforme caricamento, errori e conferme;
-4. configurare gli endpoint per sviluppo e produzione;
-5. ampliare test unitari e di integrazione;
-6. verificare manualmente il flusso completo nel browser e configurare gli URL per gli ambienti pubblici;
-7. introdurre successivamente entrate e dashboard.
+1. verificare nel browser registrazione, email, login, refresh e logout con lo stack backend avviato;
+2. riprovare CRUD spese, editing inline, inserimento entrate e aggiornamento della dashboard;
+3. verificare isolamento fra utenti e comportamento sugli errori;
+4. uniformare loading, conferme ed errori e ampliare i test mirati;
+5. separare gli URL di sviluppo/produzione prima della pubblicazione integrata.
+
+L'editing inline è già presente; il prossimo passo è verificarlo nel flusso completo, non ricostruirlo. La demo frontend non equivale a un backend pubblico disponibile.
 
 ## Versioning
 

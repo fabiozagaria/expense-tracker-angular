@@ -15,6 +15,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class Header {
   protected readonly demo = environment.demo;
+  protected readonly registrationEnabled = environment.registrationEnabled;
   protected readonly menuOpen = signal(false);
   readonly theme = inject(ThemeService);
   protected readonly auth = inject(AuthService);

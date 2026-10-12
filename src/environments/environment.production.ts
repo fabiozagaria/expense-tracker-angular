@@ -1,1 +1,1 @@
-export const environment = { apiBaseUrl: '', demo: true };
+export const environment = { apiBaseUrl: '', demo: true, registrationEnabled: false };

@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { finalize } from 'rxjs';
+import { finalize, TimeoutError } from 'rxjs';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
 import { AuthService } from '../../services/auth.service';
 
@@ -20,6 +20,7 @@ import { AuthService } from '../../services/auth.service';
 export class Register {
   private readonly auth = inject(AuthService);
   protected readonly demo = environment.demo;
+  protected readonly registrationEnabled = environment.registrationEnabled;
   protected readonly loading = signal(false);
   protected readonly registered = signal(false);
   protected readonly error = signal('');
@@ -30,7 +31,7 @@ export class Register {
   });
 
   protected submit(): void {
-    if (this.demo || this.loading()) return;
+    if (!this.registrationEnabled || this.loading()) return;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -39,15 +40,20 @@ export class Register {
     this.error.set('');
     this.auth.register(this.form.getRawValue()).pipe(finalize(() => this.loading.set(false))).subscribe({
       next: () => this.registered.set(true),
-      error: (error: HttpErrorResponse) => this.error.set(this.registrationError(error)),
+      error: (error: unknown) => this.error.set(this.registrationError(error)),
     });
   }
 
-  private registrationError(error: HttpErrorResponse): string {
+  private registrationError(error: unknown): string {
+    if (error instanceof TimeoutError) return 'Il server non si è avviato in tempo. Riprova più tardi.';
+    if (!(error instanceof HttpErrorResponse)) return 'Registrazione non riuscita. Riprova più tardi.';
     if (error.status === 409) {
       if (error.error?.errorName === 'EMAIL_ALREADY_EXISTS') return 'Email già registrata. Usa un altro indirizzo o accedi.';
       if (error.error?.errorName === 'USERNAME_ALREADY_EXISTS') return 'Username già registrato. Scegli un altro username.';
       return 'Username o email già registrati.';
+    }
+    if (error.status === 503 && error.error?.errorName === 'EMAIL_DELIVERY_UNAVAILABLE') {
+      return 'Non è stato possibile inviare l’email di verifica. Account non creato: riprova più tardi.';
     }
     if (error.status === 0 || error.status === 503) {
       return 'Server non disponibile. Controlla la connessione e riprova più tardi.';

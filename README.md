@@ -12,6 +12,10 @@ L'applicazione è sviluppata con Angular e comunica tramite API REST con un back
 - [Demo frontend](https://gestionale-spese.vercel.app/)
 - [Repository backend](https://github.com/fabiozagaria/expense-tracker-api)
 
+## Anteprima nuova UI — `feature/newui`
+
+Prima migrazione a PrimeNG 21 con tema Aura e PrimeIcons: nuova navigazione responsive, login e dashboard. Le animazioni GSAP rispettano la preferenza di movimento ridotto. Dashboard e login vengono caricati al bisogno; la dashboard legge riepilogo, spese ed entrate dalle API esistenti e permette di filtrare gli ultimi movimenti. Le altre pagine mantengono per ora i componenti Bootstrap. Il branch è dedicato alla revisione della UI prima della pubblicazione in produzione.
+
 ## Stato del progetto
 
 **In consolidamento: funzionalità presenti, verifica completa nel browser ancora aperta.**

@@ -1,42 +1,70 @@
-<section class="container py-5">
-  <div class="row justify-content-center"><div class="col-12 col-sm-10 col-md-8 col-lg-5">
-    <div class="card border-0 shadow-sm"><div class="card-body p-4 p-lg-5">
-      <h1 class="h2 fw-bold text-center mb-4">Accedi</h1>
-      @if (demo) {
-        <p>Con «Prova la demo» usi un account condiviso: le modifiche sono visibili agli altri visitatori. Usa solo dati fittizi.</p>
-        <button class="btn btn-primary w-100 mb-3" type="button" (click)="tryDemo()" [disabled]="loading()">Prova la demo</button>
-      }
-      @if (loading()) {
-        <p role="status" aria-live="polite">Avvio del server demo in corso. Il primo accesso può richiedere 2–3 minuti.</p>
-      }
-      <form [formGroup]="form" (ngSubmit)="submit()">
-        <div class="mb-3">
-          <label class="form-label" for="login-username">Username</label>
-          <input class="form-control" id="login-username" formControlName="username" autocomplete="username" required
-            [class.is-invalid]="form.controls.username.touched && form.controls.username.invalid">
-          @if (form.controls.username.touched && form.controls.username.invalid) {
-            <div class="invalid-feedback">Inserisci lo username.</div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="login-password">Password</label>
-          <input class="form-control" id="login-password" type="password" formControlName="password"
-            autocomplete="current-password" required
-            [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid">
-          @if (form.controls.password.touched && form.controls.password.invalid) {
-            <div class="invalid-feedback">Inserisci la password.</div>
-          }
-        </div>
-        @if (error()) { <p class="alert alert-danger" role="alert">{{ error() }}</p> }
-        <button class="btn btn-primary w-100" type="submit" [disabled]="loading()">
-          {{ loading() ? 'Accesso in corso…' : 'Accedi' }}
-        </button>
-      </form>
-      <p class="text-center mt-4 mb-0">Non hai un account? <a routerLink="/register">Registrati</a></p>
-      @if (demo) {
-        <p class="text-center small mt-2 mb-0">Puoi vedere il form; la registrazione online attende il servizio email di verifica.</p>
-      }
-    </div></div>
-  </div></div>
-</section>
+<section class="login-page" aria-labelledby="login-title">
+  <div class="login-introduction">
+    <span class="section-eyebrow"><span aria-hidden="true"></span> IL TUO SPAZIO FINANZIARIO</span>
+    <h2>Più chiarezza.<br>Ogni giorno.</h2>
+    <p>Entrate, spese e piccoli progetti.<br>Metti tutto al posto giusto.</p>
 
+    <div class="login-illustration" aria-hidden="true">
+      <div class="illustration-heading"><span>Le tue finanze</span><i class="pi pi-chart-line"></i></div>
+      <div class="illustration-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="illustration-rule"></div>
+      <div class="illustration-item"><span class="illustration-icon"><i class="pi pi-arrow-down-left"></i></span><span>Entrate</span><span class="illustration-line"></span></div>
+      <div class="illustration-item"><span class="illustration-icon expense"><i class="pi pi-arrow-up-right"></i></span><span>Spese</span><span class="illustration-line short"></span></div>
+    </div>
+
+    <div class="intro-footnote"><i class="pi pi-check-circle" aria-hidden="true"></i><span>Una visione completa, senza complicazioni.</span></div>
+  </div>
+
+  <div class="login-card">
+    <div class="login-card-header">
+      <span class="welcome-icon" aria-hidden="true"><i class="pi pi-wallet"></i></span>
+      <span class="section-eyebrow">BENTORNATO</span>
+      <h1 id="login-title">Accedi al tuo spazio</h1>
+      <p>Le tue finanze ti aspettano.</p>
+    </div>
+
+    @if (demo) {
+      <button pButton class="demo-button" type="button" (click)="tryDemo()" [disabled]="loading()">
+        <i class="pi pi-play-circle" aria-hidden="true"></i><span>Prova la demo</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </button>
+      <p class="demo-explanation">Con «Prova la demo» usi un account condiviso: le modifiche sono visibili agli altri visitatori. Usa solo dati fittizi.</p>
+      <div class="login-divider"><span>oppure accedi al tuo account</span></div>
+    }
+    @if (loading()) {
+      <p class="login-status" role="status" aria-live="polite"><i class="pi pi-spin pi-spinner" aria-hidden="true"></i>Avvio del server demo in corso. Il primo accesso può richiedere 2–3 minuti.</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="login-field">
+        <label for="login-username">Username</label>
+        <input pInputText class="login-input" id="login-username" formControlName="username" autocomplete="username" required placeholder="Il tuo username"
+          [class.is-invalid]="form.controls.username.touched && form.controls.username.invalid"
+          [attr.aria-invalid]="form.controls.username.touched && form.controls.username.invalid"
+          [attr.aria-describedby]="form.controls.username.touched && form.controls.username.invalid ? 'username-error' : null">
+        @if (form.controls.username.touched && form.controls.username.invalid) {
+          <div id="username-error" class="field-error">Inserisci lo username.</div>
+        }
+      </div>
+      <div class="login-field">
+        <label for="login-password">Password</label>
+        <input pInputText class="login-input" id="login-password" type="password" formControlName="password"
+          autocomplete="current-password" required placeholder="La tua password"
+          [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid"
+          [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+          [attr.aria-describedby]="form.controls.password.touched && form.controls.password.invalid ? 'password-error' : null">
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <div id="password-error" class="field-error">Inserisci la password.</div>
+        }
+      </div>
+      @if (error()) { <p class="login-error" role="alert"><i class="pi pi-exclamation-circle" aria-hidden="true"></i>{{ error() }}</p> }
+      <button pButton class="login-submit" type="submit" [disabled]="loading()">
+        <span>{{ loading() ? 'Accesso in corso…' : 'Accedi' }}</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </button>
+    </form>
+
+    <p class="register-link">Non hai un account? <a routerLink="/register">Registrati</a></p>
+    @if (demo) {
+      <p class="register-note">Puoi vedere il form; la registrazione online attende il servizio email di verifica.</p>
+    }
+  </div>
+</section>

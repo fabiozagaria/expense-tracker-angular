@@ -46,9 +46,20 @@ Quando cambia il contratto REST del backend, controllare modelli, service HTTP e
 ## Tema UI — 2026-10-02
 Pulsante sole/luna accessibile nell’intestazione, tema coerente con i colori esistenti e scelta ricordata nel browser.
 
+## Anteprima UI — 2026-10-12
+
+Il branch `feature/newui` introduce PrimeNG 21.1.10 (compatibile con Angular 21), Aura, PrimeIcons e GSAP. Prima fase: sidebar desktop/menu mobile, login e dashboard; Bootstrap resta per le pagine non ancora migrate. Login e dashboard usano `loadComponent` per evitare di caricare tutta la nuova UI all'avvio. I movimenti recenti provengono da `GET /api/expenses` e `GET /api/incomes`, combinati e ordinati per data dal service; il riepilogo usa sempre `GET /api/dashboard/summary`. Non vengono aggiunti endpoint o statistiche mensili senza dati. Gli errori API non vengono presentati come saldo zero. Le animazioni partono sul browser e vengono saltate con `prefers-reduced-motion`. Credenziali, cookie, login demo e invio registrazione restano gestiti dai service esistenti.
+
+Verifica della UI prima del merge: build production riuscita, 47 test Angular passati, incluso errore 503 del riepilogo con importi indisponibili e movimenti ancora visibili. Restano avvisi sui budget di dimensione (iniziale circa 894 kB, CSS login/dashboard sotto il limite massimo di 8 kB). L'anteprima visuale locale usa risposte API simulate con dati fittizi, senza scrivere nel database condiviso.
+
 
 ## Demo e form di registrazione — 2026-10-12
 
 Frontend Vercel e backend Render sono online, con login condiviso e proxy Vercel. Il pulsante «Prova la demo» usa l'account condiviso: le modifiche sono visibili agli altri visitatori e vanno usati solo dati fittizi. SMTP/Mailpit resta il flusso locale; il servizio email HTTPS online è un passo successivo. Vedere DEPLOYMENT.md per deploy e verifiche.
 
 Il form `/register` è raggiungibile da header e login anche nella demo; `/registrati` è un alias con redirect. Nella demo i campi sono visibili, il pulsante è disabilitato e il metodo `submit()` impedisce richieste a `POST /auth/register`. In locale il form invia username, email e password, attende il successo e chiede di verificare l'email prima del login. Le risposte `409` distinguono `EMAIL_ALREADY_EXISTS` e `USERNAME_ALREADY_EXISTS` tramite `errorName`, con fallback generico; gli errori di rete e `503` indicano che il server non è disponibile.
+
+
+## Revisione prima del merge UI — 2026-10-12
+
+Verificati nel browser con le API reali: login demo, lettura riepilogo/spese/entrate, filtri, refresh dopo reload e persistenza del tema; creazione, modifica, dettaglio ed eliminazione di una spesa fittizia. Le spese di verifica sono state eliminate. Le entrate sono state lette e il form validato, senza creare record permanenti perché non è disponibile la cancellazione. Corretti contrasto di importi/errori nel tema scuro, azioni della lista spese precedentemente nascoste fuori dal passaggio del mouse, e formattazione di `null` come dato indisponibile anziché zero.

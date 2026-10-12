@@ -5,6 +5,7 @@ Frontend Angular del Gestionale Spese full stack. Il repository è in sviluppo a
 
 ## Regole operative
 - Leggere `README.md` e `docs/CONTEXT.md` prima di modifiche ampie.
+- Per modifiche alla UI, leggere e seguire [`codex/style.md`](codex/style.md).
 - Verificare il contratto REST reale prima di cambiare modelli, service o form.
 - Preferire modifiche incrementali e tipizzate; non introdurre funzionalità non presenti nella roadmap tecnica del progetto senza richiesta esplicita.
 - Mantenere separati stato UI, chiamate HTTP e responsabilità dei componenti.

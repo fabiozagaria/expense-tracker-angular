@@ -1,80 +1,86 @@
-<header class="mb-4 p-1">
-  <nav class="navbar navbar-expand-lg bg-body-tertiary" aria-label="Navigazione principale">
-    <div class="container-fluid px-3">
-      <a class="navbar-brand fw-bold" [routerLink]="['/']">Gestore Spese</a>
+<header class="workspace-header" [class.menu-open]="menuOpen()" (keydown.escape)="menuOpen.set(false)">
+  <div class="brand-row">
+    <a class="navbar-brand workspace-brand" [routerLink]="['/']" (click)="menuOpen.set(false)">
+      <span class="brand-mark" aria-hidden="true"><i class="pi pi-wallet"></i></span>
+      <span class="brand-copy"><strong>Gestore Spese</strong><span>Finance workspace</span></span>
+    </a>
+    <div class="mobile-tools">
+    <button type="button" class="mobile-theme-toggle"
+      (click)="theme.toggle()" [attr.aria-pressed]="theme.dark()"
+      [attr.aria-label]="theme.dark() ? 'Attiva tema chiaro' : 'Attiva tema scuro'">
+      <i [class]="theme.dark() ? 'pi pi-sun' : 'pi pi-moon'" aria-hidden="true"></i>
+    </button>
+    <button
+      class="menu-toggle"
+      type="button"
+      (click)="menuOpen.set(!menuOpen())"
+      aria-controls="main-navbar"
+      [attr.aria-expanded]="menuOpen()"
+      aria-label="Apri o chiudi la navigazione"
+    >
+      <i [class]="menuOpen() ? 'pi pi-times' : 'pi pi-bars'" aria-hidden="true"></i>
+    </button>
+    </div>
+  </div>
 
+  <nav id="main-navbar" class="workspace-navigation" aria-label="Navigazione principale">
+    <div class="navigation-main">
+      <p class="navigation-label">IL TUO SPAZIO</p>
+      <a class="workspace-link" [routerLink]="['/']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
+        <i class="pi pi-home" aria-hidden="true"></i><span>Home</span>
+      </a>
+      @if (auth.accessToken()) {
+        <a class="workspace-link" [routerLink]="['/dashboard']" routerLinkActive="active"
+          ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
+          <i class="pi pi-chart-pie" aria-hidden="true"></i><span>Dashboard</span>
+        </a>
+        <a class="workspace-link" [routerLink]="['/summary']" routerLinkActive="active"
+          ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
+          <i class="pi pi-receipt" aria-hidden="true"></i><span>Spese</span>
+        </a>
+        <a class="workspace-link" [routerLink]="['/add-transaction']" routerLinkActive="active"
+          ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
+          <i class="pi pi-arrow-right-arrow-left" aria-hidden="true"></i><span>Movimenti</span>
+          <span class="nav-plus" aria-hidden="true">+</span>
+        </a>
+      } @else {
+        <a class="workspace-link" routerLink="/login" routerLinkActive="active"
+          ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
+          <i class="pi pi-sign-in" aria-hidden="true"></i><span>Accedi</span>
+        </a>
+        <a class="workspace-link" routerLink="/register" routerLinkActive="active"
+          ariaCurrentWhenActive="page" (click)="menuOpen.set(false)"
+          [attr.title]="demo ? 'Form di registrazione; registrazione online non ancora disponibile' : null">
+          <i class="pi pi-user-plus" aria-hidden="true"></i><span>Registrati</span>
+        </a>
+      }
+    </div>
+
+    <div class="navigation-bottom">
+      @if (demo) {
+        <div class="workspace-note">
+          <span class="demo-dot" aria-hidden="true"></span>
+          <div><strong>Spazio demo</strong><span>{{ auth.accessToken() ? 'Account condiviso' : 'Accedi e prova la demo' }}</span></div>
+        </div>
+      }
       <button
         type="button"
-        class="theme-toggle"
+        class="theme-toggle workspace-link"
         (click)="theme.toggle()"
         [attr.aria-pressed]="theme.dark()"
         [attr.aria-label]="theme.dark() ? 'Attiva tema chiaro' : 'Attiva tema scuro'"
         [title]="theme.dark() ? 'Attiva tema chiaro' : 'Attiva tema scuro'"
       >
-        <span aria-hidden="true">{{ theme.dark() ? '☀' : '☾' }}</span>
+        <i [class]="theme.dark() ? 'pi pi-sun' : 'pi pi-moon'" aria-hidden="true"></i>
+        <span>{{ theme.dark() ? 'Tema chiaro' : 'Tema scuro' }}</span>
       </button>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#main-navbar"
-        aria-controls="main-navbar"
-        aria-expanded="false"
-        aria-label="Apri o chiudi la navigazione"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="main-navbar">
-        <ul class="navbar-nav align-items-lg-center gap-lg-2 me-auto mb-3 mb-lg-0">
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              [routerLink]="['/']"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-              ariaCurrentWhenActive="page"
-              >Home</a
-            >
-          </li>
-          @if (auth.accessToken()) {
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active"
-                >Dashboard</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="btn btn-outline-danger btn-sm"
-                [routerLink]="['/summary']"
-                routerLinkActive="active"
-                >Spese</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="btn btn-primary btn-sm"
-                [routerLink]="['/add-transaction']"
-                routerLinkActive="active"
-              >
-                Aggiungi movimento
-              </a>
-            </li>
-          }
-        </ul>
-        <div class="d-flex gap-2">
-          @if (auth.accessToken()) {
-            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">
-              Esci
-            </button>
-          } @else {
-            <a class="btn btn-outline-primary btn-sm" routerLink="/login">Accedi</a>
-            <a class="btn btn-primary btn-sm" routerLink="/register"
-              [attr.title]="demo ? 'Form di registrazione; registrazione online non ancora disponibile' : null">Registrati</a>
-          }
-        </div>
-      </div>
+      @if (auth.accessToken()) {
+        <button type="button" class="workspace-link logout-link" (click)="logout()">
+          <i class="pi pi-sign-out" aria-hidden="true"></i><span>Esci</span>
+        </button>
+      }
+      <p class="sidebar-footnote">Un po’ di ordine, ogni giorno.</p>
     </div>
   </nav>
 </header>
-

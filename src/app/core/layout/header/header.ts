@@ -1,3 +1,4 @@
+import { environment } from '../../../../environments/environment';
 import { ThemeService } from '../../theme.service';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -12,6 +13,7 @@ import { IncomeService } from '../../../features/income/services/income.service'
   styleUrl: './header.css',
 })
 export class Header {
+  protected readonly demo = environment.demo;
   readonly theme = inject(ThemeService);
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
@@ -31,3 +33,4 @@ export class Header {
     void this.router.navigateByUrl('/login');
   }
 }
+

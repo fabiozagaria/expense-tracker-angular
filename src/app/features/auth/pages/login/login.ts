@@ -1,3 +1,5 @@
+import { environment } from '../../../../../environments/environment';
+import { timeout } from 'rxjs';
 import { Component, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,6 +17,7 @@ export class Login {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
+  protected readonly demo = environment.demo;
   protected readonly loading = signal(false);
   protected readonly error = signal('');
   protected readonly form = new FormGroup({
@@ -22,7 +25,19 @@ export class Login {
     password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
+  protected tryDemo(): void {
+    if (this.loading()) return;
+    this.loading.set(true);
+    this.error.set('');
+    // Do not automatically retry the POST: a retry could create another session.
+    this.auth.demoLogin().pipe(timeout(270000), finalize(() => this.loading.set(false))).subscribe({
+      next: () => { void this.router.navigateByUrl('/dashboard'); },
+      error: () => this.error.set('Il server demo non è ancora disponibile. Attendi qualche istante e riprova.'),
+    });
+  }
+
   protected submit(): void {
+    if (this.loading()) return;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -45,3 +60,4 @@ export class Login {
     });
   }
 }
+

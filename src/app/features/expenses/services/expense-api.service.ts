@@ -1,3 +1,4 @@
+import { environment } from '../../../../environments/environment';
 import { Injectable, inject } from '@angular/core';
 import { CreateExpenseRequest, Expense, ExpensesList, UpdateExpenseEvent } from '../models/expense.model';
 import { HttpClient } from '@angular/common/http';
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class ExpenseApiService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/expenses';
+  private readonly apiUrl = `${environment.apiBaseUrl}/api/expenses`;
 
   public getExpenses(): Observable<ExpensesList> {
     return this.http.get<ExpensesList>(this.apiUrl);
@@ -44,3 +45,4 @@ export class ExpenseApiService {
     );
   }
 }
+

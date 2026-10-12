@@ -1,3 +1,4 @@
+import { environment } from '../../../../environments/environment';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -23,7 +24,40 @@ describe('authInterceptor', () => {
     requests = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => requests.verify());
+  afterEach(() => {
+    requests.verify();
+    environment.apiBaseUrl = 'http://localhost:8080';
+  });
+
+  it('uses same-origin demo URLs and never sends the token to another host', () => {
+    environment.apiBaseUrl = '';
+    // Services read the environment when instantiated.
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({ providers: [
+      provideHttpClient(withInterceptors([authInterceptor])), provideHttpClientTesting(), provideRouter([]),
+    ] });
+    auth = TestBed.inject(AuthService);
+    http = TestBed.inject(HttpClient);
+    requests = TestBed.inject(HttpTestingController);
+    auth.demoLogin().subscribe();
+    const health = requests.expectOne('/health');
+    expect(health.request.method).toBe('GET');
+    expect(health.request.headers.has('Authorization')).toBe(false);
+    requests.expectNone('/auth/demo');
+    health.flush({ status: 'up' });
+    const demo = requests.expectOne('/auth/demo');
+    expect(demo.request.withCredentials).toBe(true);
+    expect(demo.request.headers.has('Authorization')).toBe(false);
+    demo.flush({ accessToken: 'demo-token' });
+    http.get('/api/expenses').subscribe();
+    const expense = requests.expectOne('/api/expenses');
+    expect(expense.request.headers.get('Authorization')).toBe('Bearer demo-token');
+    expense.flush([]);
+    http.get('https://other.example/api/expenses').subscribe();
+    const external = requests.expectOne('https://other.example/api/expenses');
+    expect(external.request.headers.has('Authorization')).toBe(false);
+    external.flush([]);
+  });
 
   it('uses the login token for expenses and rotates it after a 401', () => {
     auth.login('utente', 'password').subscribe();
@@ -48,3 +82,4 @@ describe('authInterceptor', () => {
     expect(expenses).toEqual([]);
   });
 });
+

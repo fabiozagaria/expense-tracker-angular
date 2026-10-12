@@ -69,10 +69,11 @@
             </button>
           } @else {
             <a class="btn btn-outline-primary btn-sm" routerLink="/login">Accedi</a>
-            <a class="btn btn-primary btn-sm" routerLink="/register">Registrati</a>
+            @if (!demo) { <a class="btn btn-primary btn-sm" routerLink="/register">Registrati</a> }
           }
         </div>
       </div>
     </div>
   </nav>
 </header>
+

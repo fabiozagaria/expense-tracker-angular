@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/health", "destination": "https://expense-tracker-api-demo-plb9.onrender.com/health" },
+    { "source": "/auth/:path*", "destination": "https://expense-tracker-api-demo-plb9.onrender.com/auth/:path*" },
+    { "source": "/api/:path*", "destination": "https://expense-tracker-api-demo-plb9.onrender.com/api/:path*" }
+  ],
+  "headers": [
+    { "source": "/health", "headers": [{ "key": "Cache-Control", "value": "no-store" }] },
+    { "source": "/auth/:path*", "headers": [{ "key": "Cache-Control", "value": "no-store" }] },
+    { "source": "/api/:path*", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
+  ]
+}

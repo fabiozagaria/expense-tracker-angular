@@ -44,3 +44,8 @@ Quando cambia il contratto REST del backend, controllare modelli, service HTTP e
 
 ## Tema UI — 2026-10-02
 Pulsante sole/luna accessibile nell’intestazione, tema coerente con i colori esistenti e scelta ricordata nel browser.
+
+
+## Preparazione demo — 2026-10-12
+
+Profilo backend demo, login condiviso e proxy Vercel preparati. SMTP resta locale; registrazione disabilitata nella demo. Pubblicazione e verifica browser ancora aperte. Vedere DEPLOYMENT.md.

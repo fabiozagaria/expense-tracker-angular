@@ -42,8 +42,8 @@ export class Dashboard implements OnInit {
       error: () => { this.movementsError.set('Impossibile caricare i movimenti.'); this.movementsLoading.set(false); },
     });
   }
-  protected euro(value: number | undefined): string {
-    return value === undefined ? '—' : new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(value);
+  protected euro(value: number | null | undefined): string {
+    return value == null ? '—' : new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(value);
   }
   protected category(value: string): string { return this.categories[value] ?? value; }
 }

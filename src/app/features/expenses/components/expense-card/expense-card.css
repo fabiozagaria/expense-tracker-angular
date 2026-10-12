@@ -7,12 +7,7 @@ button {
 }
 
 .card-body.button {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.card:hover .card-body.button {
-  pointer-events: auto;
-  opacity: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }

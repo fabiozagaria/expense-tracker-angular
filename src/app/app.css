@@ -1,0 +1,10 @@
+:host { display: flex; flex-direction: column; min-height: 100vh; background: var(--ui-bg, #f6f7f4); }
+.workspace-main { flex: 1; min-width: 0; margin-left: 236px; padding: 23px 40px 42px; }
+.demo-notice { display: flex; align-items: center; gap: 13px; margin-bottom: 29px; padding: 11px 14px; border: 1px solid var(--ui-border, #e3e7e1); border-radius: 7px; background: var(--ui-surface, #fff); color: var(--ui-muted, #77837d); }
+.demo-notice p { margin: 0; font-size: 10px; line-height: 1.6; }
+.notice-badge { display: flex; align-items: center; gap: 6px; flex-shrink: 0; padding: 4px 6px; border-radius: 4px; background: #ecf2e8; color: #527442; font-size: 8px; font-weight: 650; letter-spacing: .55px; }
+.notice-badge .pi { font-size: 4px; }
+.notice-info { margin-left: auto; color: #8e9b92; font-size: 12px; }
+@media (min-width: 1800px) { .workspace-main { padding-inline: 64px; } }
+@media (max-width: 991.98px) { .workspace-main { margin-left: 0; padding: 22px 24px 32px; } }
+@media (max-width: 575.98px) { .workspace-main { padding: 18px 20px 30px; } .demo-notice { gap: 9px; padding: 9px 11px; margin-bottom: 24px; align-items: flex-start; } .notice-badge { margin-top: 2px; } .notice-info { display: none; } }

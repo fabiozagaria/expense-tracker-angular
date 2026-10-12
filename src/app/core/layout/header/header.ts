@@ -1,6 +1,6 @@
 import { environment } from '../../../../environments/environment';
 import { ThemeService } from '../../theme.service';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { ExpenseService } from '../../../features/expenses/services/expense.service';
@@ -14,6 +14,7 @@ import { IncomeService } from '../../../features/income/services/income.service'
 })
 export class Header {
   protected readonly demo = environment.demo;
+  protected readonly menuOpen = signal(false);
   readonly theme = inject(ThemeService);
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
@@ -21,6 +22,7 @@ export class Header {
   private readonly incomes = inject(IncomeService);
 
   protected logout(): void {
+    this.menuOpen.set(false);
     this.auth.logout().subscribe({
       next: () => this.finishLogout(),
       error: () => this.finishLogout(),

@@ -1,8 +1,9 @@
-footer {
-  width: 100%;
-}
-
-.nav-link:hover,
-.nav-link:focus {
-  color: var(--bs-info) !important;
-}
+:host { display: block; margin-left: 236px; }
+.workspace-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 0 40px; padding: 21px 0 24px; border-top: 1px solid var(--ui-border, #e3e7e1); color: var(--ui-muted, #7c887f); font-size: 10px; }
+.footer-message { color: var(--ui-muted, #7c887f); }
+.workspace-footer a { display: flex; align-items: center; gap: 6px; color: var(--ui-muted, #7c887f); text-decoration: none; }
+.workspace-footer a:hover { color: var(--ui-accent, #06735c); }
+.workspace-footer .pi { font-size: 10px; }
+.workspace-footer a:focus-visible { outline: 2px solid var(--ui-accent, #06735c); outline-offset: 4px; }
+@media (max-width: 991.98px) { :host { margin-left: 0; } .workspace-footer { margin: 0 24px; } }
+@media (max-width: 575.98px) { .workspace-footer { margin: 0 20px; padding: 18px 0; } .footer-message { display: none; } }

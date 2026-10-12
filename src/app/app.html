@@ -1,11 +1,14 @@
 <app-header></app-header>
 
-<main class="container-fluid">
+<main class="workspace-main">
   @if (demo) {
-    <p class="alert alert-info">Con «Prova la demo» usi un account condiviso: le modifiche sono visibili agli altri visitatori. Usa solo dati fittizi.</p>
+    <div class="demo-notice" role="note">
+      <span class="notice-badge"><i class="pi pi-circle-fill" aria-hidden="true"></i> DEMO</span>
+      <p>Account condiviso: le modifiche sono visibili agli altri visitatori. Usa solo dati fittizi.</p>
+      <i class="pi pi-info-circle notice-info" aria-hidden="true"></i>
+    </div>
   }
   <router-outlet></router-outlet>
 </main>
-
 
 <app-footer></app-footer>

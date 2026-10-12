@@ -1,69 +1,43 @@
-<section class="container py-4 py-lg-5">
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-    <div>
-      <span class="badge text-bg-primary mb-2">Panoramica</span>
-      <h1 class="display-6 fw-bold mb-1">Dashboard</h1>
-      <p class="text-body-secondary mb-0">Saldo, entrate e spese del tuo account.</p>
-    </div>
-    <a class="btn btn-primary btn-lg" [routerLink]="['/add-transaction']">Aggiungi movimento</a>
+<section class="finance-dashboard" appReveal>
+  <div class="page-top" data-reveal>
+    <div><div class="eyebrow">IL TUO SPAZIO FINANZIARIO</div><h1>Una visione chiara.<span>Ogni giorno.</span></h1><p>Entrate, spese e saldo. Tutto al posto giusto.</p></div>
+    <a pButton [routerLink]="['/add-transaction']" class="new-movement"><i class="pi pi-plus" aria-hidden="true"></i><span>Nuovo movimento</span></a>
   </div>
-
-  @if (loading()) {
-    <div class="alert alert-secondary">Caricamento riepilogo…</div>
-  }
-
-  @if (error()) {
-    <div class="alert alert-danger">{{ error() }}</div>
-  }
-
-  <div class="row g-4 mb-5">
-    <div class="col-12 col-md-4">
-      <article class="card h-100 border-primary-subtle shadow-sm">
-        <div class="card-body p-4">
-          <p class="text-primary fw-semibold mb-2">Saldo</p>
-          <h2 class="display-6 fw-bold mb-0">{{ euro(summary()?.balance) }}</h2>
-        </div>
-      </article>
-    </div>
-
-    <div class="col-12 col-md-4">
-      <article class="card h-100 border-success-subtle shadow-sm">
-        <div class="card-body d-flex flex-column p-4">
-          <p class="text-success fw-semibold mb-2">Entrate</p>
-          <h2 class="display-6 fw-bold mb-3">{{ euro(summary()?.totalIncome) }}</h2>
-          <a class="btn btn-outline-success mt-auto" [routerLink]="['/add-income']">Aggiungi entrata</a>
-        </div>
-      </article>
-    </div>
-
-    <div class="col-12 col-md-4">
-      <article class="card h-100 border-danger-subtle shadow-sm">
-        <div class="card-body d-flex flex-column p-4">
-          <p class="text-danger fw-semibold mb-2">Spese</p>
-          <h2 class="display-6 fw-bold mb-3">{{ euro(summary()?.totalExpense) }}</h2>
-          <a class="btn btn-outline-danger mt-auto" [routerLink]="['/summary']">Visualizza spese</a>
-        </div>
-      </article>
-    </div>
+  @if (error()) { <div class="status-error" role="alert">{{ error() }}</div> }
+  <div class="metrics">
+    <article class="metric balance" data-reveal><div class="metric-top"><span>Saldo disponibile</span><span class="metric-icon"><i class="pi pi-wallet" aria-hidden="true"></i></span></div>
+      @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.balance) }}</h2> }
+      <div class="metric-foot"><span class="balance-dot"></span>Il totale delle tue entrate, meno le spese</div>
+    </article>
+    <article class="metric" data-reveal><div class="metric-top"><span>Entrate totali</span><span class="metric-icon income-icon"><i class="pi pi-arrow-down-left" aria-hidden="true"></i></span></div>
+      @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.totalIncome) }}</h2> }
+      <div class="metric-foot"><a routerLink="/add-income">Aggiungi un’entrata <i class="pi pi-arrow-up-right" aria-hidden="true"></i></a></div>
+    </article>
+    <article class="metric" data-reveal><div class="metric-top"><span>Spese totali</span><span class="metric-icon expense-icon"><i class="pi pi-arrow-up-right" aria-hidden="true"></i></span></div>
+      @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.totalExpense) }}</h2> }
+      <div class="metric-foot"><a routerLink="/summary">Visualizza le spese <i class="pi pi-arrow-up-right" aria-hidden="true"></i></a></div>
+    </article>
   </div>
-
-  <div class="card border-0 shadow-sm">
-    <div class="card-header bg-white py-3">
-      <h2 class="h4 mb-0">Azioni rapide</h2>
-    </div>
-    <div class="list-group list-group-flush">
-      <a class="list-group-item list-group-item-action d-flex justify-content-between py-3"
-         [routerLink]="['/add-expense']">
-        <span>Aggiungi una nuova spesa</span><span class="badge text-bg-danger">Uscita</span>
-      </a>
-      <a class="list-group-item list-group-item-action d-flex justify-content-between py-3"
-         [routerLink]="['/add-income']">
-        <span>Aggiungi una nuova entrata</span><span class="badge text-bg-success">Entrata</span>
-      </a>
-      <a class="list-group-item list-group-item-action d-flex justify-content-between py-3"
-         [routerLink]="['/summary']">
-        <span>Consulta le spese</span><span aria-hidden="true">→</span>
-      </a>
-    </div>
+  <div class="overview-grid">
+    <article class="overview-panel" data-reveal>
+      <div class="panel-title"><div><span class="section-kicker">IL QUADRO GENERALE</span><h2>Come si muovono i tuoi soldi</h2></div><span class="period-pill"><i class="pi pi-calendar" aria-hidden="true"></i>Tutti i movimenti</span></div>
+      <div class="flow-labels"><div><span class="legend-dot income-dot"></span>Entrate<strong>{{ euro(summary()?.totalIncome) }}</strong></div><div><span class="legend-dot expense-dot"></span>Spese<strong>{{ euro(summary()?.totalExpense) }}</strong></div></div>
+      <div class="flow-bar" aria-hidden="true"><div class="flow-income" [style.width.%]="incomeShare()"></div><div class="flow-expense" [style.width.%]="summary()?.totalExpense ? 100 - incomeShare() : 0"></div></div>
+      <div class="flow-note"><i class="pi pi-info-circle" aria-hidden="true"></i>Ripartizione degli importi registrati, senza limiti di periodo.</div>
+    </article>
+    <article class="quick-panel" data-reveal><span class="section-kicker">UN PASSO ALLA VOLTA</span><h2>Ogni movimento <br>fa chiarezza.</h2><p>Registra una spesa o un’entrata e ritrova subito il tuo equilibrio.</p><a routerLink="/add-expense" class="quick-link"><span><i class="pi pi-plus" aria-hidden="true"></i>Aggiungi una spesa</span><i class="pi pi-arrow-right" aria-hidden="true"></i></a></article>
   </div>
+  <article class="transactions-panel" data-reveal>
+    <div class="transactions-heading"><div><span class="section-kicker">TUTTO SOTTO CONTROLLO</span><h2>Ultimi movimenti</h2></div><p-selectbutton [options]="filterOptions" [ngModel]="filter()" (ngModelChange)="filter.set($event)" optionLabel="label" optionValue="value" [allowEmpty]="false" ariaLabel="Tipo di movimento" /></div>
+    @if (movementsLoading()) { <div class="table-loading"><p-skeleton height="3rem" /><p-skeleton height="3rem" /><p-skeleton height="3rem" /></div> }
+    @else if (movementsError()) { <p class="table-state" role="alert">{{ movementsError() }}</p> }
+    @else {
+      <p-table [value]="visibleMovements()" [tableStyle]="{ 'min-width': '520px' }">
+        <ng-template #header><tr><th>MOVIMENTO</th><th>CATEGORIA</th><th>DATA</th><th class="amount-column">IMPORTO</th></tr></ng-template>
+        <ng-template #body let-movement><tr><td><div class="movement-name"><span class="movement-icon" [class.income-icon]="movement.kind === 'income'" [class.expense-icon]="movement.kind === 'expense'"><i [class]="movement.kind === 'income' ? 'pi pi-arrow-down-left' : 'pi pi-arrow-up-right'" aria-hidden="true"></i></span><div>@if (movement.kind === 'expense') { <a [routerLink]="['/expenses', movement.id]">{{ movement.title }}</a> } @else { <strong>{{ movement.title }}</strong> }<span>{{ movement.kind === 'income' ? 'Entrata' : 'Spesa' }}</span></div></div></td><td><span class="category-pill">{{ category(movement.category) }}</span></td><td class="date-cell">{{ movement.date | date:'dd MMM yyyy' }}</td><td class="amount-column" [class.income-amount]="movement.kind === 'income'">{{ movement.kind === 'income' ? '+' : '−' }} {{ euro(movement.amount) }}</td></tr></ng-template>
+        <ng-template #emptymessage><tr><td colspan="4" class="table-state">Nessun movimento da mostrare. Inizia registrando un’entrata o una spesa.</td></tr></ng-template>
+      </p-table>
+    }
+    <div class="table-footer"><span>Gli ultimi 6 movimenti del tuo account</span><a routerLink="/summary">Vai alle spese <i class="pi pi-arrow-right" aria-hidden="true"></i></a></div>
+  </article>
 </section>

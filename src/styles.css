@@ -1,110 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'primeicons/primeicons.css';
 
 :root {
-  --bs-body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --bs-body-bg: #f6f8fb;
-  --bs-body-color: #172033;
+  --ui-bg: #f5f7f4;
+  --ui-surface: #ffffff;
+  --ui-border: #e5eae5;
+  --ui-text: #172b26;
+  --ui-muted: #73827b;
+  --ui-accent: #08765b;
+  --ui-accent-soft: #eaf5ed;
+  --ui-surface-alt: #f8faf7;
+  --bs-body-bg: var(--ui-bg);
+  --bs-body-color: var(--ui-text);
+  --bs-body-font-family: 'Inter', system-ui, sans-serif;
+  --bs-border-color: var(--ui-border);
 }
-
-html,
-body {
-  min-height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family:
-    'Inter',
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: #172033;
-  background-color: #f6f8fb;
-  background-image:
-    linear-gradient(135deg, rgba(14, 165, 233, 0.14), rgba(14, 165, 233, 0) 34%),
-    linear-gradient(225deg, rgba(34, 197, 94, 0.12), rgba(34, 197, 94, 0) 30%),
-    linear-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
-  background-size:
-    auto,
-    auto,
-    44px 44px,
-    44px 44px;
-  background-attachment: fixed;
-}
-
-app-root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-main {
-  flex: 1;
-}
-
-.navbar.bg-body-tertiary {
-  background-color: rgba(255, 255, 255, 0.78) !important;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 16px;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(16px);
-}
-
-.btn-primary {
-  --bs-btn-bg: #146c94;
-  --bs-btn-border-color: #146c94;
-  --bs-btn-hover-bg: #0f5c7f;
-  --bs-btn-hover-border-color: #0f5c7f;
-}
-
-/* Accessible theme switch, available outside the mobile navigation. */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  flex-shrink: 0;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  background: transparent;
-  color: inherit;
-  font-size: 1.5rem;
-  cursor: pointer;
-  margin-inline: 0.5rem;
-}
-.theme-toggle:focus-visible {
-  outline: 3px solid #38bdf8;
-  outline-offset: 3px;
-}
-
-html[data-theme='dark'] {
-  --bs-body-bg: #101827;
-  --bs-body-color: #e4edf9;
-}
-html[data-theme='dark'] body {
-  color: var(--bs-body-color);
-  background-color: var(--bs-body-bg);
-}
-html[data-theme='dark'] .navbar.bg-body-tertiary {
-  background-color: rgba(24, 36, 55, 0.92) !important;
-  border-color: #34465e;
-}
-html[data-theme='dark'] .bg-white {
-  background-color: #182437 !important;
-}
-html[data-theme='dark'] .text-dark {
-  color: #e4edf9 !important;
-}
-html[data-theme='dark'] .btn-outline-primary {
-  --bs-btn-color: #70c9f2;
-  --bs-btn-border-color: #70c9f2;
-}
-
-html[data-theme='dark'] {
-  --home-surface: rgba(24, 36, 55, 0.92);
-}
+html, body { min-height: 100%; }
+body { margin: 0; background: var(--ui-bg); color: var(--ui-text); font-family: 'Inter', system-ui, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
+app-root { display: flex; min-height: 100vh; flex-direction: column; }
+main { flex: 1; }
+a { color: var(--ui-accent); }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid #7fcbb4; outline-offset: 4px; }
+::selection { background: #c7e7d9; color: #12382c; }
+.btn { font-weight: 600; border-radius: 10px; padding: .7rem 1rem; }
+.btn-primary { --bs-btn-bg: #08765b; --bs-btn-border-color: #08765b; --bs-btn-hover-bg: #075f4a; --bs-btn-hover-border-color: #075f4a; }
+.btn-outline-primary { --bs-btn-color: #08765b; --bs-btn-border-color: #c9dcd3; --bs-btn-hover-bg: #08765b; --bs-btn-hover-border-color: #08765b; }
+.form-control, .form-select { border-color: var(--ui-border); border-radius: 10px; }
+.form-control:focus, .form-select:focus { border-color: #75b39c; box-shadow: 0 0 0 3px #08765b12; }
+.card { border-color: var(--ui-border); border-radius: 15px; }
+html[data-theme='dark'] { --ui-bg: #111d19; --ui-surface: #192823; --ui-surface-alt: #1d2e27; --ui-border: #2b3c33; --ui-text: #e2eee7; --ui-muted: #a2b5a8; --ui-accent: #74cfa9; --ui-accent-soft: #243f32; --bs-body-bg: var(--ui-bg); --bs-body-color: var(--ui-text); }
+html[data-theme='dark'] .bg-white { background: var(--ui-surface) !important; }
+html[data-theme='dark'] .text-dark { color: var(--ui-text) !important; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }

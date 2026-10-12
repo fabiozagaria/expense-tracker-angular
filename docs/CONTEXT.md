@@ -46,6 +46,12 @@ Quando cambia il contratto REST del backend, controllare modelli, service HTTP e
 ## Tema UI — 2026-10-02
 Pulsante sole/luna accessibile nell’intestazione, tema coerente con i colori esistenti e scelta ricordata nel browser.
 
+## Anteprima UI — 2026-10-12
+
+Il branch `feature/newui` introduce PrimeNG 21.1.10 (compatibile con Angular 21), Aura, PrimeIcons e GSAP. Prima fase: sidebar desktop/menu mobile, login e dashboard; Bootstrap resta per le pagine non ancora migrate. Login e dashboard usano `loadComponent` per evitare di caricare tutta la nuova UI all'avvio. I movimenti recenti provengono da `GET /api/expenses` e `GET /api/incomes`, combinati e ordinati per data dal service; il riepilogo usa sempre `GET /api/dashboard/summary`. Non vengono aggiunti endpoint o statistiche mensili senza dati. Gli errori API non vengono presentati come saldo zero. Le animazioni partono sul browser e vengono saltate con `prefers-reduced-motion`. Credenziali, cookie, login demo e invio registrazione restano gestiti dai service esistenti.
+
+Verifica della prima UI: build production riuscita, 46 test Angular passati. Restano avvisi sui budget di dimensione (iniziale 894 kB, CSS login/dashboard sotto il limite massimo di 8 kB). L'anteprima visuale locale usa risposte API simulate con dati fittizi, senza scrivere nel database condiviso.
+
 
 ## Demo e form di registrazione — 2026-10-12
 

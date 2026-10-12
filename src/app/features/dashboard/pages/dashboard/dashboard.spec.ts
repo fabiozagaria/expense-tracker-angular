@@ -16,7 +16,13 @@ describe('Dashboard', () => {
         provideRouter([]),
         {
           provide: DashboardService,
-          useValue: { getSummary: () => of({ totalIncome: 1000, totalExpense: 250, balance: 750 }) },
+          useValue: {
+            getSummary: () => of({ totalIncome: 1000, totalExpense: 250, balance: 750 }),
+            getMovements: () => of([
+              { id: 2, kind: 'income', title: 'Stipendio', amount: 1000, category: 'salary', date: '2026-10-12' },
+              { id: 1, kind: 'expense', title: 'Spesa settimanale', amount: 250, category: 'groceries', date: '2026-10-11' },
+            ]),
+          },
         },
       ],
     }).compileComponents();
@@ -28,5 +34,12 @@ describe('Dashboard', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('renders income and expense movements with the expense detail link', () => {
+    const content = fixture.nativeElement as HTMLElement;
+    expect(content.textContent).toContain('Stipendio');
+    expect(content.textContent).toContain('Spesa settimanale');
+    expect(content.querySelector('a[href="/expenses/1"]')?.textContent).toContain('Spesa settimanale');
   });
 });

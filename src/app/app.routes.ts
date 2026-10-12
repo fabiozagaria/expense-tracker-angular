@@ -4,10 +4,8 @@ import { AddExpense } from './features/expenses/pages/add-expense/add-expense';
 import { ExpenseSummary } from './features/expenses/pages/expense-summary/expense-summary';
 import { ExpenseDetail } from './features/expenses/pages/expense-detail/expense-detail';
 import { VerifyEmail } from './features/auth/pages/verify-email/verify-email';
-import { Login } from './features/auth/pages/login/login';
 import { Register } from './features/auth/pages/register/register';
 import { authGuard } from './features/auth/services/auth.guard';
-import { Dashboard } from './features/dashboard/pages/dashboard/dashboard';
 import { AddTransaction } from './features/transactions/pages/add-transaction/add-transaction';
 import { AddIncome } from './features/income/pages/add-income/add-income';
 
@@ -20,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [authGuard],
-    component: Dashboard,
+    loadComponent: () => import('./features/dashboard/pages/dashboard/dashboard').then(m => m.Dashboard),
     title: 'Dashboard | Gestionale Spese'
   },
   {
@@ -55,7 +53,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    component: Login,
+    loadComponent: () => import('./features/auth/pages/login/login').then(m => m.Login),
     title: 'Accedi | Gestionale Spese'
   },
   {

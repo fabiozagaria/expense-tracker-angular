@@ -1,16 +1,16 @@
 <header class="workspace-header" [class.menu-open]="menuOpen()" (keydown.escape)="menuOpen.set(false)">
   <div class="brand-row">
-    <a class="navbar-brand workspace-brand" [routerLink]="['/']" (click)="menuOpen.set(false)">
+    <a class="workspace-brand" [routerLink]="['/']" (click)="menuOpen.set(false)">
       <span class="brand-mark" aria-hidden="true"><i class="pi pi-wallet"></i></span>
-      <span class="brand-copy"><strong>Gestore Spese</strong><span>Finance workspace</span></span>
+      <span class="brand-copy"><strong>Gestore Spese</strong><span>Le tue finanze</span></span>
     </a>
     <div class="mobile-tools">
-    <button type="button" class="mobile-theme-toggle"
+    <button pButton [text]="true" severity="secondary" type="button" class="mobile-theme-toggle"
       (click)="theme.toggle()" [attr.aria-pressed]="theme.dark()"
       [attr.aria-label]="theme.dark() ? 'Attiva tema chiaro' : 'Attiva tema scuro'">
       <i [class]="theme.dark() ? 'pi pi-sun' : 'pi pi-moon'" aria-hidden="true"></i>
     </button>
-    <button
+    <button pButton [text]="true" severity="secondary"
       class="menu-toggle"
       type="button"
       (click)="menuOpen.set(!menuOpen())"
@@ -64,7 +64,7 @@
           <div><strong>Spazio demo</strong><span>{{ auth.accessToken() ? 'Account condiviso' : 'Accedi e prova la demo' }}</span></div>
         </div>
       }
-      <button
+      <button pButton [text]="true" severity="secondary"
         type="button"
         class="theme-toggle workspace-link"
         (click)="theme.toggle()"
@@ -76,7 +76,7 @@
         <span>{{ theme.dark() ? 'Tema chiaro' : 'Tema scuro' }}</span>
       </button>
       @if (auth.accessToken()) {
-        <button type="button" class="workspace-link logout-link" (click)="logout()">
+        <button pButton [text]="true" severity="secondary" type="button" class="workspace-link logout-link" (click)="logout()">
           <i class="pi pi-sign-out" aria-hidden="true"></i><span>Esci</span>
         </button>
       }

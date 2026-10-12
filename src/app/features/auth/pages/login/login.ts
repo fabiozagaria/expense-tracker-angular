@@ -8,10 +8,12 @@ import { finalize } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { RevealDirective } from '../../../../core/ui/reveal.directive';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, ButtonModule, InputTextModule],
+  imports: [ReactiveFormsModule, RouterLink, ButtonModule, InputTextModule, MessageModule, RevealDirective],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })

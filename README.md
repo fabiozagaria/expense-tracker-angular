@@ -12,15 +12,15 @@ L'applicazione è sviluppata con Angular e comunica tramite API REST con un back
 - [Demo frontend](https://gestionale-spese.vercel.app/)
 - [Repository backend](https://github.com/fabiozagaria/expense-tracker-api)
 
-## Anteprima nuova UI — `feature/newui`
+## Interfaccia PrimeNG/Aura
 
-Prima migrazione a PrimeNG 21 con tema Aura e PrimeIcons: nuova navigazione responsive, login e dashboard. Le animazioni GSAP rispettano la preferenza di movimento ridotto. Dashboard e login vengono caricati al bisogno; la dashboard legge riepilogo, spese ed entrate dalle API esistenti e permette di filtrare gli ultimi movimenti. Le altre pagine mantengono per ora i componenti Bootstrap. Il branch è dedicato alla revisione della UI prima della pubblicazione in produzione.
+Tutte le pagine e i componenti usano PrimeNG 21, Aura e PrimeIcons: home, dashboard, login, registrazione, verifica email, scelta movimento, form spesa/entrata, elenco, card e dettaglio spese. Bootstrap è stato rimosso dalle dipendenze, dagli stili e dagli script. Colori, spaziatura, form e messaggi seguono [codex/style.md](codex/style.md), con tema chiaro/scuro, layout responsive e animazioni GSAP che rispettano il movimento ridotto. Tutte le pagine sono caricate al bisogno.
 
 ## Stato del progetto
 
 **In consolidamento: funzionalità presenti, verifica completa nel browser ancora aperta.**
 
-Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica è online e collegata al backend Render: il pulsante **Prova la demo** usa un account condiviso con dati fittizi. Il form `/register` è visibile anche online, ma l'invio è disabilitato in attesa del servizio email HTTPS per la verifica dell'account. Le route protette `/dashboard`, `/add-income` e `/add-transaction` sono presenti nel codice; resta aperta la verifica completa nel browser.
+Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica è online e collegata al backend Render: il pulsante **Prova la demo** usa un account condiviso con dati fittizi. Il form `/register` è visibile anche online, ma l'invio è disabilitato in attesa del servizio email HTTPS per la verifica dell'account. Le route protette `/dashboard`, `/add-income` e `/add-transaction` sono presenti nel codice; login demo, sessione, dashboard e CRUD spese sono verificati nel browser; la registrazione locale con email e la creazione di entrate sul database condiviso restano verifiche separate.
 
 ## Scopo e confine della versione
 
@@ -52,7 +52,8 @@ Client Angular del prodotto full stack Expense Tracker: integra UI, form, chiama
 - Angular Router
 - Angular HttpClient
 - RxJS
-- Bootstrap 5
+- PrimeNG 21, Aura e PrimeIcons
+- GSAP
 - Vitest
 
 ## Architettura frontend

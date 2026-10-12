@@ -1,48 +1,59 @@
-<section class="container">
-  <h2>Dettaglio Spesa</h2>
-
-  @if (expense(); as expense) {
-    <div class="card w-75 m-2">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start gap-3">
-          <div>
-            <h4 class="card-title mb-2">{{ expense.title }}</h4>
-            <h6 class="card-subtitle mb-3 text-body-secondary">
-              {{ expense.category | uppercase }}
-            </h6>
-          </div>
-
-          <span class="fs-4 text-danger">
-            {{ expense.amount | currency:'EUR' }}
-          </span>
-        </div>
-
-        <dl class="row mb-0">
-          <dt class="col-sm-3">Data</dt>
-          <dd class="col-sm-9">{{ expense.date | date:'dd/MM/yyyy' }}</dd>
-
-          <dt class="col-sm-3">Descrizione</dt>
-          <dd class="col-sm-9">
-            {{ expense.description ? expense.description : 'Nessuna descrizione!' }}
-          </dd>
-
-          <dt class="col-sm-3">ID</dt>
-          <dd class="col-sm-9 text-body-secondary">{{ expense.id }}</dd>
-        </dl>
-      </div>
+<section class="ui-page expense-detail" appReveal>
+  <header class="ui-page-header" data-reveal>
+    <div>
+      <span class="ui-eyebrow">IL MOVIMENTO NEL DETTAGLIO</span>
+      <h1>Dettaglio spesa</h1>
+      <p class="ui-subtitle">Le informazioni del movimento registrato nel tuo account.</p>
     </div>
-  } @else if (loading()) {
-    <p>Caricamento spesa…</p>
-  } @else {
-    <p class="invalid-feedback d-block fs-4">
-      Nessuna spesa trovata!
-    </p>
-  }
+    <a pButton severity="secondary" [outlined]="true" routerLink="/summary"><i pButtonIcon class="pi pi-arrow-left" aria-hidden="true"></i><span pButtonLabel>Torna al Riepilogo</span></a>
+  </header>
 
-  <button
-    type="button"
-    class="btn btn-primary m-2"
-    [routerLink]="['/summary']">
-    Torna al Riepilogo
-  </button>
+  <div class="detail-content" [attr.aria-busy]="loading()" data-reveal>
+    @if (expense(); as expense) {
+      <p-card styleClass="ui-card">
+        <article aria-labelledby="expense-detail-title">
+          <div class="detail-heading">
+            <div class="detail-title">
+              <span class="detail-icon" aria-hidden="true"><i class="pi pi-arrow-up-right"></i></span>
+              <div><span class="ui-eyebrow">SPESA REGISTRATA</span><h2 id="expense-detail-title">{{ expense.title }}</h2></div>
+            </div>
+            <div class="detail-amount"><span>Importo della spesa</span><strong>− {{ expense.amount | currency:'EUR' }}</strong></div>
+          </div>
+          <dl class="detail-data">
+            <div><dt>Categoria</dt><dd><p-tag severity="secondary" [value]="categoryLabel(expense.category)" [rounded]="true" /></dd></div>
+            <div><dt>Data</dt><dd><time [attr.datetime]="expense.date">{{ expense.date | date:'dd MMMM yyyy' }}</time></dd></div>
+            <div><dt>ID spesa</dt><dd class="expense-reference">#{{ expense.id }}</dd></div>
+            <div class="description-data"><dt>Descrizione</dt><dd>{{ expense.description || 'Nessuna descrizione.' }}</dd></div>
+          </dl>
+          <div class="detail-footer"><i class="pi pi-info-circle" aria-hidden="true"></i><span>Puoi modificare titolo e descrizione dall’elenco delle spese.</span><a routerLink="/summary">Vai alle spese<i class="pi pi-arrow-right" aria-hidden="true"></i></a></div>
+        </article>
+      </p-card>
+    } @else if (loading()) {
+      <span class="screen-reader-status" role="status">Caricamento spesa…</span>
+      <p-card styleClass="ui-card" aria-hidden="true">
+        <div class="detail-skeleton-heading"><p-skeleton width="60%" height="3rem" /><p-skeleton width="100%" height="3rem" /></div>
+        <div class="detail-skeleton-data"><p-skeleton height="3.5rem" /><p-skeleton height="3.5rem" /><p-skeleton height="3.5rem" /></div>
+        <p-skeleton width="40%" height="1rem" />
+        <p-skeleton width="75%" height="1.5rem" />
+      </p-card>
+    } @else if (error()) {
+      <p-card styleClass="ui-card">
+        <div class="detail-state">
+          <span class="state-icon"><i class="pi pi-cloud" aria-hidden="true"></i></span>
+          <h2>La spesa non è disponibile</h2>
+          <p-message severity="error" icon="pi pi-exclamation-circle">{{ error() }}</p-message>
+          <button pButton type="button" class="ui-primary" (click)="loadExpense()"><i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i><span pButtonLabel>Riprova</span></button>
+        </div>
+      </p-card>
+    } @else if (notFound()) {
+      <p-card styleClass="ui-card">
+        <div class="detail-state" role="status">
+          <span class="state-icon"><i class="pi pi-search" aria-hidden="true"></i></span>
+          <h2>Nessuna spesa trovata</h2>
+          <p>Il movimento potrebbe essere stato eliminato o il collegamento potrebbe non essere valido.</p>
+          <a pButton class="ui-primary" routerLink="/summary"><i pButtonIcon class="pi pi-arrow-left" aria-hidden="true"></i><span pButtonLabel>Vai al riepilogo</span></a>
+        </div>
+      </p-card>
+    }
+  </div>
 </section>

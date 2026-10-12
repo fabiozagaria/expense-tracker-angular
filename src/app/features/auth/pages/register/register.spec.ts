@@ -72,7 +72,7 @@ describe('Register', () => {
     createForm();
     submitForm();
     requests.expectNone(registrationUrl);
-    expect(fixture.nativeElement.querySelectorAll('.is-invalid').length).toBe(3);
+    expect(fixture.nativeElement.querySelectorAll('input[aria-invalid="true"]').length).toBe(3);
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
   });
 
@@ -85,7 +85,7 @@ describe('Register', () => {
     fillForm(values);
     submitForm();
     requests.expectNone(registrationUrl);
-    expect(fixture.nativeElement.querySelector('.is-invalid')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('input[aria-invalid="true"]')).toBeTruthy();
   });
 
   it('prevents another request while registration is in progress', () => {

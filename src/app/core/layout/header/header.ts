@@ -5,10 +5,11 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { ExpenseService } from '../../../features/expenses/services/expense.service';
 import { IncomeService } from '../../../features/income/services/income.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, ButtonModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })

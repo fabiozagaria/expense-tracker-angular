@@ -1,5 +1,5 @@
-<section class="login-page" aria-labelledby="login-title">
-  <div class="login-introduction">
+<section class="login-page" aria-labelledby="login-title" appReveal>
+  <div class="login-introduction" data-reveal>
     <span class="section-eyebrow"><span aria-hidden="true"></span> IL TUO SPAZIO FINANZIARIO</span>
     <h2>Più chiarezza.<br>Ogni giorno.</h2>
     <p>Entrate, spese e piccoli progetti.<br>Metti tutto al posto giusto.</p>
@@ -15,7 +15,7 @@
     <div class="intro-footnote"><i class="pi pi-check-circle" aria-hidden="true"></i><span>Una visione completa, senza complicazioni.</span></div>
   </div>
 
-  <div class="login-card">
+  <div class="login-card" data-reveal>
     <div class="login-card-header">
       <span class="welcome-icon" aria-hidden="true"><i class="pi pi-wallet"></i></span>
       <span class="section-eyebrow">BENTORNATO</span>
@@ -31,14 +31,14 @@
       <div class="login-divider"><span>oppure accedi al tuo account</span></div>
     }
     @if (loading()) {
-      <p class="login-status" role="status" aria-live="polite"><i class="pi pi-spin pi-spinner" aria-hidden="true"></i>Avvio del server demo in corso. Il primo accesso può richiedere 2–3 minuti.</p>
+      <p-message severity="info" class="login-status" role="status" aria-live="polite">Accesso in corso. Il primo avvio del server demo può richiedere 2–3 minuti.</p-message>
     }
 
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div class="login-field">
         <label for="login-username">Username</label>
         <input pInputText class="login-input" id="login-username" formControlName="username" autocomplete="username" required placeholder="Il tuo username"
-          [class.is-invalid]="form.controls.username.touched && form.controls.username.invalid"
+          [invalid]="form.controls.username.touched && form.controls.username.invalid"
           [attr.aria-invalid]="form.controls.username.touched && form.controls.username.invalid"
           [attr.aria-describedby]="form.controls.username.touched && form.controls.username.invalid ? 'username-error' : null">
         @if (form.controls.username.touched && form.controls.username.invalid) {
@@ -49,14 +49,14 @@
         <label for="login-password">Password</label>
         <input pInputText class="login-input" id="login-password" type="password" formControlName="password"
           autocomplete="current-password" required placeholder="La tua password"
-          [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid"
+          [invalid]="form.controls.password.touched && form.controls.password.invalid"
           [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
           [attr.aria-describedby]="form.controls.password.touched && form.controls.password.invalid ? 'password-error' : null">
         @if (form.controls.password.touched && form.controls.password.invalid) {
           <div id="password-error" class="field-error">Inserisci la password.</div>
         }
       </div>
-      @if (error()) { <p class="login-error" role="alert"><i class="pi pi-exclamation-circle" aria-hidden="true"></i>{{ error() }}</p> }
+      @if (error()) { <p-message severity="error" class="login-error" role="alert">{{ error() }}</p-message> }
       <button pButton class="login-submit" type="submit" [disabled]="loading()">
         <span>{{ loading() ? 'Accesso in corso…' : 'Accedi' }}</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
       </button>

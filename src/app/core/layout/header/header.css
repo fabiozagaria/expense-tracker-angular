@@ -20,7 +20,7 @@
 .brand-copy > span { color: #8fa99f; font-size: 10px; letter-spacing: .4px; }
 .workspace-navigation { display: flex; flex-direction: column; flex: 1; padding: 0 16px 21px; min-height: 0; overflow-y: auto; }
 .navigation-label { color: #819d92; margin: 0 13px 12px; font-size: 9px; font-weight: 600; letter-spacing: 1.6px; }
-.workspace-link { display: flex; align-items: center; gap: 13px; width: 100%; min-height: 47px; padding: 12px 14px; margin: 4px 0; border: 1px solid transparent; border-radius: 8px; color: #aec1b9; background: transparent; text-decoration: none; text-align: left; font-family: inherit; font-size: 12px; font-weight: 450; line-height: 1.4; cursor: pointer; transition: color 160ms ease, background 160ms ease, border-color 160ms ease; }
+.workspace-link, .workspace-link.p-button { display: flex; align-items: center; gap: 13px; width: 100%; min-height: 47px; padding: 12px 14px; margin: 4px 0; border: 1px solid transparent; border-radius: 8px; color: #aec1b9; background: transparent; text-decoration: none; text-align: left; font-family: inherit; font-size: 13px; font-weight: 450; line-height: 1.4; cursor: pointer; transition: color 160ms ease, background 160ms ease, border-color 160ms ease; }
 .workspace-link > .pi { font-size: 15px; flex-shrink: 0; }
 .workspace-link:hover { color: #f5faf8; background: #1c3830; }
 .workspace-link.active { color: #f4faf6; background: #284b3e; border-color: #355c4d; }
@@ -34,7 +34,7 @@
 .demo-dot { width: 6px; height: 6px; flex-shrink: 0; margin-top: 5px; border-radius: 100%; background: #80c49e; }
 .theme-toggle { border-radius: 8px; justify-content: flex-start; flex-shrink: initial; min-width: 0; font-size: 12px; }
 .logout-link { color: #aec1b9; }
-.sidebar-footnote { margin: 23px 13px 0; padding-top: 19px; border-top: 1px solid #294238; color: #6f8d7f; font-size: 9px; }
+.sidebar-footnote { margin: 23px 13px 0; padding-top: 19px; border-top: 1px solid #294238; color: #95afa1; font-size: 9px; }
 .mobile-tools { display: none; }
 a:focus-visible, button:focus-visible { outline: 2px solid #a5e4c0; outline-offset: 3px; }
 
@@ -56,5 +56,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid #a5e4c0; outline-offs
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .workspace-link { transition: none; }
+  .workspace-link, .workspace-link.p-button { transition: none; }
 }
+
+.workspace-link.p-button { justify-content: flex-start; }
+.mobile-theme-toggle.p-button, .menu-toggle.p-button { background: #1c3830; color: #e1eee7; border-color: #365349; }

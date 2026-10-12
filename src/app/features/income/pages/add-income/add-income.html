@@ -1,81 +1,99 @@
-<section class="container py-4 py-lg-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-lg-9 col-xl-8">
-      <div class="d-flex justify-content-between align-items-end gap-3 mb-4">
-        <div>
-          <span class="badge text-bg-success mb-2">Nuova entrata</span>
-          <h1 class="display-6 fw-bold mb-2">Aggiungi un'entrata</h1>
-          <p class="text-body-secondary mb-0">Inserisci i dettagli del movimento in entrata.</p>
+<section class="ui-page" appReveal>
+  <header class="ui-page-header" data-reveal>
+    <div>
+      <span class="ui-eyebrow">Nuova entrata</span>
+      <h1>Aggiungi un'entrata</h1>
+      <p class="ui-subtitle">Inserisci i dettagli del movimento in entrata.</p>
+    </div>
+    <a pButton severity="secondary" [outlined]="true" [routerLink]="['/dashboard']">
+      <i class="pi pi-chart-bar" aria-hidden="true"></i><span>Dashboard</span>
+    </a>
+  </header>
+
+  <div class="form-layout">
+    <p-card styleClass="ui-card" data-reveal>
+      <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()" [attr.aria-busy]="saving()" novalidate>
+        <div class="form-heading">
+          <h2>Dettagli dell'entrata</h2>
+          <p>La descrizione è facoltativa. Tutti gli altri campi sono obbligatori.</p>
         </div>
-        <a class="btn btn-outline-primary" [routerLink]="['/dashboard']">Dashboard</a>
-      </div>
-
-      <form class="card border-0 shadow-sm" [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
-        <div class="card-body p-4 p-lg-5">
-          <div class="row g-4">
-            <div class="col-12 col-md-7">
-              <label class="form-label" for="income-title">Titolo</label>
-              <input class="form-control form-control-lg" id="income-title" formControlName="title"
-                     [class.is-invalid]="incomeForm.controls.title.invalid && incomeForm.controls.title.touched">
-              <div class="invalid-feedback">Inserisci un titolo da 3 a 15 caratteri.</div>
-            </div>
-
-            <div class="col-12 col-md-5">
-              <label class="form-label" for="income-amount">Importo</label>
-              <div class="input-group input-group-lg">
-                <span class="input-group-text">€</span>
-                <input class="form-control" id="income-amount" type="number" min="0.01" step="0.01"
-                       formControlName="amount"
-                       [class.is-invalid]="incomeForm.controls.amount.invalid && incomeForm.controls.amount.touched">
-                <div class="invalid-feedback">Inserisci un importo maggiore di zero.</div>
-              </div>
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="income-category">Categoria</label>
-              <select class="form-select form-select-lg" id="income-category" formControlName="category"
-                      [class.is-invalid]="incomeForm.controls.category.invalid && incomeForm.controls.category.touched">
-                <option value="">Scegli una categoria</option>
-                <option [value]="IncomeCategory.Salary">Stipendio</option>
-                <option [value]="IncomeCategory.Freelance">Lavoro autonomo</option>
-                <option [value]="IncomeCategory.Bonus">Bonus</option>
-                <option [value]="IncomeCategory.Refund">Rimborso</option>
-                <option [value]="IncomeCategory.Investment">Investimenti</option>
-                <option [value]="IncomeCategory.Gift">Regalo</option>
-                <option [value]="IncomeCategory.Rental">Affitto</option>
-                <option [value]="IncomeCategory.Other">Altro</option>
-              </select>
-              <div class="invalid-feedback">Seleziona una categoria.</div>
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="income-date">Data</label>
-              <input class="form-control form-control-lg" id="income-date" type="date" [max]="maxDate"
-                     formControlName="date"
-                     [class.is-invalid]="incomeForm.controls.date.invalid && incomeForm.controls.date.touched">
-              <div class="invalid-feedback">Seleziona una data odierna o passata.</div>
-            </div>
-
-            <div class="col-12">
-              <label class="form-label" for="income-description">Descrizione</label>
-              <textarea class="form-control" id="income-description" rows="4" maxlength="30"
-                        formControlName="description"
-                        [class.is-invalid]="incomeForm.controls.description.invalid && incomeForm.controls.description.touched"></textarea>
-              <div class="form-text">Massimo 30 caratteri.</div>
-            </div>
+        <div class="ui-form-grid">
+          <div class="ui-field">
+            <label for="income-title">Titolo</label>
+            <input pInputText id="income-title" type="text" formControlName="title"
+              placeholder="Es. Stipendio" [fluid]="true" [invalid]="isInvalidField('title')"
+              [attr.aria-invalid]="isInvalidField('title')"
+              [attr.aria-describedby]="isInvalidField('title') ? 'income-title-error' : null" aria-required="true">
+            @if (isInvalidField('title')) {
+              <p class="ui-field-error" id="income-title-error">Inserisci un titolo da 3 a 15 caratteri.</p>
+            }
           </div>
-
-          @if (saved()) { <div class="alert alert-success mt-4 mb-0">Entrata aggiunta correttamente.</div> }
-          @if (saveError()) { <div class="alert alert-danger mt-4 mb-0">{{ saveError() }}</div> }
+          <div class="ui-field">
+            <label for="income-amount">Importo</label>
+            <p-inputnumber inputId="income-amount" formControlName="amount" mode="currency" currency="EUR"
+              locale="it-IT" placeholder="0,00 €" [minFractionDigits]="2" [maxFractionDigits]="2" [step]="0.01"
+              [fluid]="true" [invalid]="isInvalidField('amount')" [ariaRequired]="true"
+              [ariaDescribedBy]="isInvalidField('amount') ? 'income-amount-error' : undefined"
+              [pt]="{ pcInputText: { root: fieldAria('amount') } }" />
+            @if (isInvalidField('amount')) {
+              <p class="ui-field-error" id="income-amount-error">Inserisci un importo maggiore di zero.</p>
+            }
+          </div>
+          <div class="ui-field">
+            <label id="income-category-label" for="income-category">Categoria</label>
+            <p-select inputId="income-category" formControlName="category" [options]="categories"
+              optionLabel="label" optionValue="value" placeholder="Scegli una categoria" [fluid]="true"
+              [invalid]="isInvalidField('category')" [required]="true" ariaLabelledBy="income-category-label"
+              [pt]="{ label: fieldAria('category') }" />
+            @if (isInvalidField('category')) {
+              <p class="ui-field-error" id="income-category-error">Seleziona una categoria.</p>
+            }
+          </div>
+          <div class="ui-field">
+            <label for="income-date">Data</label>
+            <p-datepicker inputId="income-date" formControlName="date" dataType="string" dateFormat="yy-mm-dd"
+              placeholder="aaaa-mm-gg" [maxDate]="maxDate" [showIcon]="true" iconDisplay="input"
+              [fluid]="true" [invalid]="isInvalidField('date')" [required]="true"
+              [pt]="{ pcInputText: { root: fieldAria('date') } }" />
+            @if (isInvalidField('date')) {
+              <p class="ui-field-error" id="income-date-error">Seleziona una data odierna o passata.</p>
+            }
+          </div>
+          <div class="ui-field ui-span-full">
+            <label for="income-description">Descrizione <span class="optional-label">(facoltativa)</span></label>
+            <textarea pTextarea id="income-description" rows="4" maxlength="30" formControlName="description"
+              placeholder="Aggiungi una nota facoltativa" [fluid]="true" [invalid]="isInvalidField('description')"
+              [attr.aria-invalid]="isInvalidField('description')"
+              [attr.aria-describedby]="isInvalidField('description') ? 'income-description-help income-description-error' : 'income-description-help'"></textarea>
+            <small id="income-description-help">Massimo 30 caratteri.</small>
+            @if (isInvalidField('description')) {
+              <p class="ui-field-error" id="income-description-error">La descrizione supera i 30 caratteri.</p>
+            }
+          </div>
         </div>
-
-        <div class="card-footer bg-white d-flex justify-content-end gap-2 p-4">
-          <a class="btn btn-outline-secondary" [routerLink]="['/add-transaction']">Annulla</a>
-          <button class="btn btn-success" type="submit" [disabled]="saving()">
-            {{ saving() ? 'Salvataggio…' : 'Aggiungi entrata' }}
+        <div class="form-notices" aria-live="polite">
+          @if (saved()) {
+            <p-message severity="success">Entrata aggiunta correttamente.</p-message>
+          }
+          @if (saveError()) {
+            <p-message severity="error">{{ saveError() }}</p-message>
+          }
+        </div>
+        <div class="ui-actions form-actions">
+          <a pButton severity="secondary" [outlined]="true" [routerLink]="['/add-transaction']">Annulla</a>
+          <button pButton class="ui-primary" type="submit" [disabled]="saving()" [loading]="saving()">
+            <span>{{ saving() ? 'Salvataggio…' : 'Aggiungi entrata' }}</span>
           </button>
         </div>
       </form>
-    </div>
+    </p-card>
+
+    <aside class="ui-panel form-note" data-reveal aria-labelledby="income-note-title">
+      <span class="note-icon"><i class="pi pi-arrow-down-left" aria-hidden="true"></i></span>
+      <span class="ui-eyebrow">Il tuo quadro finanziario</span>
+      <h2 id="income-note-title">Ogni entrata fa chiarezza.</h2>
+      <p>Registra l'importo ricevuto e scegli la categoria per avere una visione aggiornata delle tue finanze.</p>
+      <div class="note-tip"><i class="pi pi-calendar" aria-hidden="true"></i><span>Puoi registrare un'entrata di oggi o di un giorno passato.</span></div>
+    </aside>
   </div>
 </section>

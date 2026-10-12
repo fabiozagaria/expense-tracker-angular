@@ -1,0 +1,38 @@
+:host { display: block; }
+.register-page { max-width: 1080px; }
+.register-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 24px; align-items: start; }
+.register-introduction { background: var(--ui-accent-soft); padding: 32px; }
+.register-header { margin-bottom: 32px; }
+.register-header h1 { margin: 12px 0; line-height: 1.2; }
+.register-header .ui-subtitle { line-height: 1.8; }
+.register-steps { display: grid; gap: 28px; list-style: none; margin: 0; padding: 0; }
+.register-steps li { display: flex; align-items: flex-start; gap: 12px; }
+.register-step-icon, .register-card-icon { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border: 1px solid var(--ui-border); border-radius: 10px; background: var(--ui-surface); color: var(--ui-accent); }
+.register-steps h2 { margin: 0 0 6px; font-size: 14px; font-weight: 600; color: var(--ui-text); }
+.register-steps p { margin: 0; font-size: 13px; line-height: 1.7; color: var(--ui-muted); }
+.register-panel { display: block; min-width: 0; }
+.register-card-header { margin-bottom: 24px; }
+.register-card-icon { margin-bottom: 16px; }
+.register-card-header h2 { margin: 0 0 8px; font-size: 22px; font-weight: 600; letter-spacing: -.5px; color: var(--ui-text); }
+.register-card-header p { margin: 0; color: var(--ui-muted); line-height: 1.6; }
+.register-message { display: flex; margin-bottom: 24px; }
+.register-field { margin-bottom: 20px; }
+.register-field input { width: 100%; min-height: 44px; }
+.register-hint { margin: 6px 0 0; color: var(--ui-muted); font-size: 12px; line-height: 1.6; }
+.register-field .ui-field-error { margin-bottom: 0; }
+.register-actions { margin-top: 24px; }
+.register-submit { width: 100%; min-height: 44px; justify-content: center; text-decoration: none; }
+.register-login { margin: 24px 0 0; text-align: center; color: var(--ui-muted); line-height: 1.7; }
+.register-login a { font-weight: 600; text-underline-offset: 3px; }
+@media (max-width: 900px) {
+  .register-page { max-width: 640px; }
+  .register-layout { grid-template-columns: 1fr; gap: 20px; }
+  .register-introduction { padding: 24px; }
+  .register-header { margin-bottom: 24px; }
+  .register-steps { gap: 20px; }
+}
+@media (max-width: 700px) {
+  .register-introduction { padding: 24px 20px; }
+  .register-header h1 { font-size: 30px; }
+  .register-steps { gap: 16px; }
+}

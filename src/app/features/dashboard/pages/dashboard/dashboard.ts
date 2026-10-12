@@ -6,12 +6,13 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SkeletonModule } from 'primeng/skeleton';
+import { MessageModule } from 'primeng/message';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
 import { DashboardMovement, DashboardService, DashboardSummary } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink, DatePipe, FormsModule, ButtonModule, TableModule, SelectButtonModule, SkeletonModule, RevealDirective],
+  imports: [RouterLink, DatePipe, FormsModule, ButtonModule, TableModule, SelectButtonModule, SkeletonModule, MessageModule, RevealDirective],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

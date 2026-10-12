@@ -2,13 +2,18 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { RevealDirective } from '../../../../core/ui/reveal.directive';
 import { EmailVerificationApiService } from '../../services/email-verification-api.service';
 
 type VerificationState = 'loading' | 'success' | 'error';
 
 @Component({
   selector: 'app-verify-email',
-  imports: [RouterLink],
+  imports: [RouterLink, ButtonModule, CardModule, MessageModule, ProgressSpinnerModule, RevealDirective],
   templateUrl: './verify-email.html',
   styleUrl: './verify-email.css',
 })

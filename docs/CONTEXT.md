@@ -63,3 +63,10 @@ Il form `/register` è raggiungibile da header e login anche nella demo; `/regis
 ## Revisione prima del merge UI — 2026-10-12
 
 Verificati nel browser con le API reali: login demo, lettura riepilogo/spese/entrate, filtri, refresh dopo reload e persistenza del tema; creazione, modifica, dettaglio ed eliminazione di una spesa fittizia. Le spese di verifica sono state eliminate. Le entrate sono state lette e il form validato, senza creare record permanenti perché non è disponibile la cancellazione. Corretti contrasto di importi/errori nel tema scuro, azioni della lista spese precedentemente nascoste fuori dal passaggio del mouse, e formattazione di `null` come dato indisponibile anziché zero.
+
+
+## Migrazione completa UI — 2026-10-12
+
+Tutte le 10 pagine canoniche e i componenti di spesa sono migrati a PrimeNG 21/Aura; restano gli alias e le rotte originali. Bootstrap, Popper, stylesheet/script Bootstrap, utility CSS e data-bs-theme sono rimossi. I controlli importo/categoria/data usano InputNumber (it-IT), Select e DatePicker: Reactive Forms e DTO conservano importi numerici, enum originali e date ISO. Tutte le rotte usano loadComponent. Card, form, pulsanti, messaggi e skeleton condividono i token --ui-*; muted light scurito a #63756b e locale PrimeNG italiano. codex/style.md definisce ora un unico sistema UI senza Bootstrap.
+
+Verifica: 55 test Angular passati; build production riuscita, bundle iniziale circa 622 kB (prima circa 894 kB), entro limite massimo 1 MB. Browser: tutte le 10 pagine su desktop chiaro e mobile scuro, nessun overflow o errore JS; form di entrambe le transazioni con POST simulato verificano 4,20 € -> 4.2 e data ISO senza scritture nel DB condiviso. Verificati anche stati vuoti/errori/404 e successo/errore verifica email con risposte simulate e un solo POST per token. Con API reali verificati login, refresh, tema, filtri, CRUD completo di una spesa fittizia poi eliminata, logout e blocco signup demo. Il provider email pubblico resta da integrare.

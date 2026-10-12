@@ -3,9 +3,9 @@
     <div class="card border-0 shadow-sm"><div class="card-body p-4 p-lg-5">
       <h1 class="h2 fw-bold text-center mb-4">Crea un account</h1>
       @if (demo) {
-        <p>La registrazione non è disponibile nella demo. Puoi provarla con un account già pronto.</p>
-        <a class="btn btn-primary w-100" routerLink="/login">Prova la demo</a>
-      } @else if (registered()) {
+        <p class="alert alert-info" role="note">La registrazione online non è ancora disponibile. Puoi esplorare il form con dati fittizi; per accedere usa «Prova la demo».</p>
+      }
+      @if (registered()) {
         <p class="alert alert-success" role="status">Account creato. Controlla la tua email e apri il link di verifica prima di accedere.</p>
         <a class="btn btn-primary w-100" routerLink="/login">Vai al login</a>
       } @else {
@@ -35,11 +35,15 @@
             }
           </div>
           @if (error()) { <p class="alert alert-danger" role="alert">{{ error() }}</p> }
-          <button class="btn btn-primary w-100" type="submit" [disabled]="loading()">
+          <button class="btn btn-primary w-100" type="submit" [disabled]="demo || loading()">
             {{ loading() ? 'Registrazione in corso…' : 'Registrati' }}
           </button>
         </form>
-        <p class="text-center mt-4 mb-0">Hai già un account? <a routerLink="/login">Accedi</a></p>
+        @if (demo) {
+          <p class="text-center mt-4 mb-0"><a routerLink="/login">Prova la demo</a> con l'account condiviso.</p>
+        } @else {
+          <p class="text-center mt-4 mb-0">Hai già un account? <a routerLink="/login">Accedi</a></p>
+        }
       }
     </div></div>
   </div></div>

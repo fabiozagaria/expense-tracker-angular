@@ -64,6 +64,11 @@ export const routes: Routes = [
     title: 'Registrati | Gestionale Spese'
   },
   {
+    path: 'registrati',
+    redirectTo: 'register',
+    pathMatch: 'full'
+  },
+  {
     path: 'verify-email',
     component: VerifyEmail
   },
@@ -72,3 +77,4 @@ export const routes: Routes = [
     redirectTo: ''
   }
 ];
+

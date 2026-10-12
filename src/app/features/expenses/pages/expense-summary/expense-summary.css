@@ -1,0 +1,39 @@
+:host { display: block; --p-card-body-padding: 24px; }
+.expense-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-bottom: 32px; }
+.expense-metrics p-card { min-width: 0; }
+.metric-heading { display: flex; gap: 12px; align-items: center; justify-content: space-between; color: var(--ui-muted); margin-bottom: 20px; }
+.metric-heading i { color: var(--ui-accent); font-size: 18px; }
+.metric-value { display: block; color: var(--ui-text); font-size: 30px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.25; overflow-wrap: anywhere; }
+.metric-date { font-size: 25px; }
+.metric-note { color: var(--ui-muted); font-size: 12px; line-height: 1.5; margin: 12px 0 0; }
+.list-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+.list-heading h2 { margin: 0 0 6px; color: var(--ui-text); font-size: 22px; font-weight: 600; }
+.list-heading p { margin: 0; color: var(--ui-muted); line-height: 1.5; }
+.list-heading .ui-actions { gap: 12px; flex-shrink: 0; }
+.list-heading button { min-height: 44px; }
+.list-error { margin-bottom: 20px; }
+.list-error p-message { display: block; }
+.expense-list, .expense-items { display: grid; gap: 16px; min-width: 0; }
+.skeleton-heading { display: flex; justify-content: space-between; gap: 20px; }
+.skeleton-heading p-skeleton { flex: 1; }
+.expense-list > p-card p-skeleton { display: block; margin-bottom: 16px; max-width: 100%; }
+.expense-list > p-card p-skeleton:last-child { margin-bottom: 0; }
+.empty-state { display: flex; align-items: center; flex-direction: column; text-align: center; padding: 32px 16px; }
+.state-icon { display: grid; place-items: center; width: 64px; height: 64px; background: var(--ui-accent-soft); color: var(--ui-accent); border-radius: 18px; font-size: 26px; margin-bottom: 20px; }
+.empty-state h3 { color: var(--ui-text); font-size: 22px; font-weight: 600; margin: 0 0 10px; }
+.empty-state p { max-width: 380px; margin: 0 0 24px; color: var(--ui-muted); line-height: 1.7; }
+.screen-reader-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 900px) {
+  .expense-metrics { gap: 16px; }
+  .metric-value { font-size: 26px; }
+  .metric-date { font-size: 22px; }
+}
+@media (max-width: 700px) {
+  :host { --p-card-body-padding: 20px; }
+  .expense-metrics { grid-template-columns: 1fr; margin-bottom: 28px; }
+  .metric-heading { margin-bottom: 12px; }
+  .metric-note { margin-top: 8px; }
+  .list-heading { flex-wrap: wrap; align-items: flex-start; }
+  .list-heading .ui-actions { width: 100%; justify-content: space-between; }
+  .empty-state { padding: 24px 0; }
+}

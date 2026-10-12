@@ -3,7 +3,7 @@
     <div><div class="eyebrow">IL TUO SPAZIO FINANZIARIO</div><h1>Una visione chiara.<span>Ogni giorno.</span></h1><p>Entrate, spese e saldo. Tutto al posto giusto.</p></div>
     <a pButton [routerLink]="['/add-transaction']" class="new-movement"><i class="pi pi-plus" aria-hidden="true"></i><span>Nuovo movimento</span></a>
   </div>
-  @if (error()) { <div class="status-error" role="alert">{{ error() }}</div> }
+  @if (error()) { <p-message severity="error" role="alert" class="status-error">{{ error() }}</p-message> }
   <div class="metrics">
     <article class="metric balance" data-reveal><div class="metric-top"><span>Saldo disponibile</span><span class="metric-icon"><i class="pi pi-wallet" aria-hidden="true"></i></span></div>
       @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.balance) }}</h2> }

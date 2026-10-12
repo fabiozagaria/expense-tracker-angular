@@ -1,0 +1,22 @@
+:host { display: block; }
+.verification-page { max-width: 780px; }
+.verification-header { margin-bottom: 24px; }
+.verification-header h1 { margin: 12px 0; }
+.verification-panel { display: block; min-width: 0; }
+.verification-content { display: grid; justify-items: center; gap: 20px; padding: 16px 0 8px; text-align: center; }
+.verification-content h2 { margin: 0; color: var(--ui-text); font-size: 24px; font-weight: 600; letter-spacing: -.5px; line-height: 1.3; }
+.verification-loading { display: grid; place-items: center; min-height: 64px; }
+.verification-spinner { display: block; width: 64px; height: 64px; --p-progressspinner-color-one: var(--ui-accent); --p-progressspinner-color-two: var(--ui-accent); --p-progressspinner-color-three: var(--ui-accent); --p-progressspinner-color-four: var(--ui-accent); }
+.verification-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 16px; background: var(--ui-accent-soft); color: var(--ui-accent); }
+.verification-icon .pi { font-size: 28px; }
+.verification-icon-error { background: var(--ui-surface-alt); border: 1px solid var(--ui-border); color: var(--ui-error-text); }
+.verification-message { display: flex; width: 100%; text-align: left; }
+.verification-actions { justify-content: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--ui-border); }
+.verification-actions a { min-height: 44px; text-decoration: none; }
+@media (max-width: 700px) {
+  .verification-header h1 { font-size: 30px; }
+  .verification-content { padding-top: 8px; }
+  .verification-content h2 { font-size: 22px; }
+  .verification-actions { flex-direction: column; align-items: stretch; }
+  .verification-actions a { justify-content: center; }
+}

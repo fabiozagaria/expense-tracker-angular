@@ -23,7 +23,6 @@
           (saved !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         const theme = dark ? 'dark' : 'light';
         document.documentElement.dataset.theme = theme;
-        document.documentElement.dataset.bsTheme = theme;
         document.documentElement.style.colorScheme = theme;
       })();
     </script>

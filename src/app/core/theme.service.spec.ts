@@ -26,7 +26,7 @@ describe('ThemeService', () => {
     change({ matches: false } as MediaQueryListEvent);
     expect(theme.dark()).toBe(false);
     theme.toggle();
-    expect(document.documentElement.dataset['bsTheme']).toBe('dark');
+    expect(document.documentElement.dataset['theme']).toBe('dark');
     expect(localStorage.getItem('color-theme')).toBe('dark');
     change({ matches: false } as MediaQueryListEvent);
     expect(theme.dark()).toBe(true);

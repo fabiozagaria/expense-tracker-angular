@@ -1,18 +1,84 @@
-<section class="container">
-  <h2>Riepilogo Spese</h2>
-  @if (loading()) { <p>Caricamento spese…</p> }
-  @if (error()) { <p class="alert alert-danger" role="alert">{{ error() }}</p> }
-  @for (expense of expenseList(); track expense.id) {
-    <app-expense-card
-    
-    [expense]="expense"
-    (onRemove)="removeExpense($event)"
-    (onUpdate)="updateExpense($event)"
-    ></app-expense-card>
+<section class="ui-page expense-summary" appReveal>
+  <header class="ui-page-header" data-reveal>
+    <div>
+      <span class="ui-eyebrow">LE TUE FINANZE</span>
+      <h1>Riepilogo spese</h1>
+      <p class="ui-subtitle">Importi, dettagli e modifiche. Tutte le tue spese in un unico posto.</p>
+    </div>
+    <a pButton class="ui-primary" routerLink="/add-expense"><i pButtonIcon class="pi pi-plus" aria-hidden="true"></i><span pButtonLabel>Aggiungi una spesa</span></a>
+  </header>
 
-  } @empty {
-    @if (!loading() && !error()) { <p class="invalid-feedback d-block fs-2">
-      Nessuna spesa aggiunta! 
-    </p> }
-  }
+  <div class="expense-metrics" data-reveal [attr.aria-busy]="loading()">
+    <p-card styleClass="ui-card">
+      <div class="metric-heading"><span>Totale spese registrate</span><i class="pi pi-wallet" aria-hidden="true"></i></div>
+      @if (loading() && !expenseList().length) { <p-skeleton width="75%" height="2.5rem" /> }
+      @else { <strong class="metric-value">{{ unavailable() ? '—' : (totalExpense() | currency:'EUR') }}</strong> }
+      <p class="metric-note">Tutti gli importi presenti nell’elenco</p>
+    </p-card>
+    <p-card styleClass="ui-card">
+      <div class="metric-heading"><span>Spese registrate</span><i class="pi pi-receipt" aria-hidden="true"></i></div>
+      @if (loading() && !expenseList().length) { <p-skeleton width="35%" height="2.5rem" /> }
+      @else { <strong class="metric-value">{{ unavailable() ? '—' : expenseList().length }}</strong> }
+      <p class="metric-note">I movimenti del tuo account</p>
+    </p-card>
+    <p-card styleClass="ui-card">
+      <div class="metric-heading"><span>Ultima spesa</span><i class="pi pi-calendar" aria-hidden="true"></i></div>
+      @if (loading() && !expenseList().length) { <p-skeleton width="65%" height="2.5rem" /> }
+      @else { <strong class="metric-value metric-date">{{ latestExpenseDate() ? (latestExpenseDate() | date:'dd MMM yyyy') : '—' }}</strong> }
+      <p class="metric-note">La data più recente nell’elenco</p>
+    </p-card>
+  </div>
+
+  <section class="expense-list-section" aria-labelledby="expense-list-heading" data-reveal>
+    <div class="list-heading">
+      <div><h2 id="expense-list-heading">Le tue spese</h2><p>Consulta un movimento o aggiorna titolo e descrizione.</p></div>
+      <div class="ui-actions">
+        @if (!loading() && !unavailable()) { <p-tag severity="secondary" [value]="expenseList().length + (expenseList().length === 1 ? ' spesa' : ' spese')" [rounded]="true" /> }
+        <button pButton type="button" severity="secondary" [outlined]="true" [loading]="loading()" [disabled]="loading()" (click)="reloadExpenses()"><i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i><span pButtonLabel>Aggiorna</span></button>
+      </div>
+    </div>
+
+    @if (error()) {
+      <div class="list-error">
+        <p-message severity="error" icon="pi pi-exclamation-circle">{{ error() }}</p-message>
+      </div>
+    }
+
+    <div class="expense-list" [attr.aria-busy]="loading()">
+      @if (loading() && !expenseList().length) {
+        <span class="screen-reader-status" role="status">Caricamento spese…</span>
+        @for (placeholder of [1, 2, 3]; track placeholder) {
+          <p-card styleClass="ui-card" aria-hidden="true">
+            <div class="skeleton-heading"><p-skeleton width="45%" height="1.5rem" /><p-skeleton width="22%" height="1.75rem" /></div>
+            <p-skeleton width="35%" height="1.25rem" />
+            <p-skeleton width="65%" height="1rem" />
+            <p-skeleton width="75%" height="2.75rem" />
+          </p-card>
+        }
+      } @else if (expenseList().length) {
+        <div class="expense-items" role="list" aria-label="Spese registrate">
+          @for (expense of expenseList(); track expense.id) {
+            <app-expense-card role="listitem" [expense]="expense" (onRemove)="removeExpense($event)" (onUpdate)="updateExpense($event)" />
+          }
+        </div>
+      } @else if (!error()) {
+        <p-card styleClass="ui-card">
+          <div class="empty-state">
+            <span class="state-icon"><i class="pi pi-wallet" aria-hidden="true"></i></span>
+            <h3>Nessuna spesa aggiunta</h3>
+            <p>Registra la prima spesa per ritrovare qui importo, categoria e dettagli.</p>
+            <a pButton class="ui-primary" routerLink="/add-expense"><i pButtonIcon class="pi pi-plus" aria-hidden="true"></i><span pButtonLabel>Aggiungi una spesa</span></a>
+          </div>
+        </p-card>
+      } @else {
+        <p-card styleClass="ui-card">
+          <div class="empty-state">
+            <span class="state-icon"><i class="pi pi-cloud" aria-hidden="true"></i></span>
+            <h3>Le spese non sono disponibili</h3>
+            <p>Puoi riprovare a caricare l’elenco con il pulsante Aggiorna.</p>
+          </div>
+        </p-card>
+      }
+    </div>
+  </section>
 </section>

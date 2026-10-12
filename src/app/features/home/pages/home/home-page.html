@@ -1,16 +1,66 @@
-<section class="home m-3 p-2">
-  <div class="hero d-flex flex-column gap-3 justify-content-around align-items-center">
-    <h1>{{title()}}</h1>
-    <p>Benvenuto in <strong>Gestore Spese!</strong></p>
-    <p>Registra una spesa o consulta quelle già salvate.</p>
-
-    <div class="d-flex flex-wrap justify-content-center gap-2">
-      <a class="btn btn-primary btn-lg px-4" [routerLink]="['/add-expense']">
-        Aggiungi una spesa
-      </a>
-      <a class="btn btn-outline-secondary btn-lg px-4" [routerLink]="['/summary']">
-        Vedi le spese
-      </a>
+<section class="ui-page home-page" appReveal aria-labelledby="home-title">
+  <div class="home-hero">
+    <div class="home-introduction" data-reveal>
+      <p-tag [value]="title()" icon="pi pi-wallet" severity="secondary" />
+      <p class="ui-eyebrow home-eyebrow">IL TUO SPAZIO FINANZIARIO</p>
+      <h1 id="home-title">Le tue finanze,<span>al posto giusto.</span></h1>
+      <p class="home-description">Tieni insieme entrate, uscite e saldo. Registra i tuoi movimenti e ritrovali in uno spazio semplice e ordinato.</p>
+      <div class="ui-actions home-actions">
+        @if (auth.accessToken()) {
+          <a pButton class="ui-primary" routerLink="/dashboard"><span>Vai alla dashboard</span><i class="pi pi-arrow-right" aria-hidden="true"></i></a>
+          <a pButton [outlined]="true" class="home-secondary" routerLink="/add-transaction"><i class="pi pi-plus" aria-hidden="true"></i><span>Nuovo movimento</span></a>
+        } @else {
+          <a pButton class="ui-primary" routerLink="/login"><span>Accedi al tuo spazio</span><i class="pi pi-arrow-right" aria-hidden="true"></i></a>
+          <a pButton [outlined]="true" class="home-secondary" routerLink="/register"><span>Registrati</span><i class="pi pi-user-plus" aria-hidden="true"></i></a>
+        }
+      </div>
+      <p class="home-reassurance"><i class="pi pi-check-circle" aria-hidden="true"></i>Un po’ di ordine, ogni giorno.</p>
     </div>
+
+    <p-card styleClass="ui-card home-overview-card" data-reveal>
+      <div class="overview-heading"><span class="ui-eyebrow">UNA VISTA D’INSIEME</span><i class="pi pi-chart-pie" aria-hidden="true"></i></div>
+      <h2>Ogni movimento conta.</h2>
+      <p class="overview-description">Le informazioni essenziali, tutte nello stesso spazio.</p>
+      <div class="overview-item">
+        <span class="overview-icon" aria-hidden="true"><i class="pi pi-arrow-down-left"></i></span>
+        <div><h3>Entrate</h3><p>Stipendi, rimborsi e altre entrate</p></div>
+      </div>
+      <div class="overview-item">
+        <span class="overview-icon expense-icon" aria-hidden="true"><i class="pi pi-arrow-up-right"></i></span>
+        <div><h3>Spese</h3><p>Acquisti, bollette e uscite quotidiane</p></div>
+      </div>
+      <div class="overview-item balance-item">
+        <span class="overview-icon" aria-hidden="true"><i class="pi pi-wallet"></i></span>
+        <div><h3>Saldo</h3><p>Il totale delle entrate, meno le spese</p></div>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="features-heading" data-reveal><span class="ui-eyebrow">SEMPLICE, DALL’INIZIO</span><h2>Uno spazio per la tua quotidianità.</h2></div>
+  <div class="home-features">
+    <p-card styleClass="ui-card home-feature-card" data-reveal>
+      <div class="feature-content">
+        <span class="feature-icon" aria-hidden="true"><i class="pi pi-receipt"></i></span>
+        <h3>Spese organizzate</h3>
+        <p>Aggiungi una spesa con importo, data e categoria. Consulta i dettagli e aggiorna i movimenti salvati.</p>
+        <a class="feature-link" [routerLink]="auth.accessToken() ? '/summary' : '/login'">Vedi le spese<i class="pi pi-arrow-up-right" aria-hidden="true"></i></a>
+      </div>
+    </p-card>
+    <p-card styleClass="ui-card home-feature-card" data-reveal>
+      <div class="feature-content">
+        <span class="feature-icon" aria-hidden="true"><i class="pi pi-arrow-down-left"></i></span>
+        <h3>Entrate in ordine</h3>
+        <p>Registra uno stipendio, un rimborso o un’altra entrata e ritrova l’importo nella tua dashboard.</p>
+        <a class="feature-link" [routerLink]="auth.accessToken() ? '/add-income' : '/login'">Aggiungi un’entrata<i class="pi pi-arrow-up-right" aria-hidden="true"></i></a>
+      </div>
+    </p-card>
+    <p-card styleClass="ui-card home-feature-card" data-reveal>
+      <div class="feature-content">
+        <span class="feature-icon" aria-hidden="true"><i class="pi pi-chart-pie"></i></span>
+        <h3>Una visione chiara</h3>
+        <p>Consulta i totali del tuo account e gli ultimi movimenti, con filtri per distinguere entrate e spese.</p>
+        <a class="feature-link" [routerLink]="auth.accessToken() ? '/dashboard' : '/login'">Apri la dashboard<i class="pi pi-arrow-up-right" aria-hidden="true"></i></a>
+      </div>
+    </p-card>
   </div>
 </section>

@@ -1,79 +1,70 @@
 @let ex = expense();
 
-@if (isEditing()) {
-  <form class="card-body"
-  [formGroup]="editForm"
-  (ngSubmit)="saveEdit()"
-  >
-      <label class="form-label" for="edit-title">
-        Titolo
-      </label>
+<p-card styleClass="ui-card">
+  @if (isEditing()) {
+    <form class="expense-editor" [formGroup]="editForm" (ngSubmit)="saveEdit()"
+      [attr.aria-labelledby]="'edit-heading-' + ex.id">
+      <div class="edit-heading">
+        <div>
+          <span class="ui-eyebrow">MODIFICA SPESA</span>
+          <h3 [id]="'edit-heading-' + ex.id">{{ ex.title }}</h3>
+        </div>
+        <span class="expense-amount">− {{ ex.amount | currency:'EUR' }}</span>
+      </div>
 
-      <input
-        id="edit-title"
-        class="form-control mb-2"
-        type="text"
-        formControlName="title"
-        
-      />
-     
-
-      <label class="form-label" for="edit-description">
-        Descrizione
-      </label>
-
-      <textarea
-        id="edit-description"
-        class="form-control mb-2"
-        rows="3"
-        formControlName="description"
-        
-      ></textarea>
-
-      <div class="d-flex gap-2">
-        <button
-          type="submit"
-          class="btn btn-success">
-          
-          Salva
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-secondary"
-          (click)="cancelEdit()">
-          Annulla
-        </button>
+      <div class="ui-form-grid">
+        <div class="ui-field">
+          <label [for]="'edit-title-' + ex.id">Titolo</label>
+          <input #editTitle pInputText [id]="'edit-title-' + ex.id" type="text"
+            formControlName="title" autocomplete="off" maxlength="15" required
+            [invalid]="fieldInvalid('title')"
+            [attr.aria-invalid]="fieldInvalid('title')"
+            [attr.aria-describedby]="'edit-title-hint-' + ex.id + (fieldInvalid('title') ? ' edit-title-error-' + ex.id : '')" />
+          <small class="field-hint" [id]="'edit-title-hint-' + ex.id">Da 3 a 15 caratteri.</small>
+          @if (fieldInvalid('title')) {
+            <small class="ui-field-error" [id]="'edit-title-error-' + ex.id" aria-live="polite">
+              @if (editForm.controls.title.hasError('required')) { Inserisci un titolo. }
+              @else { Il titolo deve avere da 3 a 15 caratteri. }
+            </small>
+          }
+        </div>
+        <div class="ui-field">
+          <label [for]="'edit-description-' + ex.id">Descrizione <span class="optional-label">(facoltativa)</span></label>
+          <textarea pTextarea [id]="'edit-description-' + ex.id" rows="2"
+            formControlName="description" maxlength="30"
+            [invalid]="fieldInvalid('description')"
+            [attr.aria-invalid]="fieldInvalid('description')"
+            [attr.aria-describedby]="'edit-description-hint-' + ex.id + (fieldInvalid('description') ? ' edit-description-error-' + ex.id : '')"></textarea>
+          <small class="field-hint" [id]="'edit-description-hint-' + ex.id">Massimo 30 caratteri.</small>
+          @if (fieldInvalid('description')) {
+            <small class="ui-field-error" [id]="'edit-description-error-' + ex.id" aria-live="polite">La descrizione non può superare 30 caratteri.</small>
+          }
+        </div>
+      </div>
+      <div class="ui-actions edit-actions">
+        <button pButton type="submit" class="ui-primary"><i pButtonIcon class="pi pi-check" aria-hidden="true"></i><span pButtonLabel>Salva</span></button>
+        <button pButton type="button" severity="secondary" [outlined]="true" (click)="cancelEdit()"><span pButtonLabel>Annulla</span></button>
       </div>
     </form>
-
-} @else {
-  <div class="card d-flex justify-content-around align-items-start" >
-  <div class="card-body">
-    <h4 class="card-title">{{ex.title}}</h4>
-    <h5 class="card-subtitle mb-2 text-body-secondary">{{ex.amount | currency:'EUR'}}</h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary">{{ex.category | uppercase}}</h6>
-    <p class="card-text">{{ex.description ? ex.description : 'Nessuna descrizione!'}}</p>
-    
-  </div>
-
-  <div class="card-body button">
-    <button 
-    type="button" class="btn btn-info"
-    (click)="startEdit()">Modifica
-    </button>
-    <button type="button" class="btn btn-danger"
-    (click)="removeExpense()">Elimina
-    </button>
-    <button type="button" class="btn btn-primary"
-    [routerLink]="['/expenses', ex.id]">Dettaglio
-
-    </button>
-  </div>
-</div>
-
-
-}
-
-
-  
+  } @else {
+    <article class="expense-row" [attr.aria-labelledby]="'expense-title-' + ex.id">
+      <span class="expense-icon" aria-hidden="true"><i class="pi pi-arrow-up-right"></i></span>
+      <div class="expense-content">
+        <div class="expense-heading">
+          <h3 [id]="'expense-title-' + ex.id">{{ ex.title }}</h3>
+          <span class="expense-amount"><span class="amount-label">Spesa</span>− {{ ex.amount | currency:'EUR' }}</span>
+        </div>
+        <div class="expense-meta">
+          <p-tag severity="secondary" [value]="categoryLabel(ex.category)" [rounded]="true" />
+          <span><i class="pi pi-calendar" aria-hidden="true"></i><time [attr.datetime]="ex.date">{{ ex.date | date:'dd MMM yyyy' }}</time></span>
+        </div>
+        <p class="expense-description">{{ ex.description || 'Nessuna descrizione.' }}</p>
+        <div class="ui-actions expense-actions">
+          <button #editButton pButton type="button" severity="secondary" [outlined]="true" (click)="startEdit()"><i pButtonIcon class="pi pi-pencil" aria-hidden="true"></i><span pButtonLabel>Modifica</span></button>
+          <a pButton severity="secondary" [outlined]="true" [routerLink]="['/expenses', ex.id]"><i pButtonIcon class="pi pi-arrow-up-right" aria-hidden="true"></i><span pButtonLabel>Dettaglio</span></a>
+          <button pButton type="button" severity="danger" [text]="true" (click)="removeExpense()"><i pButtonIcon class="pi pi-trash" aria-hidden="true"></i><span pButtonLabel>Elimina</span></button>
+        </div>
+      </div>
+    </article>
+  }
+</p-card>

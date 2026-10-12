@@ -16,7 +16,7 @@ Queste regole guidano le modifiche alla UI Angular del progetto. Leggerle prima 
 - Usare **PrimeNG 21**, tema **Aura**, **PrimeIcons** e **GSAP**, già installati e compatibili con Angular 21.
 - Preferire i componenti PrimeNG per pulsanti, input, selettori, tabelle, dialog e skeleton. Importare solo i moduli necessari nel componente standalone.
 - La configurazione del tema è in [`app.config.ts`](../src/app/app.config.ts); i token globali sono in [`styles.css`](../src/styles.css).
-- Bootstrap resta nelle pagine non ancora migrate. Migrare una pagina alla volta; non mescolare due componenti equivalenti delle librerie nello stesso controllo.
+- Tutte le pagine e i componenti usano PrimeNG/Aura. Bootstrap è rimosso: non reintrodurre dipendenze, stylesheet, script o utility Bootstrap.
 - Non aggiungere un'altra libreria UI o di animazione per replicare funzionalità già disponibili.
 - Preferire token e API di personalizzazione PrimeNG agli override interni. Limitare `::ng-deep` a override circoscritti sotto `:host`, quando necessari.
 
@@ -31,7 +31,7 @@ Usare `var(--ui-...)` per superfici, testo e bordi. Evitare nuove palette locali
 | `--ui-surface-alt` | `#f8faf7` | `#1d2e27` | Superfici secondarie |
 | `--ui-border` | `#e5eae5` | `#2b3c33` | Bordi e separatori |
 | `--ui-text` | `#172b26` | `#e2eee7` | Testo principale |
-| `--ui-muted` | `#73827b` | `#a2b5a8` | Testo secondario |
+| `--ui-muted` | `#63756b` | `#a2b5a8` | Testo secondario |
 | `--ui-error-text` | `#ac5245` | `#f0a394` | Errori dei campi |
 | `--ui-accent` | `#08765b` | `#74cfa9` | Link e accenti |
 | `--ui-accent-soft` | `#eaf5ed` | `#243f32` | Accenti di superficie |
@@ -40,7 +40,7 @@ Usare `var(--ui-...)` per superfici, testo e bordi. Evitare nuove palette locali
 - Entrate: verde; spese: accento caldo e discreto. Aggiungere sempre etichetta, icona o segno dell'importo: il colore da solo non basta.
 - Per i pulsanti primari con testo bianco usare lo sfondo `#08765b` e hover `#075a48`. L'accento chiaro del tema scuro non va abbinato automaticamente al testo bianco.
 - Verificare il contrasto in entrambi i temi: almeno 4,5:1 per testo normale e 3:1 per testo grande e indicatori dei controlli. Non usare il testo attenuato dove rende difficile leggere un dato essenziale.
-- Conservare il tema gestito dal servizio esistente, la preferenza salvata e gli attributi `data-theme`/`data-bs-theme`. PrimeNG usa `[data-theme="dark"]`.
+- Conservare il tema gestito dal servizio esistente, la preferenza salvata e l’attributo `data-theme`. PrimeNG usa `[data-theme="dark"]`.
 
 ## 4. Tipografia e spaziatura
 
@@ -115,7 +115,7 @@ Esempio di template, dopo aver importato `RevealDirective` nel componente:
 
 ## 10. Verifica delle modifiche
 
-- Confrontare visivamente la pagina con dashboard, login e navigazione del branch `feature/newui`.
+- Confrontare visivamente la pagina con dashboard, login e navigazione del sistema UI PrimeNG/Aura condiviso.
 - Controllare desktop, mobile a circa 390 px, tema chiaro/scuro, tastiera e movimento ridotto, secondo le aree modificate.
 - Verificare errori e stati vuoti quando si modificano dati o form. Usare fixture separate per anteprime riproducibili.
 - Eseguire `npm run build` per modifiche al codice UI, dipendenze o stili. Se cambia il comportamento, eseguire anche i test pertinenti (`npm test -- --watch=false`). Una modifica solo a questa documentazione non richiede build o test Angular.

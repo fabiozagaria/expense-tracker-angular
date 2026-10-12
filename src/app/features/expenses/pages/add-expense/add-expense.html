@@ -1,150 +1,109 @@
-<section class="container py-4 py-lg-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-lg-9 col-xl-8">
-      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3 mb-4">
-        <div>
-          <span class="badge text-bg-danger mb-2">Nuova spesa</span>
-          <h1 class="display-6 fw-bold mb-2">Aggiungi una spesa</h1>
-          <p class="text-body-secondary mb-0">
-            Inserisci i dettagli dell'acquisto o del pagamento effettuato.
-          </p>
+<section class="ui-page" appReveal>
+  <header class="ui-page-header" data-reveal>
+    <div>
+      <span class="ui-eyebrow">Nuova spesa</span>
+      <h1>Aggiungi una spesa</h1>
+      <p class="ui-subtitle">Inserisci i dettagli dell'acquisto o del pagamento effettuato.</p>
+    </div>
+    <a pButton severity="secondary" [outlined]="true" [routerLink]="['/summary']">
+      <i class="pi pi-list" aria-hidden="true"></i><span>Visualizza spese</span>
+    </a>
+  </header>
+
+  <div class="form-layout">
+    <p-card styleClass="ui-card" data-reveal>
+      <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" [attr.aria-busy]="saving()" novalidate>
+        <div class="form-heading">
+          <h2>Dettagli della spesa</h2>
+          <p>La descrizione è facoltativa. Tutti gli altri campi sono obbligatori.</p>
         </div>
-
-        <a class="btn btn-outline-danger" [routerLink]="['/summary']">
-          Visualizza spese
-        </a>
-      </div>
-
-      <form class="card border-0 shadow-sm" [formGroup]="expenseForm" 
-      (ngSubmit)="onSubmit()">
-        <div class="card-body p-4 p-lg-5">
-          <div class="row g-4">
-            <div class="col-12 col-md-7">
-              <label class="form-label" for="expense-title">Titolo</label>
-              <input
-                class="form-control form-control-lg"
-                id="expense-title"
-                type="text"
-                formControlName="title"
-                placeholder="Es. Spesa settimanale"
-                [class.is-invalid]="isInvalidField('title')">
-
-              @if (hasFieldError('title', 'required')) {
-                <div class="invalid-feedback">Il titolo è obbligatorio.</div>
-              }
-              @if (hasFieldError('title', 'minlength')) {
-                <div class="invalid-feedback">Inserisci almeno 3 caratteri.</div>
-              }
-              @if (hasFieldError('title', 'maxlength')) {
-                <div class="invalid-feedback">Inserisci al massimo 15 caratteri.</div>
-              }
-            </div>
-
-            <div class="col-12 col-md-5">
-              <label class="form-label" for="expense-amount">Importo</label>
-              <div class="input-group input-group-lg">
-                <span class="input-group-text">€</span>
-                <input
-                  class="form-control"
-                  id="expense-amount"
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  formControlName="amount"
-                  placeholder="0,00"
-                  [class.is-invalid]="isInvalidField('amount')">
-
-                @if (hasFieldError('amount', 'required')) {
-                  <div class="invalid-feedback">L'importo è obbligatorio.</div>
-                }
-                @if (hasFieldError('amount', 'min')) {
-                  <div class="invalid-feedback">Inserisci un importo maggiore di zero.</div>
-                }
-              </div>
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="expense-category">Categoria</label>
-              <select
-                class="form-select form-select-lg"
-                id="expense-category"
-                formControlName="category"
-                [class.is-invalid]="isInvalidField('category')">
-                <option value="">Scegli una categoria</option>
-                <option [value]="ExpenseCategory.Groceries">Alimentari</option>
-                <option [value]="ExpenseCategory.Car">Auto</option>
-                <option [value]="ExpenseCategory.Gifts">Regali</option>
-                <option [value]="ExpenseCategory.Installments">Rate</option>
-                <option [value]="ExpenseCategory.Loan">Prestito</option>
-                <option [value]="ExpenseCategory.Health">Salute</option>
-                <option [value]="ExpenseCategory.Transport">Trasporti</option>
-                <option [value]="ExpenseCategory.Bills">Bollette</option>
-                <option [value]="ExpenseCategory.Housing">Casa</option>
-                <option [value]="ExpenseCategory.Leisure">Tempo libero</option>
-                <option [value]="ExpenseCategory.Other">Altro</option>
-              </select>
-
-              @if (hasFieldError('category', 'required')) {
-                <div class="invalid-feedback">Seleziona una categoria.</div>
-              }
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="expense-date">Data</label>
-              <input
-                class="form-control form-control-lg"
-                id="expense-date"
-                type="date"
-                [max] = "maxDate"
-                formControlName="date"
-                [class.is-invalid]="isInvalidField('date')">
-
-              @if (hasFieldError('date', 'required')) {
-                <div class="invalid-feedback">Seleziona una data.</div>
-              }
-
-              @if (hasFieldError('date', 'futureDate')) {
-                <div class="invalid-feedback">Seleziona una data odierna o passata</div>
-              }
-            </div>
-
-            <div class="col-12">
-              <label class="form-label" for="expense-description">Descrizione</label>
-              <textarea
-                class="form-control"
-                id="expense-description"
-                rows="4"
-                maxlength="30"
-                formControlName="description"
-                placeholder="Aggiungi una nota facoltativa"
-                [class.is-invalid]="isInvalidField('description')"></textarea>
-              <div class="form-text">Massimo 30 caratteri.</div>
-
-              @if (hasFieldError('description', 'maxlength')) {
-                <div class="invalid-feedback">La descrizione supera i 30 caratteri.</div>
-              }
-            </div>
+        <div class="ui-form-grid">
+          <div class="ui-field">
+            <label for="expense-title">Titolo</label>
+            <input pInputText id="expense-title" type="text" formControlName="title"
+              placeholder="Es. Spesa settimanale" [fluid]="true" [invalid]="isInvalidField('title')"
+              [attr.aria-invalid]="isInvalidField('title')"
+              [attr.aria-describedby]="isInvalidField('title') ? 'expense-title-error' : null" aria-required="true">
+            @if (isInvalidField('title')) {
+              <p class="ui-field-error" id="expense-title-error">
+                @if (hasFieldError('title', 'required')) { Il titolo è obbligatorio. }
+                @if (hasFieldError('title', 'minlength')) { Inserisci almeno 3 caratteri. }
+                @if (hasFieldError('title', 'maxlength')) { Inserisci al massimo 15 caratteri. }
+              </p>
+            }
           </div>
-
+          <div class="ui-field">
+            <label for="expense-amount">Importo</label>
+            <p-inputnumber inputId="expense-amount" formControlName="amount" mode="currency" currency="EUR"
+              locale="it-IT" placeholder="0,00 €" [minFractionDigits]="2" [maxFractionDigits]="2" [step]="0.01"
+              [fluid]="true" [invalid]="isInvalidField('amount')" [ariaRequired]="true"
+              [ariaDescribedBy]="isInvalidField('amount') ? 'expense-amount-error' : undefined"
+              [pt]="{ pcInputText: { root: fieldAria('amount') } }" />
+            @if (isInvalidField('amount')) {
+              <p class="ui-field-error" id="expense-amount-error">
+                @if (hasFieldError('amount', 'required')) { L'importo è obbligatorio. }
+                @if (hasFieldError('amount', 'min')) { Inserisci un importo maggiore di zero. }
+              </p>
+            }
+          </div>
+          <div class="ui-field">
+            <label id="expense-category-label" for="expense-category">Categoria</label>
+            <p-select inputId="expense-category" formControlName="category" [options]="categories"
+              optionLabel="label" optionValue="value" placeholder="Scegli una categoria" [fluid]="true"
+              [invalid]="isInvalidField('category')" [required]="true" ariaLabelledBy="expense-category-label"
+              [pt]="{ label: fieldAria('category') }" />
+            @if (hasFieldError('category', 'required')) {
+              <p class="ui-field-error" id="expense-category-error">Seleziona una categoria.</p>
+            }
+          </div>
+          <div class="ui-field">
+            <label for="expense-date">Data</label>
+            <p-datepicker inputId="expense-date" formControlName="date" dataType="string" dateFormat="yy-mm-dd"
+              placeholder="aaaa-mm-gg" [maxDate]="maxDate" [showIcon]="true" iconDisplay="input"
+              [fluid]="true" [invalid]="isInvalidField('date')" [required]="true"
+              [pt]="{ pcInputText: { root: fieldAria('date') } }" />
+            @if (isInvalidField('date')) {
+              <p class="ui-field-error" id="expense-date-error">
+                @if (hasFieldError('date', 'required')) { Seleziona una data. }
+                @if (hasFieldError('date', 'futureDate')) { Seleziona una data odierna o passata }
+              </p>
+            }
+          </div>
+          <div class="ui-field ui-span-full">
+            <label for="expense-description">Descrizione <span class="optional-label">(facoltativa)</span></label>
+            <textarea pTextarea id="expense-description" rows="4" maxlength="30" formControlName="description"
+              placeholder="Aggiungi una nota facoltativa" [fluid]="true" [invalid]="isInvalidField('description')"
+              [attr.aria-invalid]="isInvalidField('description')"
+              [attr.aria-describedby]="isInvalidField('description') ? 'expense-description-help expense-description-error' : 'expense-description-help'"></textarea>
+            <small id="expense-description-help">Massimo 30 caratteri.</small>
+            @if (hasFieldError('description', 'maxlength')) {
+              <p class="ui-field-error" id="expense-description-error">La descrizione supera i 30 caratteri.</p>
+            }
+          </div>
+        </div>
+        <div class="form-notices" aria-live="polite">
           @if (expenseAddedNoticeVisible()) {
-            <div class="alert alert-success mt-4 mb-0" role="status">
-              Spesa aggiunta correttamente.
-            </div>
+            <p-message severity="success">Spesa aggiunta correttamente.</p-message>
           }
           @if (saveError()) {
-            <div class="alert alert-danger mt-4 mb-0" role="alert">{{ saveError() }}</div>
+            <p-message severity="error">{{ saveError() }}</p-message>
           }
         </div>
-
-        <div class="card-footer bg-white d-flex flex-column flex-sm-row justify-content-end gap-2 p-4">
-          <a class="btn btn-outline-secondary" [routerLink]="['/add-transaction']">
-            Annulla
-          </a>
-          <button class="btn btn-danger" type="submit" [disabled]="saving()">
-            {{ saving() ? 'Salvataggio…' : 'Aggiungi spesa' }}
+        <div class="ui-actions form-actions">
+          <a pButton severity="secondary" [outlined]="true" [routerLink]="['/add-transaction']">Annulla</a>
+          <button pButton class="ui-primary" type="submit" [disabled]="saving()" [loading]="saving()">
+            <span>{{ saving() ? 'Salvataggio…' : 'Aggiungi spesa' }}</span>
           </button>
         </div>
       </form>
-    </div>
+    </p-card>
+
+    <aside class="ui-panel form-note" data-reveal aria-labelledby="expense-note-title">
+      <span class="note-icon"><i class="pi pi-arrow-up-right" aria-hidden="true"></i></span>
+      <span class="ui-eyebrow">Ogni dettaglio conta</span>
+      <h2 id="expense-note-title">Più ordine nelle tue spese.</h2>
+      <p>Scegli la categoria più adatta e la data del pagamento per ritrovare facilmente il movimento.</p>
+      <div class="note-tip"><i class="pi pi-calendar" aria-hidden="true"></i><span>Puoi registrare una spesa di oggi o di un giorno passato.</span></div>
+    </aside>
   </div>
 </section>

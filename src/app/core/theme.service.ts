@@ -44,7 +44,6 @@ export class ThemeService {
 
   private apply(dark: boolean): void {
     this.dark.set(dark);
-    this.document.documentElement.setAttribute('data-bs-theme', dark ? 'dark' : 'light');
     this.document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
     this.document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
   }

@@ -1,0 +1,17 @@
+:host { display: block; }
+.form-layout { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 24px; align-items: start; }
+p-card { min-width: 0; }
+.form-heading { margin-bottom: 28px; }
+.form-heading h2, .form-note h2 { margin: 0 0 8px; font-size: 21px; font-weight: 600; }
+.form-heading p, .form-note p { margin: 0; color: var(--ui-muted); line-height: 1.7; }
+.optional-label, .ui-field small { color: var(--ui-muted); font-weight: 400; }
+textarea { resize: vertical; }
+.form-notices { display: grid; gap: 12px; }
+.form-notices:not(:empty) { margin-top: 24px; }
+.form-actions { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--ui-border); justify-content: flex-end; }
+.form-note { display: flex; flex-direction: column; gap: 16px; }
+.note-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; color: var(--ui-accent); background: var(--ui-accent-soft); font-size: 20px; }
+.note-tip { display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid var(--ui-border); color: var(--ui-muted); line-height: 1.6; }
+.note-tip i { margin-top: 4px; color: var(--ui-accent); }
+@media (max-width: 1100px) { .form-layout { grid-template-columns: minmax(0, 1fr); } .form-note { display: none; } }
+@media (max-width: 700px) { .form-actions { flex-direction: column-reverse; align-items: stretch; } .form-actions > * { justify-content: center; width: 100%; } }

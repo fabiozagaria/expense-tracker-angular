@@ -1,18 +1,10 @@
 import { Routes } from '@angular/router';
-import { HomePage } from './features/home/pages/home/home-page';
-import { AddExpense } from './features/expenses/pages/add-expense/add-expense';
-import { ExpenseSummary } from './features/expenses/pages/expense-summary/expense-summary';
-import { ExpenseDetail } from './features/expenses/pages/expense-detail/expense-detail';
-import { VerifyEmail } from './features/auth/pages/verify-email/verify-email';
-import { Register } from './features/auth/pages/register/register';
 import { authGuard } from './features/auth/services/auth.guard';
-import { AddTransaction } from './features/transactions/pages/add-transaction/add-transaction';
-import { AddIncome } from './features/income/pages/add-income/add-income';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomePage,
+    loadComponent: () => import('./features/home/pages/home/home-page').then(m => m.HomePage),
     title: 'Home | Gestionale Spese'
   },
   {
@@ -24,31 +16,31 @@ export const routes: Routes = [
   {
     path: 'add-transaction',
     canActivate: [authGuard],
-    component: AddTransaction,
+    loadComponent: () => import('./features/transactions/pages/add-transaction/add-transaction').then(m => m.AddTransaction),
     title: 'Nuovo movimento | Gestionale Spese'
   },
   {
     path: 'add-income',
     canActivate: [authGuard],
-    component: AddIncome,
+    loadComponent: () => import('./features/income/pages/add-income/add-income').then(m => m.AddIncome),
     title: 'Aggiungi Entrata | Gestionale Spese'
   },
   {
     path: 'add-expense',
     canActivate: [authGuard],
-    component: AddExpense,
+    loadComponent: () => import('./features/expenses/pages/add-expense/add-expense').then(m => m.AddExpense),
     title: 'Aggiungi Spesa | Gestionale Spese'
   },
   {
     path: 'summary',
     canActivate: [authGuard],
-    component: ExpenseSummary,
+    loadComponent: () => import('./features/expenses/pages/expense-summary/expense-summary').then(m => m.ExpenseSummary),
     title: 'Riepilogo | Gestionale Spese'
   },
   {
     path: 'expenses/:id',
     canActivate: [authGuard],
-    component: ExpenseDetail,
+    loadComponent: () => import('./features/expenses/pages/expense-detail/expense-detail').then(m => m.ExpenseDetail),
     title: 'Dettaglio Spesa | Gestionale Spese'
   },
   {
@@ -58,7 +50,7 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    component: Register,
+    loadComponent: () => import('./features/auth/pages/register/register').then(m => m.Register),
     title: 'Registrati | Gestionale Spese'
   },
   {
@@ -68,7 +60,8 @@ export const routes: Routes = [
   },
   {
     path: 'verify-email',
-    component: VerifyEmail
+    title: 'Verifica email | Gestionale Spese',
+    loadComponent: () => import('./features/auth/pages/verify-email/verify-email').then(m => m.VerifyEmail),
   },
   {
     path: '**',

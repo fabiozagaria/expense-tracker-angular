@@ -1,41 +1,53 @@
-<section class="container py-5">
-  <div class="text-center mb-5">
-    <span class="badge rounded-pill text-bg-primary mb-3">Nuovo movimento</span>
-    <h1 class="display-6 fw-bold">Cosa vuoi aggiungere?</h1>
-    <p class="lead text-body-secondary mb-0">
-      Scegli il tipo di movimento per continuare.
-    </p>
-  </div>
-
-  <div class="row g-4 justify-content-center">
-    <div class="col-12 col-md-6 col-xl-5">
-      <article class="choice-card card h-100 border-danger-subtle shadow-sm">
-        <div class="card-body d-flex flex-column p-4 p-lg-5">
-          <span class="choice-symbol text-danger mb-3" aria-hidden="true">−</span>
-          <h2 class="card-title h3">Aggiungi una spesa</h2>
-          <p class="card-text text-body-secondary flex-grow-1">
-            Registra un acquisto, una bolletta o un'altra uscita.
-          </p>
-          <a class="btn btn-danger btn-lg w-100" [routerLink]="['/add-expense']">
-            Continua con la spesa
-          </a>
-        </div>
-      </article>
+<section class="ui-page movement-choice" appReveal aria-labelledby="movement-title">
+  <header class="ui-page-header" data-reveal>
+    <div>
+      <span class="ui-eyebrow">Nuovo movimento</span>
+      <h1 id="movement-title">Cosa vuoi aggiungere?</h1>
+      <p class="ui-subtitle">Scegli il tipo di movimento per continuare.</p>
     </div>
+  </header>
 
-    <div class="col-12 col-md-6 col-xl-5">
-      <article class="choice-card card h-100 border-success-subtle shadow-sm">
-        <div class="card-body d-flex flex-column p-4 p-lg-5">
-          <span class="choice-symbol text-success mb-3" aria-hidden="true">+</span>
-          <h2 class="card-title h3">Aggiungi un'entrata</h2>
-          <p class="card-text text-body-secondary flex-grow-1">
-            Registra uno stipendio, un rimborso o un'altra entrata.
-          </p>
-          <a class="btn btn-success btn-lg w-100" [routerLink]="['/add-income']">
-            Continua con l'entrata
+  <div class="choice-grid">
+    <article class="choice-option" aria-labelledby="expense-choice-title" data-reveal>
+      <p-card styleClass="ui-card choice-card">
+        <ng-template #content>
+          <div class="choice-heading">
+            <span class="choice-symbol choice-symbol-expense" aria-hidden="true">
+              <i class="pi pi-arrow-up-right"></i>
+            </span>
+            <p-tag value="Spesa" styleClass="choice-tag choice-tag-expense" />
+          </div>
+          <h2 id="expense-choice-title">Aggiungi una spesa</h2>
+          <p class="choice-description">Registra un acquisto, una bolletta o un'altra uscita.</p>
+          <p class="choice-detail"><i class="pi pi-minus-circle" aria-hidden="true"></i>Un importo che esce dal tuo saldo</p>
+        </ng-template>
+        <ng-template #footer>
+          <a pButton class="ui-primary choice-link" [routerLink]="['/add-expense']">
+            <span>Continua con la spesa</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
           </a>
-        </div>
-      </article>
-    </div>
+        </ng-template>
+      </p-card>
+    </article>
+
+    <article class="choice-option" aria-labelledby="income-choice-title" data-reveal>
+      <p-card styleClass="ui-card choice-card">
+        <ng-template #content>
+          <div class="choice-heading">
+            <span class="choice-symbol choice-symbol-income" aria-hidden="true">
+              <i class="pi pi-arrow-down-left"></i>
+            </span>
+            <p-tag value="Entrata" styleClass="choice-tag choice-tag-income" />
+          </div>
+          <h2 id="income-choice-title">Aggiungi un'entrata</h2>
+          <p class="choice-description">Registra uno stipendio, un rimborso o un'altra entrata.</p>
+          <p class="choice-detail"><i class="pi pi-plus-circle" aria-hidden="true"></i>Un importo che entra nel tuo saldo</p>
+        </ng-template>
+        <ng-template #footer>
+          <a pButton class="ui-primary choice-link" [routerLink]="['/add-income']">
+            <span>Continua con l'entrata</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
+          </a>
+        </ng-template>
+      </p-card>
+    </article>
   </div>
 </section>

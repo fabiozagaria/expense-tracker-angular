@@ -1,13 +1,32 @@
-
-
-button {
-  font-size: .8rem;
-  padding: 2.5px;
-  margin: 3px;
+:host { display: block; --p-card-body-padding: 24px; }
+.expense-row { display: flex; gap: 16px; align-items: flex-start; }
+.expense-icon { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border-radius: 12px; background: var(--ui-accent-soft); color: var(--ui-accent); font-size: 18px; }
+.expense-content { flex: 1; min-width: 0; }
+.expense-heading, .edit-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+h3 { color: var(--ui-text); margin: 0; font-size: 18px; font-weight: 600; overflow-wrap: anywhere; }
+.expense-amount { color: var(--ui-text); font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; overflow-wrap: anywhere; }
+.amount-label { display: block; margin-bottom: 4px; color: var(--ui-muted); font-size: 12px; font-weight: 400; }
+.expense-meta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 8px; color: var(--ui-muted); font-size: 13px; }
+.expense-meta > span { display: inline-flex; gap: 6px; align-items: center; }
+.expense-description { margin: 14px 0 18px; color: var(--ui-muted); line-height: 1.6; overflow-wrap: anywhere; }
+.expense-actions { gap: 8px; }
+.expense-actions button, .expense-actions a, .edit-actions button { min-height: 44px; }
+.edit-heading { padding-bottom: 20px; border-bottom: 1px solid var(--ui-border); margin-bottom: 20px; }
+.edit-heading h3 { margin-top: 8px; }
+.expense-editor input, .expense-editor textarea { width: 100%; }
+.expense-editor textarea { min-height: 84px; resize: vertical; }
+.field-hint, .optional-label { color: var(--ui-muted); font-size: 12px; font-weight: 400; }
+.edit-actions { margin-top: 24px; }
+@media (max-width: 700px) {
+  :host { --p-card-body-padding: 20px; }
+  .expense-row { gap: 12px; }
+  .expense-icon { width: 36px; height: 36px; flex-basis: 36px; font-size: 16px; }
+  .expense-heading, .edit-heading { flex-wrap: wrap; gap: 12px; }
+  .expense-amount { text-align: left; font-size: 21px; }
+  .expense-heading h3 { width: 100%; }
+  .amount-label { display: inline; margin-right: 6px; }
+  .expense-actions { margin-left: -48px; }
 }
-
-.card-body.button {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
+@media (max-width: 420px) {
+  .expense-actions button, .expense-actions a { flex: 1 1 auto; justify-content: center; }
 }

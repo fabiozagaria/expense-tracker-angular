@@ -1,51 +1,108 @@
-<section class="container py-5">
-  <div class="row justify-content-center"><div class="col-12 col-sm-10 col-md-8 col-lg-5">
-    <div class="card border-0 shadow-sm"><div class="card-body p-4 p-lg-5">
-      <h1 class="h2 fw-bold text-center mb-4">Crea un account</h1>
+<section class="ui-page register-page" appReveal aria-labelledby="register-title">
+  <div class="register-layout">
+    <div class="ui-panel register-introduction" data-reveal>
+      <header class="ui-page-header register-header">
+        <div>
+          <span class="ui-eyebrow">IL TUO SPAZIO FINANZIARIO</span>
+          <h1 id="register-title">Crea un account</h1>
+          <p class="ui-subtitle">Un posto per le tue entrate, le tue spese e una visione più chiara.</p>
+        </div>
+      </header>
+
+      <ol class="register-steps" aria-label="Come iniziare">
+        <li>
+          <span class="register-step-icon" aria-hidden="true"><i class="pi pi-user-plus"></i></span>
+          <div><h2>Scegli i tuoi dati</h2><p>Username, email e password per il tuo account.</p></div>
+        </li>
+        <li>
+          <span class="register-step-icon" aria-hidden="true"><i class="pi pi-envelope"></i></span>
+          <div><h2>Verifica l’email</h2><p>Apri il link ricevuto prima di effettuare il login.</p></div>
+        </li>
+        <li>
+          <span class="register-step-icon" aria-hidden="true"><i class="pi pi-wallet"></i></span>
+          <div><h2>Accedi al tuo spazio</h2><p>Registra i movimenti e ritrova il tuo equilibrio.</p></div>
+        </li>
+      </ol>
+    </div>
+
+    <p-card class="register-panel" styleClass="ui-card" data-reveal>
+      <div class="register-card-header">
+        <span class="register-card-icon" aria-hidden="true"><i class="pi pi-user-plus"></i></span>
+        <h2>{{ registered() ? 'Registrazione completata' : 'I tuoi dati' }}</h2>
+        @if (!registered()) {
+          <p>Tutti i campi sono obbligatori.</p>
+        }
+      </div>
+
       @if (demo) {
-        <p class="alert alert-info" role="note">La registrazione online non è ancora disponibile. Puoi esplorare il form con dati fittizi; per accedere usa «Prova la demo».</p>
+        <p-message class="register-message" severity="info" [attr.role]="'note'">
+          La registrazione online non è ancora disponibile. Puoi esplorare il form con dati fittizi; per accedere usa «Prova la demo».
+        </p-message>
       }
+
       @if (registered()) {
-        <p class="alert alert-success" role="status">Account creato. Controlla la tua email e apri il link di verifica prima di accedere.</p>
-        <a class="btn btn-primary w-100" routerLink="/login">Vai al login</a>
+        <p-message class="register-message" severity="success" [attr.role]="'status'">
+          Account creato. Controlla la tua email e apri il link di verifica prima di accedere.
+        </p-message>
+        <div class="ui-actions register-actions">
+          <a pButton class="ui-primary register-submit" routerLink="/login">
+            <span>Vai al login</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
       } @else {
-        <form [formGroup]="form" (ngSubmit)="submit()">
-          <div class="mb-3">
-            <label class="form-label" for="register-username">Username</label>
-            <input class="form-control" id="register-username" formControlName="username" autocomplete="username" required
-              [class.is-invalid]="form.controls.username.touched && form.controls.username.invalid">
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate [attr.aria-busy]="loading()">
+          <div class="ui-field register-field">
+            <label for="register-username">Username</label>
+            <input pInputText id="register-username" formControlName="username" autocomplete="username" required
+              placeholder="Scegli il tuo username"
+              [invalid]="form.controls.username.touched && form.controls.username.invalid"
+              [attr.aria-invalid]="form.controls.username.touched && form.controls.username.invalid"
+              [attr.aria-describedby]="form.controls.username.touched && form.controls.username.invalid ? 'register-username-hint register-username-error' : 'register-username-hint'">
+            <p id="register-username-hint" class="register-hint">Da 6 a 20 caratteri.</p>
             @if (form.controls.username.touched && form.controls.username.invalid) {
-              <div class="invalid-feedback">Usa da 6 a 20 caratteri.</div>
+              <p id="register-username-error" class="ui-field-error">Usa da 6 a 20 caratteri.</p>
             }
           </div>
-          <div class="mb-3">
-            <label class="form-label" for="register-email">Email</label>
-            <input class="form-control" id="register-email" type="email" formControlName="email" autocomplete="email" required
-              [class.is-invalid]="form.controls.email.touched && form.controls.email.invalid">
+          <div class="ui-field register-field">
+            <label for="register-email">Email</label>
+            <input pInputText id="register-email" type="email" formControlName="email" autocomplete="email" required
+              placeholder="nome@esempio.it"
+              [invalid]="form.controls.email.touched && form.controls.email.invalid"
+              [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+              [attr.aria-describedby]="form.controls.email.touched && form.controls.email.invalid ? 'register-email-hint register-email-error' : 'register-email-hint'">
+            <p id="register-email-hint" class="register-hint">Riceverai qui il link di verifica.</p>
             @if (form.controls.email.touched && form.controls.email.invalid) {
-              <div class="invalid-feedback">Inserisci un indirizzo email valido (massimo 50 caratteri).</div>
+              <p id="register-email-error" class="ui-field-error">Inserisci un indirizzo email valido (massimo 50 caratteri).</p>
             }
           </div>
-          <div class="mb-3">
-            <label class="form-label" for="register-password">Password</label>
-            <input class="form-control" id="register-password" type="password" formControlName="password" autocomplete="new-password" required
-              [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid">
+          <div class="ui-field register-field">
+            <label for="register-password">Password</label>
+            <input pInputText id="register-password" type="password" formControlName="password" autocomplete="new-password" required
+              placeholder="Scegli la tua password"
+              [invalid]="form.controls.password.touched && form.controls.password.invalid"
+              [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+              [attr.aria-describedby]="form.controls.password.touched && form.controls.password.invalid ? 'register-password-hint register-password-error' : 'register-password-hint'">
+            <p id="register-password-hint" class="register-hint">Da 6 a 12 caratteri.</p>
             @if (form.controls.password.touched && form.controls.password.invalid) {
-              <div class="invalid-feedback">Usa da 6 a 12 caratteri.</div>
+              <p id="register-password-error" class="ui-field-error">Usa da 6 a 12 caratteri.</p>
             }
           </div>
-          @if (error()) { <p class="alert alert-danger" role="alert">{{ error() }}</p> }
-          <button class="btn btn-primary w-100" type="submit" [disabled]="demo || loading()">
-            {{ loading() ? 'Registrazione in corso…' : 'Registrati' }}
-          </button>
+          @if (error()) {
+            <p-message class="register-message" severity="error">{{ error() }}</p-message>
+          }
+          <div class="ui-actions register-actions">
+            <button pButton class="ui-primary register-submit" type="submit" [disabled]="demo || loading()" [loading]="loading()">
+              <span>{{ loading() ? 'Registrazione in corso…' : 'Registrati' }}</span>
+            </button>
+          </div>
         </form>
+
         @if (demo) {
-          <p class="text-center mt-4 mb-0"><a routerLink="/login">Prova la demo</a> con l'account condiviso.</p>
+          <p class="register-login"><a routerLink="/login">Prova la demo</a> con l'account condiviso.</p>
         } @else {
-          <p class="text-center mt-4 mb-0">Hai già un account? <a routerLink="/login">Accedi</a></p>
+          <p class="register-login">Hai già un account? <a routerLink="/login">Accedi</a></p>
         }
       }
-    </div></div>
-  </div></div>
+    </p-card>
+  </div>
 </section>
-

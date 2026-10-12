@@ -32,6 +32,7 @@ Usare `var(--ui-...)` per superfici, testo e bordi. Evitare nuove palette locali
 | `--ui-border` | `#e5eae5` | `#2b3c33` | Bordi e separatori |
 | `--ui-text` | `#172b26` | `#e2eee7` | Testo principale |
 | `--ui-muted` | `#73827b` | `#a2b5a8` | Testo secondario |
+| `--ui-error-text` | `#ac5245` | `#f0a394` | Errori dei campi |
 | `--ui-accent` | `#08765b` | `#74cfa9` | Link e accenti |
 | `--ui-accent-soft` | `#eaf5ed` | `#243f32` | Accenti di superficie |
 

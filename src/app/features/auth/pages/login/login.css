@@ -34,7 +34,7 @@
 .login-field label { display: block; margin: 0 0 8px; color: var(--ui-text, #263c30); font-size: 11px; font-weight: 550; }
 .login-input.p-inputtext { display: block; width: 100%; height: 43px; padding: 11px 12px; border: 1px solid var(--ui-border, #e3e7e1); border-radius: 6px; background: var(--ui-surface, #fff); color: var(--ui-text, #263c30); font-family: inherit; font-size: 11px; box-shadow: none; }
 .login-input::placeholder { color: #a0aaa2; }.login-input.p-inputtext:hover { border-color: #91ac9a; }.login-input.p-inputtext:focus { border-color: var(--ui-accent, #06735c); box-shadow: 0 0 0 3px #06735c12; }
-.login-input.is-invalid { border-color: #b26252; }.field-error { margin-top: 7px; color: #ac5245; font-size: 10px; }
+.login-input.is-invalid { border-color: #b26252; }.field-error { margin-top: 7px; color: var(--ui-error-text); font-size: 10px; }
 .login-submit.p-button { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 43px; margin-top: 22px; padding: 12px 14px; border: 1px solid #08765b; border-radius: 6px; background: #08765b; color: #fff; font-family: inherit; font-size: 11px; font-weight: 500; box-shadow: none; }
 .login-submit.p-button:hover { background: #075a48; border-color: #075a48; }.login-submit .pi { font-size: 10px; }
 .register-link { margin: 25px 0 0; text-align: center; color: var(--ui-muted, #77837d); font-size: 10px; }.register-link a { margin-left: 4px; color: var(--ui-accent, #06735c); font-weight: 600; text-decoration: none; }.register-link a:hover { text-decoration: underline; }

@@ -6,6 +6,7 @@
   --ui-border: #e5eae5;
   --ui-text: #172b26;
   --ui-muted: #73827b;
+  --ui-error-text: #ac5245;
   --ui-accent: #08765b;
   --ui-accent-soft: #eaf5ed;
   --ui-surface-alt: #f8faf7;
@@ -28,7 +29,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .form-control, .form-select { border-color: var(--ui-border); border-radius: 10px; }
 .form-control:focus, .form-select:focus { border-color: #75b39c; box-shadow: 0 0 0 3px #08765b12; }
 .card { border-color: var(--ui-border); border-radius: 15px; }
-html[data-theme='dark'] { --ui-bg: #111d19; --ui-surface: #192823; --ui-surface-alt: #1d2e27; --ui-border: #2b3c33; --ui-text: #e2eee7; --ui-muted: #a2b5a8; --ui-accent: #74cfa9; --ui-accent-soft: #243f32; --bs-body-bg: var(--ui-bg); --bs-body-color: var(--ui-text); }
+html[data-theme='dark'] { --ui-bg: #111d19; --ui-surface: #192823; --ui-surface-alt: #1d2e27; --ui-border: #2b3c33; --ui-text: #e2eee7; --ui-muted: #a2b5a8; --ui-error-text: #f0a394; --ui-accent: #74cfa9; --ui-accent-soft: #243f32; --bs-body-bg: var(--ui-bg); --bs-body-color: var(--ui-text); }
 html[data-theme='dark'] .bg-white { background: var(--ui-surface) !important; }
 html[data-theme='dark'] .text-dark { color: var(--ui-text) !important; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }

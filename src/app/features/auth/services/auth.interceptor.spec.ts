@@ -40,6 +40,11 @@ describe('authInterceptor', () => {
     http = TestBed.inject(HttpClient);
     requests = TestBed.inject(HttpTestingController);
     auth.demoLogin().subscribe();
+    const health = requests.expectOne('/health');
+    expect(health.request.method).toBe('GET');
+    expect(health.request.headers.has('Authorization')).toBe(false);
+    requests.expectNone('/auth/demo');
+    health.flush({ status: 'up' });
     const demo = requests.expectOne('/auth/demo');
     expect(demo.request.withCredentials).toBe(true);
     expect(demo.request.headers.has('Authorization')).toBe(false);

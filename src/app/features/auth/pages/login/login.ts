@@ -30,7 +30,7 @@ export class Login {
     this.loading.set(true);
     this.error.set('');
     // Do not automatically retry the POST: a retry could create another session.
-    this.auth.demoLogin().pipe(timeout(150000), finalize(() => this.loading.set(false))).subscribe({
+    this.auth.demoLogin().pipe(timeout(270000), finalize(() => this.loading.set(false))).subscribe({
       next: () => { void this.router.navigateByUrl('/dashboard'); },
       error: () => this.error.set('Il server demo non è ancora disponibile. Attendi qualche istante e riprova.'),
     });

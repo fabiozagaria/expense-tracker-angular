@@ -7,7 +7,7 @@
         <button class="btn btn-primary w-100 mb-3" type="button" (click)="tryDemo()" [disabled]="loading()">Prova la demo</button>
       }
       @if (loading()) {
-        <p role="status" aria-live="polite">Avvio del server demo in corso. Il primo accesso può richiedere circa un minuto.</p>
+        <p role="status" aria-live="polite">Avvio del server demo in corso. Il primo accesso può richiedere 2–3 minuti.</p>
       }
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="mb-3">

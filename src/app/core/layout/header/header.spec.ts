@@ -8,6 +8,7 @@ describe('Header', () => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
   const initialDemo = environment.demo;
+  const initialRegistrationEnabled = environment.registrationEnabled;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,6 +23,7 @@ describe('Header', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
+    environment.registrationEnabled = initialRegistrationEnabled;
   });
 
   it('should create', () => {
@@ -30,6 +32,7 @@ describe('Header', () => {
 
   it('keeps registration reachable in the demo', () => {
     environment.demo = true;
+    environment.registrationEnabled = false;
     fixture = TestBed.createComponent(Header);
     fixture.detectChanges();
     const link = fixture.nativeElement.querySelector('a[href="/register"]') as HTMLAnchorElement;

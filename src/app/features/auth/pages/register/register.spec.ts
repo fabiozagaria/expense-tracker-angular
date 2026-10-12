@@ -12,6 +12,7 @@ describe('Register', () => {
   let fixture: ComponentFixture<Register>;
   let requests: HttpTestingController;
   const initialDemo = environment.demo;
+  const initialRegistrationEnabled = environment.registrationEnabled;
   const initialApiBaseUrl = environment.apiBaseUrl;
   const registrationUrl = `${initialApiBaseUrl}/auth/register`;
 
@@ -25,6 +26,7 @@ describe('Register', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
+    environment.registrationEnabled = initialRegistrationEnabled;
     environment.apiBaseUrl = initialApiBaseUrl;
     requests.verify();
   });
@@ -124,6 +126,7 @@ describe('Register', () => {
 
   it('shows the demo form but blocks registration even if a submit event is triggered', () => {
     environment.demo = true;
+    environment.registrationEnabled = false;
     environment.apiBaseUrl = '';
     createForm();
     expect(fixture.nativeElement.querySelectorAll('form input').length).toBe(3);
@@ -134,6 +137,33 @@ describe('Register', () => {
     requests.expectNone(request => request.url.endsWith('/auth/register'));
     expect(fixture.nativeElement.textContent).not.toContain('Account creato.');
     expect(fixture.nativeElement.querySelector('a').getAttribute('href')).toBe('/login');
+  });
+
+  it('allows personal registration while demo login remains enabled', () => {
+    environment.demo = true;
+    environment.registrationEnabled = true;
+    createForm();
+    fillForm();
+    submitForm();
+    requests.expectNone(registrationUrl);
+    requests.expectOne(`${initialApiBaseUrl}/health`).flush({ status: 'up' });
+    requests.expectOne(registrationUrl).flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('10 minuti');
+    expect(fixture.nativeElement.textContent).not.toContain('La registrazione online non è ancora disponibile.');
+  });
+
+  it('shows an email delivery failure without claiming the account was created or retrying', () => {
+    createForm();
+    fillForm();
+    submitForm();
+    requests.expectOne(registrationUrl).flush({ errorName: 'EMAIL_DELIVERY_UNAVAILABLE', message: 'private details' },
+      { status: 503, statusText: 'Unavailable' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Account non creato: riprova più tardi.');
+    expect(fixture.nativeElement.textContent).not.toContain('private details');
+    expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
+    requests.expectNone(registrationUrl);
   });
 
   it('redirects the Italian alias to the canonical registration page', async () => {

@@ -23,7 +23,9 @@ export class AuthService {
   readonly accessToken = this.token.asReadonly();
 
   register(request: RegistrationRequest): Observable<{ msg: string }> {
-    return this.http.post<{ msg: string }>(`${this.apiUrl}/register`, request);
+    const send = () => this.http.post<{ msg: string }>(`${this.apiUrl}/register`, request, { timeout: 15000 });
+    // Wake Render with safe GET requests; never retry account creation or email delivery.
+    return environment.demo ? this.warmDemoServer().pipe(switchMap(send)) : send();
   }
 
   login(username: string, password: string): Observable<AuthResponse> {

@@ -49,3 +49,13 @@ Deploy Render `dep-db6g54ad0e5s73akjl20` live. `/health`, login demo, lettura sp
 ## Pagina registrazione — 2026-10-12
 
 `/register` espone un form ReactiveForms con username, email e password; `/registrati` è un alias. Il form locale usa POST /auth/register e il flusso di verifica email. Nella demo pubblica i campi sono visibili, ma il submit è bloccato finché non viene configurato un provider email adatto al deploy. Nessuna verifica email viene simulata. Gestiti i conflitti di username/email con errorName specifico e HTTP 409. 44 test Angular passati e build production riuscita; 7 test backend con MySQL passati.
+
+## Attivazione email HTTPS
+
+Il backend supporta Brevo Free via HTTPS; seguire [EMAIL.md nel repository API](https://github.com/fabiozagaria/expense-tracker-api/blob/feature/emailservice/docs/EMAIL.md) per mittente verificato, chiave API e limiti. Nessuna credenziale del provider deve arrivare ad Angular.
+
+`environment.production.ts` conserva `demo: true` e `registrationEnabled: false`. La registrazione è un’impostazione separata dal pulsante «Prova la demo»: dopo configurazione backend e prova reale della consegna, impostare soltanto `registrationEnabled: true` e pubblicare una nuova build. La build di sviluppo usa `registrationEnabled: true` per Mailpit. Un frontend abilitato non sostituisce il controllo server `REGISTRATION_ENABLED`.
+
+HTTP 503 `EMAIL_DELIVERY_UNAVAILABLE` comunica che l'account non è stato creato; il form conserva i campi e permette un nuovo tentativo manuale. La pagina non ripete il POST automaticamente. La conferma di registrazione ricorda i 10 minuti del link e il controllo Spam.
+
+Su Render, anche la registrazione attende `/health` (massimo 4 minuti) prima di un unico POST con timeout di 15 secondi. I retry riguardano soltanto il GET di risveglio; errori email e POST non sono ripetuti automaticamente.

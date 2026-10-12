@@ -34,15 +34,21 @@
         }
       </div>
 
-      @if (demo) {
+      @if (!registrationEnabled) {
         <p-message class="register-message" severity="info" [attr.role]="'note'">
           La registrazione online non è ancora disponibile. Puoi esplorare il form con dati fittizi; per accedere usa «Prova la demo».
         </p-message>
       }
 
+      @if (loading() && demo) {
+        <p-message class="register-message" severity="info" role="status" aria-live="polite">
+          Registrazione in corso. Il primo avvio del server può richiedere 2–3 minuti.
+        </p-message>
+      }
+
       @if (registered()) {
         <p-message class="register-message" severity="success" [attr.role]="'status'">
-          Account creato. Controlla la tua email e apri il link di verifica prima di accedere.
+          Account creato. Controlla la tua email e apri il link di verifica prima di accedere. Il link è valido per 10 minuti; controlla anche la cartella Spam.
         </p-message>
         <div class="ui-actions register-actions">
           <a pButton class="ui-primary register-submit" routerLink="/login">
@@ -91,13 +97,13 @@
             <p-message class="register-message" severity="error">{{ error() }}</p-message>
           }
           <div class="ui-actions register-actions">
-            <button pButton class="ui-primary register-submit" type="submit" [disabled]="demo || loading()" [loading]="loading()">
+            <button pButton class="ui-primary register-submit" type="submit" [disabled]="!registrationEnabled || loading()" [loading]="loading()">
               <span>{{ loading() ? 'Registrazione in corso…' : 'Registrati' }}</span>
             </button>
           </div>
         </form>
 
-        @if (demo) {
+        @if (!registrationEnabled) {
           <p class="register-login"><a routerLink="/login">Prova la demo</a> con l'account condiviso.</p>
         } @else {
           <p class="register-login">Hai già un account? <a routerLink="/login">Accedi</a></p>

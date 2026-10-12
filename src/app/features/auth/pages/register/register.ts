@@ -1,3 +1,4 @@
+import { environment } from '../../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class Register {
   private readonly auth = inject(AuthService);
+  protected readonly demo = environment.demo;
   protected readonly loading = signal(false);
   protected readonly registered = signal(false);
   protected readonly error = signal('');
@@ -22,6 +24,7 @@ export class Register {
   });
 
   protected submit(): void {
+    if (this.demo || this.loading()) return;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -36,3 +39,4 @@ export class Register {
     });
   }
 }
+

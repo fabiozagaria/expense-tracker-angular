@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/auth/:path*", "destination": "https://expense-tracker-api-demo.onrender.com/auth/:path*" },
+    { "source": "/api/:path*", "destination": "https://expense-tracker-api-demo.onrender.com/api/:path*" }
+  ],
+  "headers": [
+    { "source": "/auth/:path*", "headers": [{ "key": "Cache-Control", "value": "no-store" }] },
+    { "source": "/api/:path*", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
+  ]
+}

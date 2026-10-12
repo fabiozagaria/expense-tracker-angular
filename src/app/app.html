@@ -1,6 +1,9 @@
 <app-header></app-header>
 
 <main class="container-fluid">
+  @if (demo) {
+    <p class="alert alert-info">Demo con dati fittizi condivisi. Le modifiche sono visibili agli altri visitatori. Non inserire dati personali.</p>
+  }
   <router-outlet></router-outlet>
 </main>
 

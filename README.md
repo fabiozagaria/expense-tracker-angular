@@ -139,3 +139,8 @@ Fabio Zagaria — Junior Backend Developer con competenze full stack.
 ## Tema della pagina
 
 Il pulsante sole/luna nella navigazione alterna tema chiaro e scuro. Al primo accesso segue il dispositivo; la scelta manuale viene ricordata nel browser.
+
+
+## Preparazione demo pubblica
+
+Configurazione demo in preparazione: vedere [deploy e verifiche](docs/DEPLOYMENT.md). La disponibilità del backend pubblico resta da verificare.

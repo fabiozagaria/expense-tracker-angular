@@ -1,3 +1,4 @@
+import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, finalize, Observable, shareReplay, tap, throwError } from 'rxjs';
@@ -15,7 +16,7 @@ interface AuthResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/auth';
+  private readonly apiUrl = `${environment.apiBaseUrl}/auth`;
   private readonly token = signal<string | null>(null);
   private refreshRequest?: Observable<AuthResponse>;
 
@@ -27,6 +28,12 @@ export class AuthService {
 
   login(username: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { username, password }, {
+      withCredentials: true,
+    }).pipe(tap(response => this.token.set(response.accessToken)));
+  }
+
+  demoLogin(): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/demo`, null, {
       withCredentials: true,
     }).pipe(tap(response => this.token.set(response.accessToken)));
   }
@@ -58,3 +65,4 @@ export class AuthService {
     this.token.set(null);
   }
 }
+

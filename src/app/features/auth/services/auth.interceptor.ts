@@ -1,3 +1,4 @@
+import { environment } from '../../../../environments/environment';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -5,7 +6,7 @@ import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (request, next) => {
-  if (!request.url.startsWith('http://localhost:8080/api/')) {
+  if (!request.url.startsWith(`${environment.apiBaseUrl}/api/`)) {
     return next(request);
   }
 
@@ -36,3 +37,4 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
     );
   }));
 };
+

@@ -2,7 +2,10 @@
   <div class="row justify-content-center"><div class="col-12 col-sm-10 col-md-8 col-lg-5">
     <div class="card border-0 shadow-sm"><div class="card-body p-4 p-lg-5">
       <h1 class="h2 fw-bold text-center mb-4">Crea un account</h1>
-      @if (registered()) {
+      @if (demo) {
+        <p>La registrazione non è disponibile nella demo. Puoi provarla con un account già pronto.</p>
+        <a class="btn btn-primary w-100" routerLink="/login">Prova la demo</a>
+      } @else if (registered()) {
         <p class="alert alert-success" role="status">Account creato. Controlla la tua email e apri il link di verifica prima di accedere.</p>
         <a class="btn btn-primary w-100" routerLink="/login">Vai al login</a>
       } @else {
@@ -41,3 +44,4 @@
     </div></div>
   </div></div>
 </section>
+

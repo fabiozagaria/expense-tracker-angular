@@ -2,6 +2,13 @@
   <div class="row justify-content-center"><div class="col-12 col-sm-10 col-md-8 col-lg-5">
     <div class="card border-0 shadow-sm"><div class="card-body p-4 p-lg-5">
       <h1 class="h2 fw-bold text-center mb-4">Accedi</h1>
+      @if (demo) {
+        <p>Dati fittizi condivisi: le modifiche sono visibili agli altri visitatori. Non inserire dati personali.</p>
+        <button class="btn btn-primary w-100 mb-3" type="button" (click)="tryDemo()" [disabled]="loading()">Prova la demo</button>
+      }
+      @if (loading()) {
+        <p role="status" aria-live="polite">Avvio del server demo in corso. Il primo accesso può richiedere circa un minuto.</p>
+      }
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="mb-3">
           <label class="form-label" for="login-username">Username</label>
@@ -25,7 +32,10 @@
           {{ loading() ? 'Accesso in corso…' : 'Accedi' }}
         </button>
       </form>
-      <p class="text-center mt-4 mb-0">Non hai un account? <a routerLink="/register">Registrati</a></p>
+      @if (!demo) {
+        <p class="text-center mt-4 mb-0">Non hai un account? <a routerLink="/register">Registrati</a></p>
+      }
     </div></div>
   </div></div>
 </section>
+

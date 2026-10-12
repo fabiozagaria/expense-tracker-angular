@@ -2,12 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { environment } from '../../../../../environments/environment';
 
 import { Login } from './login';
 
 describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
+  const initialDemo = environment.demo;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,8 +22,22 @@ describe('Login', () => {
     await fixture.whenStable();
   });
 
+  afterEach(() => {
+    environment.demo = initialDemo;
+    TestBed.inject(HttpTestingController).verify();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('links to the registration form in the demo and explains online availability', () => {
+    environment.demo = true;
+    fixture = TestBed.createComponent(Login);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('a[href="/register"]')?.textContent).toContain('Registrati');
+    expect(fixture.nativeElement.textContent).toContain('la registrazione online attende il servizio email di verifica');
+    expect(fixture.nativeElement.textContent).toContain('Prova la demo');
   });
 
   it('submits credentials to the backend and shows an invalid credentials error', () => {
@@ -42,3 +58,4 @@ describe('Login', () => {
     TestBed.inject(HttpTestingController).verify();
   });
 });
+

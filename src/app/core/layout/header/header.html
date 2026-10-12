@@ -69,7 +69,8 @@
             </button>
           } @else {
             <a class="btn btn-outline-primary btn-sm" routerLink="/login">Accedi</a>
-            @if (!demo) { <a class="btn btn-primary btn-sm" routerLink="/register">Registrati</a> }
+            <a class="btn btn-primary btn-sm" routerLink="/register"
+              [attr.title]="demo ? 'Form di registrazione; registrazione online non ancora disponibile' : null">Registrati</a>
           }
         </div>
       </div>

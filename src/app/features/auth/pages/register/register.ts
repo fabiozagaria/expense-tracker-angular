@@ -33,10 +33,20 @@ export class Register {
     this.error.set('');
     this.auth.register(this.form.getRawValue()).pipe(finalize(() => this.loading.set(false))).subscribe({
       next: () => this.registered.set(true),
-      error: (error: HttpErrorResponse) => this.error.set(
-        error.status === 409 ? 'Username o email già registrati.' : 'Registrazione non riuscita. Riprova più tardi.'
-      ),
+      error: (error: HttpErrorResponse) => this.error.set(this.registrationError(error)),
     });
+  }
+
+  private registrationError(error: HttpErrorResponse): string {
+    if (error.status === 409) {
+      if (error.error?.errorName === 'EMAIL_ALREADY_EXISTS') return 'Email già registrata. Usa un altro indirizzo o accedi.';
+      if (error.error?.errorName === 'USERNAME_ALREADY_EXISTS') return 'Username già registrato. Scegli un altro username.';
+      return 'Username o email già registrati.';
+    }
+    if (error.status === 0 || error.status === 503) {
+      return 'Server non disponibile. Controlla la connessione e riprova più tardi.';
+    }
+    return 'Registrazione non riuscita. Riprova più tardi.';
   }
 }
 

@@ -16,7 +16,7 @@ L'applicazione è sviluppata con Angular e comunica tramite API REST con un back
 
 **In consolidamento: funzionalità presenti, verifica completa nel browser ancora aperta.**
 
-Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica mostra l'interfaccia; le operazioni persistenti richiedono il backend. Le route protette `/dashboard`, `/add-income` e `/add-transaction` sono presenti nel codice. Entrate e riepilogo devono essere verificati end-to-end prima di dichiararli consolidati.
+Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica è online e collegata al backend Render: il pulsante **Prova la demo** usa un account condiviso con dati fittizi. Il form `/register` è visibile anche online, ma l'invio è disabilitato in attesa del servizio email HTTPS per la verifica dell'account. Le route protette `/dashboard`, `/add-income` e `/add-transaction` sono presenti nel codice; resta aperta la verifica completa nel browser.
 
 ## Scopo e confine della versione
 
@@ -87,6 +87,8 @@ Il backend espone l'intero CRUD del dominio `Expense`, `GET`/`POST /api/incomes`
 
 L'autenticazione locale usa `POST /auth/register`, `POST /auth/verify-email`, `POST /auth/login`, `POST /auth/refresh` e `POST /auth/logout`. Il backend restituisce l'access token nel corpo del login/refresh e conserva il refresh token in un cookie HttpOnly. Il frontend invia il cookie con `withCredentials` e protegge le rotte `/summary`, `/add-expense`, `/expenses/:id`, `/dashboard`, `/add-income` e `/add-transaction`.
 
+La pagina canonica di registrazione è `/register`; `/registrati` reindirizza alla stessa pagina. Il form valida username, email e password e invia il DTO a `POST /auth/register` solo in locale. Dopo il successo richiede la verifica email prima del login. Le risposte `409` con `errorName` `USERNAME_ALREADY_EXISTS` o `EMAIL_ALREADY_EXISTS` mostrano quale campo è già registrato. Nella demo il form è consultabile e l'invio è bloccato sia nella UI sia nel backend: l'integrazione del servizio email HTTPS resta un passo successivo.
+
 ## Avvio locale
 
 ### Requisiti
@@ -119,9 +121,9 @@ npm run build
 2. riprovare CRUD spese, editing inline, inserimento entrate e aggiornamento della dashboard;
 3. verificare isolamento fra utenti e comportamento sugli errori;
 4. uniformare loading, conferme ed errori e ampliare i test mirati;
-5. separare gli URL di sviluppo/produzione prima della pubblicazione integrata.
+5. integrare il servizio email HTTPS prima di abilitare la registrazione online.
 
-L'editing inline è già presente; il prossimo passo è verificarlo nel flusso completo, non ricostruirlo. La demo frontend non equivale a un backend pubblico disponibile.
+L'editing inline è già presente; il prossimo passo è verificarlo nel flusso completo. La demo pubblica usa il backend Render; la registrazione online resta disabilitata.
 
 ## Versioning
 
@@ -141,6 +143,6 @@ Fabio Zagaria — Junior Backend Developer con competenze full stack.
 Il pulsante sole/luna nella navigazione alterna tema chiaro e scuro. Al primo accesso segue il dispositivo; la scelta manuale viene ricordata nel browser.
 
 
-## Preparazione demo pubblica
+## Demo pubblica
 
-Configurazione demo in preparazione: vedere [deploy e verifiche](docs/DEPLOYMENT.md). La disponibilità del backend pubblico resta da verificare.
+Frontend Vercel e backend Render sono online: vedere [deploy e verifiche](docs/DEPLOYMENT.md). **Prova la demo** apre l'account condiviso; le modifiche sono visibili agli altri visitatori. Usare solo dati fittizi. La registrazione online attende il servizio email HTTPS, mentre in locale resta disponibile con verifica email tramite SMTP/Mailpit.

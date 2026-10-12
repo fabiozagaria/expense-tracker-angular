@@ -45,3 +45,7 @@ Servizio `expense-tracker-api-demo`, piano Free, regione Frankfurt, branch `demo
 ## Verifica backend pubblico — 2026-10-12
 
 Deploy Render `dep-db6g54ad0e5s73akjl20` live. `/health`, login demo, lettura spese/entrate/dashboard e refresh restituiscono 200; logout restituisce 204 e il refresh dopo logout 401. Cookie HttpOnly, Secure, SameSite=Strict e Path=/auth verificati. Connessione MySQL riuscita con la configurazione VERIFY_IDENTITY e il certificato Aiven. Avvio dell'app circa 143 secondi su Render Free; la UI deve considerare 2–3 minuti.
+
+## Pagina registrazione — 2026-10-12
+
+`/register` espone un form ReactiveForms con username, email e password; `/registrati` è un alias. Il form locale usa POST /auth/register e il flusso di verifica email. Nella demo pubblica i campi sono visibili, ma il submit è bloccato finché non viene configurato un provider email adatto al deploy. Nessuna verifica email viene simulata. Gestiti i conflitti di username/email con errorName specifico e HTTP 409. 44 test Angular passati e build production riuscita; 7 test backend con MySQL passati.

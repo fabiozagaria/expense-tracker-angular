@@ -18,13 +18,13 @@ Tutte le pagine e i componenti usano PrimeNG 21, Aura e PrimeIcons: home, dashbo
 
 ## Stato del progetto
 
-**In consolidamento: funzionalità presenti, verifica completa nel browser ancora aperta.**
+**Demo full stack pubblica; consolidamento e verifiche dei casi limite ancora aperti.**
 
 Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica è online e collegata al backend Render: il pulsante **Prova la demo** usa un account condiviso con dati fittizi. Il form `/register` è visibile anche online, ma l'invio è disabilitato in attesa del servizio email HTTPS per la verifica dell'account. Le route protette `/dashboard`, `/add-income` e `/add-transaction` sono presenti nel codice; login demo, sessione, dashboard e CRUD spese sono verificati nel browser; la registrazione locale con email e la creazione di entrate sul database condiviso restano verifiche separate.
 
 ## Scopo e confine della versione
 
-Client Angular del prodotto full stack Expense Tracker: integra UI, form, chiamate REST e autenticazione con il backend. Il prossimo traguardo è un flusso riproducibile nel browser per autenticazione, spese, entrate e riepilogo; nuove funzionalità vengono scelte dopo questa verifica.
+Client Angular del prodotto full stack Expense Tracker: integra UI, form, chiamate REST e autenticazione con il backend. La demo pubblica integra autenticazione, spese, entrate e riepilogo. Il lavoro residuo riguarda prove riproducibili dei casi limite, registrazione locale con verifica email e copertura dei test; nuove funzionalità richiedono una scelta di scope separata.
 
 ## Funzionalità presenti
 
@@ -36,7 +36,7 @@ Client Angular del prodotto full stack Expense Tracker: integra UI, form, chiama
 - aggiunta, modifica e rimozione di una spesa;
 - pagina di riepilogo e route di dettaglio;
 - gestione iniziale degli stati di caricamento ed errore;
-- client HTTP tipizzato per le operazioni REST previste.
+- client HTTP tipizzato per le operazioni REST previste;
 - registrazione, verifica email e login con JWT per le spese personali;
 - rinnovo dell'access token tramite cookie HttpOnly e `POST /auth/refresh`;
 - logout e protezione delle route applicative;
@@ -122,13 +122,13 @@ npm run build
 
 ## Prossimi sviluppi
 
-1. verificare nel browser registrazione, email, login, refresh e logout con lo stack backend avviato;
-2. riprovare CRUD spese, editing inline, inserimento entrate e aggiornamento della dashboard;
+1. completare la verifica della registrazione locale e della verifica email con backend e Mailpit;
+2. ampliare le prove di regressione del CRUD spese, dell'editing inline e della creazione di entrate con aggiornamento dashboard;
 3. verificare isolamento fra utenti e comportamento sugli errori;
 4. uniformare loading, conferme ed errori e ampliare i test mirati;
 5. integrare il servizio email HTTPS prima di abilitare la registrazione online.
 
-L'editing inline è già presente; il prossimo passo è verificarlo nel flusso completo. La demo pubblica usa il backend Render; la registrazione online resta disabilitata.
+L'editing inline è già presente; restano da ampliare le prove dei casi limite. La demo pubblica usa il backend Render; la registrazione online resta disabilitata.
 
 ## Versioning
 

@@ -35,6 +35,7 @@
           ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
           <i class="pi pi-chart-pie" aria-hidden="true"></i><span>Dashboard</span>
         </a>
+        <a class="workspace-link" routerLink="/incomes" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="menuOpen.set(false)"><i class="pi pi-arrow-down-left" aria-hidden="true"></i><span>Entrate</span></a>
         <a class="workspace-link" [routerLink]="['/summary']" routerLinkActive="active"
           ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
           <i class="pi pi-receipt" aria-hidden="true"></i><span>Spese</span>

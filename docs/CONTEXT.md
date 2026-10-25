@@ -88,3 +88,9 @@ Resta da verificare con un indirizzo reale: registrazione nuova, accettazione/co
 ## Avvisi della sessione demo — 2026-10-25
 
 La registrazione pubblica e la ricezione dell'email sono state confermate dal proprietario. Il banner DEMO e la nota Spazio demo nella sidebar ora compaiono soltanto per il subject JWT portfolio-demo, anche dopo refresh. Il decoding del token serve soltanto alla presentazione: autenticazione e autorizzazione restano sul backend. Login demo disponibile e environment.demo conservato per il relativo pulsante. Rimosso il tooltip che dichiarava la registrazione indisponibile. Verifica: 60 test Angular passati; build production riuscita con i consueti avvisi sui budget.
+
+## CRUD entrate e liste — 2026-10-25, branch in verifica
+
+Scope autorizzato: CRUD completo entrate, liste paginate dal database, ordinamento data/ID, mese/anno, ricerca titolo/descrizione/importo/data e firma fabiozagariadev con portfolio e GitHub. Nessuna modifica agli endpoint array usati dai grafici. Nuovi endpoint /api/{expenses,incomes}/search. Angular /summary e /incomes usano un componente condiviso con client HTTP dedicato, gestione errori, modifica completa e conferma cancellazione.
+
+Verifiche: build frontend e 62 test Angular passati; 6 test backend mirati passati con Java 21 e Mockito agent esterno. Nuova regressione MySQL aggiunta ad AuthExpenseFlowTests, ancora da eseguire su database isolato. Nessun dato o configurazione del deploy alterato. Prima del merge: suite con MySQL e controllo browser desktop/mobile, chiaro/scuro; poi deploy backend e frontend coordinati.

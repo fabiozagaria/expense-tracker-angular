@@ -30,7 +30,7 @@ export class Register {
   });
 
   protected submit(): void {
-    if (this.demo || this.loading()) return;
+    if (this.loading()) return;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -48,6 +48,9 @@ export class Register {
       if (error.error?.errorName === 'EMAIL_ALREADY_EXISTS') return 'Email già registrata. Usa un altro indirizzo o accedi.';
       if (error.error?.errorName === 'USERNAME_ALREADY_EXISTS') return 'Username già registrato. Scegli un altro username.';
       return 'Username o email già registrati.';
+    }
+    if (error.status === 503 && error.error?.errorName === 'EMAIL_DELIVERY_FAILED') {
+      return 'Invio email non riuscito. Riprova più tardi.';
     }
     if (error.status === 0 || error.status === 503) {
       return 'Server non disponibile. Controlla la connessione e riprova più tardi.';

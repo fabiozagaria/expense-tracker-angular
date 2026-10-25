@@ -34,12 +34,6 @@
         }
       </div>
 
-      @if (demo) {
-        <p-message class="register-message" severity="info" [attr.role]="'note'">
-          La registrazione online non è ancora disponibile. Puoi esplorare il form con dati fittizi; per accedere usa «Prova la demo».
-        </p-message>
-      }
-
       @if (registered()) {
         <p-message class="register-message" severity="success" [attr.role]="'status'">
           Account creato. Controlla la tua email e apri il link di verifica prima di accedere.
@@ -91,7 +85,7 @@
             <p-message class="register-message" severity="error">{{ error() }}</p-message>
           }
           <div class="ui-actions register-actions">
-            <button pButton class="ui-primary register-submit" type="submit" [disabled]="demo || loading()" [loading]="loading()">
+            <button pButton class="ui-primary register-submit" type="submit" [disabled]="loading()" [loading]="loading()">
               <span>{{ loading() ? 'Registrazione in corso…' : 'Registrati' }}</span>
             </button>
           </div>

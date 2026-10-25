@@ -122,18 +122,30 @@ describe('Register', () => {
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
   });
 
-  it('shows the demo form but blocks registration even if a submit event is triggered', () => {
+  it('submits registration online while retaining the demo login', () => {
     environment.demo = true;
     environment.apiBaseUrl = '';
     createForm();
-    expect(fixture.nativeElement.querySelectorAll('form input').length).toBe(3);
-    expect(fixture.nativeElement.textContent).toContain('La registrazione online non è ancora disponibile.');
-    expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(true);
+    expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
     fillForm();
     submitForm();
-    requests.expectNone(request => request.url.endsWith('/auth/register'));
+    const request = requests.expectOne('/auth/register');
+    expect(request.request.method).toBe('POST');
+    request.flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Account creato.');
+  });
+
+  it('explains email delivery failure and allows retry', () => {
+    createForm();
+    fillForm();
+    submitForm();
+    requests.expectOne(registrationUrl).flush({ errorName: 'EMAIL_DELIVERY_FAILED' },
+      { status: 503, statusText: 'Service Unavailable' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Invio email non riuscito.');
+    expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
     expect(fixture.nativeElement.textContent).not.toContain('Account creato.');
-    expect(fixture.nativeElement.querySelector('a').getAttribute('href')).toBe('/login');
   });
 
   it('redirects the Italian alias to the canonical registration page', async () => {

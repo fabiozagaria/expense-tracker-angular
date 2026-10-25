@@ -16,11 +16,17 @@ L'applicazione è sviluppata con Angular e comunica tramite API REST con un back
 
 Tutte le pagine e i componenti usano PrimeNG 21, Aura e PrimeIcons: home, dashboard, login, registrazione, verifica email, scelta movimento, form spesa/entrata, elenco, card e dettaglio spese. Bootstrap è stato rimosso dalle dipendenze, dagli stili e dagli script. Colori, spaziatura, form e messaggi seguono [codex/style.md](codex/style.md), con tema chiaro/scuro, layout responsive e animazioni GSAP che rispettano il movimento ridotto. Tutte le pagine sono caricate al bisogno.
 
+La favicon originale riprende un portafoglio stilizzato nei colori verde petrolio, avorio e smeraldo. È distribuita come [PNG 64×64](public/gestore-spese-icon.png), con [fallback ICO](public/favicon.ico) a 16, 32, 48 e 64 pixel.
+
 ## Stato del progetto
 
 **Demo full stack pubblica; consolidamento e verifiche dei casi limite ancora aperti.**
 
-Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica è online e collegata al backend Render: il pulsante **Prova la demo** usa un account condiviso con dati fittizi. Il form `/register` può inviare anche online; richiede il backend con Brevo configurato e `REGISTRATION_ENABLED=true`. Il flusso pubblico va verificato dopo il deploy. Le route protette `/dashboard`, `/add-income` e `/add-transaction` sono presenti nel codice; login demo, sessione, dashboard e CRUD spese sono verificati nel browser; la registrazione locale con email e la creazione di entrate sul database condiviso restano verifiche separate.
+L'applicazione è online su Vercel, collegata al backend Spring Boot su Render e al database MySQL Aiven. Registrazione pubblica e invio dell'email di verifica tramite Brevo HTTPS sono attivi; il proprietario ha confermato la registrazione reale il 25 ottobre 2026. In locale resta disponibile SMTP/Mailpit.
+
+Il pulsante **Prova la demo** usa un account condiviso con dati fittizi. Il banner **DEMO** e la nota **Account condiviso** compaiono soltanto per quella sessione, anche dopo il rinnovo del token; gli account personali non ricevono questi avvisi. Il riconoscimento nel client serve soltanto alla presentazione: autenticazione e isolamento dei dati sono gestiti dal backend.
+
+Login demo, sessione, dashboard e CRUD spese sono stati verificati nel browser. Restano aperte le regressioni dei casi limite e le prove dedicate alla creazione di entrate sul database condiviso.
 
 ## Scopo e confine della versione
 
@@ -90,7 +96,7 @@ Contratto REST previsto dal frontend:
 
 Il backend espone l'intero CRUD del dominio `Expense`, `GET`/`POST /api/incomes` e `GET /api/dashboard/summary`. Le entrate non hanno ancora update/delete. Alcune integrazioni frontend e la gestione completa degli stati UI sono ancora in consolidamento.
 
-L'autenticazione locale usa `POST /auth/register`, `POST /auth/verify-email`, `POST /auth/login`, `POST /auth/refresh` e `POST /auth/logout`. Il backend restituisce l'access token nel corpo del login/refresh e conserva il refresh token in un cookie HttpOnly. Il frontend invia il cookie con `withCredentials` e protegge le rotte `/summary`, `/add-expense`, `/expenses/:id`, `/dashboard`, `/add-income` e `/add-transaction`.
+L'autenticazione usa `POST /auth/register`, `POST /auth/verify-email`, `POST /auth/login`, `POST /auth/refresh` e `POST /auth/logout`. Il backend restituisce l'access token nel corpo del login/refresh e conserva il refresh token in un cookie HttpOnly. Il frontend invia il cookie con `withCredentials` e protegge le rotte `/summary`, `/add-expense`, `/expenses/:id`, `/dashboard`, `/add-income` e `/add-transaction`.
 
 La pagina canonica di registrazione è `/register`; `/registrati` reindirizza alla stessa pagina. Il form valida username, email e password e invia il DTO a `POST /auth/register` anche online. Dopo il successo richiede la verifica email prima del login. Le risposte `409` con `errorName` `USERNAME_ALREADY_EXISTS` o `EMAIL_ALREADY_EXISTS` mostrano quale campo è già registrato. Il form non è più bloccato dalla modalità demo. Il backend controlla l'abilitazione e invia con Brevo HTTPS; `503 EMAIL_DELIVERY_FAILED` mostra un errore specifico e consente di riprovare.
 
@@ -115,6 +121,8 @@ Per provare la registrazione, nel repository backend configurare `.env` e avviar
 
 ## Verifiche
 
+Verifiche del 25 ottobre 2026: **60 test Angular passati** e build production riuscita. Restano gli avvisi sui budget del bundle iniziale e dei CSS di login/dashboard, senza errori bloccanti. I test includono registrazione online, errori di invio email e distinzione fra account personale e demo con ripristino dopo refresh. La registrazione con email reale è stata confermata dal proprietario; non equivale a una copertura completa dei casi limite.
+
 ```bash
 npm test
 npm run build
@@ -126,9 +134,9 @@ npm run build
 2. ampliare le prove di regressione del CRUD spese, dell'editing inline e della creazione di entrate con aggiornamento dashboard;
 3. verificare isolamento fra utenti e comportamento sugli errori;
 4. uniformare loading, conferme ed errori e ampliare i test mirati;
-5. distribuire e configurare il backend Brevo prima del frontend e verificare registrazione, ricezione email, conferma e login.
+5. ampliare le prove dei casi limite della registrazione e della verifica email.
 
-L'editing inline è già presente; restano da ampliare le prove dei casi limite. La demo pubblica usa il backend Render; la registrazione online richiede la configurazione del backend e una prova reale.
+L'editing inline è già presente; restano da ampliare le prove dei casi limite. Il sito pubblico usa il backend Render; registrazione online e invio email Brevo sono attivi.
 
 ## Versioning
 
@@ -150,4 +158,4 @@ Il pulsante sole/luna nella navigazione alterna tema chiaro e scuro. Al primo ac
 
 ## Demo pubblica
 
-Frontend Vercel e backend Render sono online: vedere [deploy e verifiche](docs/DEPLOYMENT.md). **Prova la demo** apre l'account condiviso; le modifiche sono visibili agli altri visitatori. Usare solo dati fittizi. La registrazione online usa Brevo HTTPS nel backend, previa configurazione; in locale resta SMTP/Mailpit. Questo aggiornamento non certifica il deploy o la consegna reale delle email.
+Frontend Vercel e backend Render sono online: vedere [deploy e verifiche](docs/DEPLOYMENT.md). **Prova la demo** apre l'account condiviso; le modifiche sono visibili agli altri visitatori. Usare solo dati fittizi. Gli account personali possono registrarsi online e confermare l'email inviata tramite Brevo HTTPS. In locale resta SMTP/Mailpit. Il banner DEMO identifica soltanto la sessione condivisa, non l'intero sito.

@@ -84,3 +84,7 @@ Backend Render live: deploy `dep-dbf1v8ek1f9s73fptho0`, commit `76fec7db0f4f86fb
 Verifiche completate: 3 test Brevo con Java 21 passati; 56 test Angular passati e build production riuscita con gli avvisi sui budget già presenti. Browser pubblico /register: pulsante Registrati abilitato. API pubblica: health 200, username portfolio-demo già esistente respinto con 409 USERNAME_ALREADY_EXISTS (anche tramite proxy Vercel), token verifica inesistente 400, accesso anonimo alle spese 401, login demo 200 e lettura spese autenticata 200. La prova del duplicato non crea utenti e non invia email.
 
 Resta da verificare con un indirizzo reale: registrazione nuova, accettazione/consegna Brevo, ricezione del link, conferma e login del nuovo account. Nessuna email reale inviata durante questi controlli. Le precedenti note su test non eseguibili sono superate per i test mirati citati; non è stata rieseguita l'intera suite backend con MySQL.
+
+## Avvisi della sessione demo — 2026-10-25
+
+La registrazione pubblica e la ricezione dell'email sono state confermate dal proprietario. Il banner DEMO e la nota Spazio demo nella sidebar ora compaiono soltanto per il subject JWT portfolio-demo, anche dopo refresh. Il decoding del token serve soltanto alla presentazione: autenticazione e autorizzazione restano sul backend. Login demo disponibile e environment.demo conservato per il relativo pulsante. Rimosso il tooltip che dichiarava la registrazione indisponibile. Verifica: 60 test Angular passati; build production riuscita con i consueti avvisi sui budget.

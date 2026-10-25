@@ -34,7 +34,7 @@ describe('Header', () => {
     fixture.detectChanges();
     const link = fixture.nativeElement.querySelector('a[href="/register"]') as HTMLAnchorElement;
     expect(link.textContent).toContain('Registrati');
-    expect(link.title).toContain('registrazione online non ancora disponibile');
+    expect(link.title).toBe('Crea un account personale');
   });
 });
 

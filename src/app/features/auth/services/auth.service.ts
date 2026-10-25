@@ -1,6 +1,6 @@
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, finalize, map, Observable, retry, shareReplay, switchMap, tap, throwError, timeout, timer } from 'rxjs';
 
 export interface RegistrationRequest {
@@ -21,6 +21,20 @@ export class AuthService {
   private refreshRequest?: Observable<AuthResponse>;
 
   readonly accessToken = this.token.asReadonly();
+  // Presentation only: the backend remains responsible for validating JWTs.
+  readonly isDemoSession = computed(() => {
+    const payload = this.token()?.split('.')[1];
+    if (!payload) return false;
+    try {
+      const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+      const bytes = Uint8Array.from(atob(base64), character => character.charCodeAt(0));
+      const claims: unknown = JSON.parse(new TextDecoder().decode(bytes));
+      return typeof claims === 'object' && claims !== null
+        && 'sub' in claims && claims.sub === 'portfolio-demo';
+    } catch {
+      return false;
+    }
+  });
 
   register(request: RegistrationRequest): Observable<{ msg: string }> {
     return this.http.post<{ msg: string }>(`${this.apiUrl}/register`, request);

@@ -36,7 +36,7 @@ describe('Login', () => {
     fixture = TestBed.createComponent(Login);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('a[href="/register"]')?.textContent).toContain('Registrati');
-    expect(fixture.nativeElement.textContent).toContain('la registrazione online attende il servizio email di verifica');
+    expect(fixture.nativeElement.textContent).toContain('registrati e conferma il link ricevuto via email');
     expect(fixture.nativeElement.textContent).toContain('Prova la demo');
   });
 

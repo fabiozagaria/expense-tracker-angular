@@ -110,7 +110,7 @@ Esempio di template, dopo aver importato `RevealDirective` nel componente:
 - Un restyling deve conservare rotte, guard, servizi, contratto REST e comportamento dei form.
 - Preservare login demo, gestione del risveglio, access token in memoria, cookie HttpOnly, refresh e logout.
 - Conservare l'avviso sull'account demo condiviso e l'invito a usare solo dati fittizi.
-- La registrazione pubblica resta disabilitata in attesa del servizio email di verifica. Non abilitarla come conseguenza di una modifica grafica.
+- La registrazione usa il servizio email di verifica Brevo del backend. Il form è disponibile anche in modalità demo; il backend controlla l’abilitazione con REGISTRATION_ENABLED. Conservare il login demo condiviso.
 - Mantenere le chiamate relative e il proxy di produzione. Non indebolire CORS o controlli dell'origine per rendere funzionante un'anteprima.
 
 ## 10. Verifica delle modifiche

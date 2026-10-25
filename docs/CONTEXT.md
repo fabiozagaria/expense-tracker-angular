@@ -26,7 +26,7 @@ Completare e verificare localmente il verticale registrazione → verifica email
 - Il frontend dell'editing inline è funzionalmente verificato.
 - Resta da rieseguire il percorso manuale nel browser dopo la correzione della verifica email.
 - Gli URL API Angular usano `http://localhost:8080` in sviluppo e URL relativi con proxy Vercel in produzione. Il link email backend è configurabile tramite `FRONTEND_URL`; in locale usa localhost.
-- La registrazione pubblica resta disabilitata nel frontend e nel backend demo finché non sarà integrato il servizio email HTTPS. Il form resta visibile online; non viene aggirata la verifica email.
+- Il form può inviare anche in modalità demo; il backend con Brevo deve essere configurato e abilitato prima del deploy frontend. La verifica email resta obbligatoria.
 
 ## Prossima azione
 Eseguire il percorso manuale completo nel browser e verificare la scadenza/rotazione della sessione.
@@ -70,3 +70,9 @@ Verificati nel browser con le API reali: login demo, lettura riepilogo/spese/ent
 Tutte le 10 pagine canoniche e i componenti di spesa sono migrati a PrimeNG 21/Aura; restano gli alias e le rotte originali. Bootstrap, Popper, stylesheet/script Bootstrap, utility CSS e data-bs-theme sono rimossi. I controlli importo/categoria/data usano InputNumber (it-IT), Select e DatePicker: Reactive Forms e DTO conservano importi numerici, enum originali e date ISO. Tutte le rotte usano loadComponent. Card, form, pulsanti, messaggi e skeleton condividono i token --ui-*; muted light scurito a #63756b e locale PrimeNG italiano. codex/style.md definisce ora un unico sistema UI senza Bootstrap.
 
 Verifica: 55 test Angular passati; build production riuscita, bundle iniziale circa 622 kB (prima circa 894 kB), entro limite massimo 1 MB. Browser: tutte le 10 pagine su desktop chiaro e mobile scuro, nessun overflow o errore JS; form di entrambe le transazioni con POST simulato verificano 4,20 € -> 4.2 e data ISO senza scritture nel DB condiviso. Verificati anche stati vuoti/errori/404 e successo/errore verifica email con risposte simulate e un solo POST per token. Con API reali verificati login, refresh, tema, filtri, CRUD completo di una spesa fittizia poi eliminata, logout e blocco signup demo. Il provider email pubblico resta da integrare.
+
+## Registrazione online — 2026-10-25
+
+Rimosso il blocco `environment.demo` dal submit di registrazione e dal pulsante. Login demo condiviso conservato. L'errore backend 503 EMAIL_DELIVERY_FAILED mostra un messaggio specifico, senza successo prematuro e con possibilità di retry. Aggiornati i test di registrazione online e il testo nel login.
+
+Distribuire prima il backend con Brevo configurato (MAIL_PROVIDER, BREVO_API_KEY, MAIL_FROM, FRONTEND_URL e REGISTRATION_ENABLED), poi questo frontend. Build e test Angular non eseguiti in questo ambiente privo delle dipendenze del progetto; la prova completa con invio reale resta aperta. Le sezioni datate 12 ottobre descrivono lo stato storico precedente.

@@ -49,3 +49,11 @@ Deploy Render `dep-db6g54ad0e5s73akjl20` live. `/health`, login demo, lettura sp
 ## Pagina registrazione — 2026-10-12
 
 `/register` espone un form ReactiveForms con username, email e password; `/registrati` è un alias. Il form locale usa POST /auth/register e il flusso di verifica email. Nella demo pubblica i campi sono visibili, ma il submit è bloccato finché non viene configurato un provider email adatto al deploy. Nessuna verifica email viene simulata. Gestiti i conflitti di username/email con errorName specifico e HTTP 409. 44 test Angular passati e build production riuscita; 7 test backend con MySQL passati.
+
+## Verifica deploy registrazione — 2026-10-25
+
+Backend Render live: deploy `dep-dbf1v8ek1f9s73fptho0`, commit `76fec7db0f4f86fb9764ca087836e12df7c094c7`. Il servizio segue ancora `demo/render-aiven-setup`, avanzato senza force dal vecchio commit alla versione integrata in master. Profilo demo conservato; MAIL_PROVIDER=brevo e REGISTRATION_ENABLED=true configurati su Render preservando i segreti esistenti.
+
+Verifiche completate: 3 test Brevo con Java 21 passati; 56 test Angular passati e build production riuscita con gli avvisi sui budget già presenti. Browser pubblico /register: pulsante Registrati abilitato. API pubblica: health 200, username portfolio-demo già esistente respinto con 409 USERNAME_ALREADY_EXISTS (anche tramite proxy Vercel), token verifica inesistente 400, accesso anonimo alle spese 401, login demo 200 e lettura spese autenticata 200. La prova del duplicato non crea utenti e non invia email.
+
+Resta da verificare con un indirizzo reale: registrazione nuova, accettazione/consegna Brevo, ricezione del link, conferma e login del nuovo account. Nessuna email reale inviata durante questi controlli. Le precedenti note su test non eseguibili sono superate per i test mirati citati; non è stata rieseguita l'intera suite backend con MySQL.

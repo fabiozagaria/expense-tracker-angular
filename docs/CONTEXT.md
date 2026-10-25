@@ -76,3 +76,11 @@ Verifica: 55 test Angular passati; build production riuscita, bundle iniziale ci
 Rimosso il blocco `environment.demo` dal submit di registrazione e dal pulsante. Login demo condiviso conservato. L'errore backend 503 EMAIL_DELIVERY_FAILED mostra un messaggio specifico, senza successo prematuro e con possibilità di retry. Aggiornati i test di registrazione online e il testo nel login.
 
 Distribuire prima il backend con Brevo configurato (MAIL_PROVIDER, BREVO_API_KEY, MAIL_FROM, FRONTEND_URL e REGISTRATION_ENABLED), poi questo frontend. Build e test Angular non eseguiti in questo ambiente privo delle dipendenze del progetto; la prova completa con invio reale resta aperta. Le sezioni datate 12 ottobre descrivono lo stato storico precedente.
+
+## Verifica deploy registrazione — 2026-10-25
+
+Backend Render live: deploy `dep-dbf1v8ek1f9s73fptho0`, commit `76fec7db0f4f86fb9764ca087836e12df7c094c7`. Il servizio segue ancora `demo/render-aiven-setup`, avanzato senza force dal vecchio commit alla versione integrata in master. Profilo demo conservato; MAIL_PROVIDER=brevo e REGISTRATION_ENABLED=true configurati su Render preservando i segreti esistenti.
+
+Verifiche completate: 3 test Brevo con Java 21 passati; 56 test Angular passati e build production riuscita con gli avvisi sui budget già presenti. Browser pubblico /register: pulsante Registrati abilitato. API pubblica: health 200, username portfolio-demo già esistente respinto con 409 USERNAME_ALREADY_EXISTS (anche tramite proxy Vercel), token verifica inesistente 400, accesso anonimo alle spese 401, login demo 200 e lettura spese autenticata 200. La prova del duplicato non crea utenti e non invia email.
+
+Resta da verificare con un indirizzo reale: registrazione nuova, accettazione/consegna Brevo, ricezione del link, conferma e login del nuovo account. Nessuna email reale inviata durante questi controlli. Le precedenti note su test non eseguibili sono superate per i test mirati citati; non è stata rieseguita l'intera suite backend con MySQL.

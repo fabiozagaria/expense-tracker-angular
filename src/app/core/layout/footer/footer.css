@@ -7,3 +7,8 @@
 .workspace-footer a:focus-visible { outline: 2px solid var(--ui-accent, #06735c); outline-offset: 4px; }
 @media (max-width: 991.98px) { :host { margin-left: 0; } .workspace-footer { margin: 0 24px; } }
 @media (max-width: 575.98px) { .workspace-footer { margin: 0 20px; padding: 18px 0; } .footer-message { display: none; } }
+
+.workspace-footer { flex-wrap:wrap; font-size:13px; }
+.workspace-footer strong { color:var(--ui-text); font-size:15px; }
+.workspace-footer nav { display:flex; flex-wrap:wrap; gap:20px; }
+.workspace-footer a { color:var(--ui-accent); min-height:44px; }

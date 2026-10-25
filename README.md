@@ -12,6 +12,21 @@ L'applicazione è sviluppata con Angular e comunica tramite API REST con un back
 - [Demo frontend](https://gestionale-spese.vercel.app/)
 - [Repository backend](https://github.com/fabiozagaria/expense-tracker-api)
 
+## Completamento entrate e liste — PR in verifica (25 ottobre 2026)
+
+La modifica proposta completa il CRUD entrate (`GET /api/incomes/{id}`, `PUT`, `PATCH`, `DELETE`) con controllo del proprietario e risposta 404 per risorse assenti o altrui.
+
+Le nuove liste Angular di spese ed entrate usano `GET /api/expenses/search` e `GET /api/incomes/search`:
+
+- `page` da 0, `size` da 1 a 100 (default 10);
+- `month=yyyy-MM`, `order=newest|oldest` (data e ID, default più recenti);
+- `query`: titolo/descrizione senza distinzione maiuscole, importo esatto con punto o virgola, data esatta ISO o `gg/mm/aaaa`;
+- risposta stabile: `content`, `number`, `size`, `totalElements`, `totalPages`.
+
+I precedenti GET che restituiscono array restano compatibili per dashboard e grafici. Il frontend offre modifica di tutti i campi e conferma di eliminazione. Footer con firma **fabiozagariadev**, portfolio e GitHub.
+
+Verifiche locali: build Angular riuscita (avvisi budget già presenti), 62 test Angular e 6 test backend mirati passati con Java 21. Il nuovo test di integrazione `incomeCrudSearchAndOwnership` richiede MySQL dedicato: non eseguito in questo ambiente. Verifica browser responsive e deploy ancora aperti. Le sezioni seguenti descrivono la versione pubblicata precedente alla PR.
+
 ## Interfaccia PrimeNG/Aura
 
 Tutte le pagine e i componenti usano PrimeNG 21, Aura e PrimeIcons: home, dashboard, login, registrazione, verifica email, scelta movimento, form spesa/entrata, elenco, card e dettaglio spese. Bootstrap è stato rimosso dalle dipendenze, dagli stili e dagli script. Colori, spaziatura, form e messaggi seguono [codex/style.md](codex/style.md), con tema chiaro/scuro, layout responsive e animazioni GSAP che rispettano il movimento ridotto. Tutte le pagine sono caricate al bisogno.

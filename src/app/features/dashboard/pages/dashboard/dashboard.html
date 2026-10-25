@@ -11,7 +11,7 @@
     </article>
     <article class="metric" data-reveal><div class="metric-top"><span>Entrate totali</span><span class="metric-icon income-icon"><i class="pi pi-arrow-down-left" aria-hidden="true"></i></span></div>
       @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.totalIncome) }}</h2> }
-      <div class="metric-foot"><a routerLink="/add-income">Aggiungi un’entrata <i class="pi pi-arrow-up-right" aria-hidden="true"></i></a></div>
+      <div class="metric-foot"><a routerLink="/incomes">Visualizza le entrate <i class="pi pi-arrow-up-right" aria-hidden="true"></i></a></div>
     </article>
     <article class="metric" data-reveal><div class="metric-top"><span>Spese totali</span><span class="metric-icon expense-icon"><i class="pi pi-arrow-up-right" aria-hidden="true"></i></span></div>
       @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.totalExpense) }}</h2> }
@@ -34,7 +34,7 @@
     @else {
       <p-table [value]="visibleMovements()" [tableStyle]="{ 'min-width': '520px' }">
         <ng-template #header><tr><th>MOVIMENTO</th><th>CATEGORIA</th><th>DATA</th><th class="amount-column">IMPORTO</th></tr></ng-template>
-        <ng-template #body let-movement><tr><td><div class="movement-name"><span class="movement-icon" [class.income-icon]="movement.kind === 'income'" [class.expense-icon]="movement.kind === 'expense'"><i [class]="movement.kind === 'income' ? 'pi pi-arrow-down-left' : 'pi pi-arrow-up-right'" aria-hidden="true"></i></span><div>@if (movement.kind === 'expense') { <a [routerLink]="['/expenses', movement.id]">{{ movement.title }}</a> } @else { <strong>{{ movement.title }}</strong> }<span>{{ movement.kind === 'income' ? 'Entrata' : 'Spesa' }}</span></div></div></td><td><span class="category-pill">{{ category(movement.category) }}</span></td><td class="date-cell">{{ movement.date | date:'dd MMM yyyy' }}</td><td class="amount-column" [class.income-amount]="movement.kind === 'income'">{{ movement.kind === 'income' ? '+' : '−' }} {{ euro(movement.amount) }}</td></tr></ng-template>
+        <ng-template #body let-movement><tr><td><div class="movement-name"><span class="movement-icon" [class.income-icon]="movement.kind === 'income'" [class.expense-icon]="movement.kind === 'expense'"><i [class]="movement.kind === 'income' ? 'pi pi-arrow-down-left' : 'pi pi-arrow-up-right'" aria-hidden="true"></i></span><div>@if (movement.kind === 'expense') { <a [routerLink]="['/expenses', movement.id]">{{ movement.title }}</a> } @else { <a routerLink="/incomes">{{ movement.title }}</a> }<span>{{ movement.kind === 'income' ? 'Entrata' : 'Spesa' }}</span></div></div></td><td><span class="category-pill">{{ category(movement.category) }}</span></td><td class="date-cell">{{ movement.date | date:'dd MMM yyyy' }}</td><td class="amount-column" [class.income-amount]="movement.kind === 'income'">{{ movement.kind === 'income' ? '+' : '−' }} {{ euro(movement.amount) }}</td></tr></ng-template>
         <ng-template #emptymessage><tr><td colspan="4" class="table-state">Nessun movimento da mostrare. Inizia registrando un’entrata o una spesa.</td></tr></ng-template>
       </p-table>
     }

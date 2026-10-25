@@ -51,17 +51,17 @@
         </a>
         <a class="workspace-link" routerLink="/register" routerLinkActive="active"
           ariaCurrentWhenActive="page" (click)="menuOpen.set(false)"
-          [attr.title]="demo ? 'Form di registrazione; registrazione online non ancora disponibile' : null">
+          title="Crea un account personale">
           <i class="pi pi-user-plus" aria-hidden="true"></i><span>Registrati</span>
         </a>
       }
     </div>
 
     <div class="navigation-bottom">
-      @if (demo) {
+      @if (auth.isDemoSession()) {
         <div class="workspace-note">
           <span class="demo-dot" aria-hidden="true"></span>
-          <div><strong>Spazio demo</strong><span>{{ auth.accessToken() ? 'Account condiviso' : 'Accedi e prova la demo' }}</span></div>
+          <div><strong>Spazio demo</strong><span>Account condiviso</span></div>
         </div>
       }
       <button pButton [text]="true" severity="secondary"

@@ -1,4 +1,3 @@
-import { environment } from '../../../../environments/environment';
 import { ThemeService } from '../../theme.service';
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -14,7 +13,6 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './header.css',
 })
 export class Header {
-  protected readonly demo = environment.demo;
   protected readonly menuOpen = signal(false);
   readonly theme = inject(ThemeService);
   protected readonly auth = inject(AuthService);

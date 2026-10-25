@@ -90,4 +90,32 @@ describe('AuthService demo wake-up', () => {
     expect(error).toBeInstanceOf(HttpErrorResponse);
     expect(auth.accessToken()).toBeNull();
   });
+  function tokenFor(username: string): string {
+    return `header.${btoa(JSON.stringify({ sub: username }))}.signature`;
+  }
+
+  it('distinguishes the shared account from a personal login and clears on logout', () => {
+    auth.login('portfolio-demo', 'test').subscribe();
+    requests.expectOne(`${environment.apiBaseUrl}/auth/login`).flush({ accessToken: tokenFor('portfolio-demo') });
+    expect(auth.isDemoSession()).toBe(true);
+    auth.login('personal-user', 'test').subscribe();
+    requests.expectOne(`${environment.apiBaseUrl}/auth/login`).flush({ accessToken: tokenFor('personal-user') });
+    expect(auth.isDemoSession()).toBe(false);
+    auth.clearSession();
+    expect(auth.isDemoSession()).toBe(false);
+  });
+
+  it('restores the shared account indicator from the refreshed JWT', () => {
+    auth.refresh().subscribe();
+    requests.expectOne(`${environment.apiBaseUrl}/auth/refresh`).flush({ accessToken: tokenFor('portfolio-demo') });
+    expect(auth.isDemoSession()).toBe(true);
+  });
+
+  it('does not label an absent or malformed token as the shared account', () => {
+    expect(auth.isDemoSession()).toBe(false);
+    auth.login('personal-user', 'test').subscribe();
+    requests.expectOne(`${environment.apiBaseUrl}/auth/login`).flush({ accessToken: 'header.invalid.signature' });
+    expect(auth.isDemoSession()).toBe(false);
+  });
+
 });

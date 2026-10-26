@@ -11,22 +11,26 @@ describe('AuthService demo wake-up', () => {
   let requests: HttpTestingController;
   const healthUrl = `${environment.apiBaseUrl}/health`;
   const demoUrl = `${environment.apiBaseUrl}/auth/demo`;
+  const initialDemo = environment.demo;
 
   beforeEach(() => {
     vi.useFakeTimers();
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     auth = TestBed.inject(AuthService);
     requests = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
+    environment.demo = initialDemo;
     requests.verify();
     vi.useRealTimers();
   });
 
   it('waits through an unavailable server and creates one session after health succeeds', async () => {
     let accessToken: string | undefined;
-    auth.demoLogin().subscribe(response => accessToken = response.accessToken);
+    auth.demoLogin().subscribe((response) => (accessToken = response.accessToken));
     const firstHealth = requests.expectOne(healthUrl);
     expect(firstHealth.request.method).toBe('GET');
     firstHealth.flush(null, { status: 503, statusText: 'Service Unavailable' });
@@ -71,9 +75,9 @@ describe('AuthService demo wake-up', () => {
 
   it('ends the wake-up after four minutes without sending a login request', async () => {
     let error: unknown;
-    auth.demoLogin().subscribe({ error: value => error = value });
+    auth.demoLogin().subscribe({ error: (value) => (error = value) });
     await vi.advanceTimersByTimeAsync(240000);
-    requests.match(healthUrl).forEach(request => expect(request.cancelled).toBe(true));
+    requests.match(healthUrl).forEach((request) => expect(request.cancelled).toBe(true));
     requests.expectNone(demoUrl);
     expect(error).toBeInstanceOf(TimeoutError);
     expect(auth.accessToken()).toBeNull();
@@ -81,7 +85,7 @@ describe('AuthService demo wake-up', () => {
 
   it('does not retry a failed login after the server is ready', async () => {
     let error: unknown;
-    auth.demoLogin().subscribe({ error: value => error = value });
+    auth.demoLogin().subscribe({ error: (value) => (error = value) });
     requests.expectOne(healthUrl).flush({ status: 'up' });
     requests.expectOne(demoUrl).flush(null, { status: 503, statusText: 'Service Unavailable' });
     await vi.advanceTimersByTimeAsync(10000);
@@ -90,16 +94,85 @@ describe('AuthService demo wake-up', () => {
     expect(error).toBeInstanceOf(HttpErrorResponse);
     expect(auth.accessToken()).toBeNull();
   });
+
+  it('wakes the deployed server before registration without retrying a rejected email', async () => {
+    environment.demo = true;
+    const registerUrl = `${environment.apiBaseUrl}/auth/register`;
+    let error: unknown;
+    auth
+      .register({ username: 'personal1', email: 'personal@example.test', password: 'secret123' })
+      .subscribe({ error: (value) => (error = value) });
+    requests.expectOne(healthUrl).flush(null, { status: 503, statusText: 'Unavailable' });
+    requests.expectNone(registerUrl);
+    await vi.advanceTimersByTimeAsync(5000);
+    requests.expectOne(healthUrl).flush({ status: 'up' });
+    const registration = requests.expectOne(registerUrl);
+    expect(registration.request.method).toBe('POST');
+    expect(registration.request.timeout).toBe(15000);
+    expect(registration.request.body.username).toBe('personal1');
+    registration.flush(
+      { errorName: 'EMAIL_DELIVERY_FAILED' },
+      { status: 503, statusText: 'Unavailable' },
+    );
+    await vi.advanceTimersByTimeAsync(10000);
+    requests.expectNone(registerUrl);
+    requests.expectNone(healthUrl);
+    expect(error).toBeInstanceOf(HttpErrorResponse);
+    expect(auth.accessToken()).toBeNull();
+  });
+
+  it('does not send a registration POST when wake-up expires', async () => {
+    environment.demo = true;
+    let error: unknown;
+    auth
+      .register({ username: 'personal1', email: 'personal@example.test', password: 'secret123' })
+      .subscribe({ error: (value) => (error = value) });
+    await vi.advanceTimersByTimeAsync(240000);
+    requests.match(healthUrl).forEach((request) => expect(request.cancelled).toBe(true));
+    requests.expectNone(`${environment.apiBaseUrl}/auth/register`);
+    expect(error).toBeInstanceOf(TimeoutError);
+  });
+
+  it('does not retry a registration POST after a response timeout', async () => {
+    environment.demo = true;
+    const registerUrl = `${environment.apiBaseUrl}/auth/register`;
+    let error: unknown;
+    auth
+      .register({ username: 'personal1', email: 'personal@example.test', password: 'secret123' })
+      .subscribe({ error: (value) => (error = value) });
+    requests.expectOne(healthUrl).flush({ status: 'up' });
+    requests.expectOne(registerUrl).error(new ProgressEvent('timeout'));
+    await vi.advanceTimersByTimeAsync(20000);
+    requests.expectNone(registerUrl);
+    requests.expectNone(healthUrl);
+    expect(error).toBeInstanceOf(HttpErrorResponse);
+  });
+
+  it('sends a local registration directly with a bounded timeout', () => {
+    environment.demo = false;
+    const registerUrl = `${environment.apiBaseUrl}/auth/register`;
+    auth
+      .register({ username: 'personal1', email: 'personal@example.test', password: 'secret123' })
+      .subscribe();
+    requests.expectNone(healthUrl);
+    const registration = requests.expectOne(registerUrl);
+    expect(registration.request.timeout).toBe(15000);
+    registration.flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
+  });
   function tokenFor(username: string): string {
     return `header.${btoa(JSON.stringify({ sub: username }))}.signature`;
   }
 
   it('distinguishes the shared account from a personal login and clears on logout', () => {
     auth.login('portfolio-demo', 'test').subscribe();
-    requests.expectOne(`${environment.apiBaseUrl}/auth/login`).flush({ accessToken: tokenFor('portfolio-demo') });
+    requests
+      .expectOne(`${environment.apiBaseUrl}/auth/login`)
+      .flush({ accessToken: tokenFor('portfolio-demo') });
     expect(auth.isDemoSession()).toBe(true);
     auth.login('personal-user', 'test').subscribe();
-    requests.expectOne(`${environment.apiBaseUrl}/auth/login`).flush({ accessToken: tokenFor('personal-user') });
+    requests
+      .expectOne(`${environment.apiBaseUrl}/auth/login`)
+      .flush({ accessToken: tokenFor('personal-user') });
     expect(auth.isDemoSession()).toBe(false);
     auth.clearSession();
     expect(auth.isDemoSession()).toBe(false);
@@ -107,15 +180,18 @@ describe('AuthService demo wake-up', () => {
 
   it('restores the shared account indicator from the refreshed JWT', () => {
     auth.refresh().subscribe();
-    requests.expectOne(`${environment.apiBaseUrl}/auth/refresh`).flush({ accessToken: tokenFor('portfolio-demo') });
+    requests
+      .expectOne(`${environment.apiBaseUrl}/auth/refresh`)
+      .flush({ accessToken: tokenFor('portfolio-demo') });
     expect(auth.isDemoSession()).toBe(true);
   });
 
   it('does not label an absent or malformed token as the shared account', () => {
     expect(auth.isDemoSession()).toBe(false);
     auth.login('personal-user', 'test').subscribe();
-    requests.expectOne(`${environment.apiBaseUrl}/auth/login`).flush({ accessToken: 'header.invalid.signature' });
+    requests
+      .expectOne(`${environment.apiBaseUrl}/auth/login`)
+      .flush({ accessToken: 'header.invalid.signature' });
     expect(auth.isDemoSession()).toBe(false);
   });
-
 });

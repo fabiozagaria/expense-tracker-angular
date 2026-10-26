@@ -71,3 +71,13 @@ Backend Render live: deploy `dep-dbf1v8ek1f9s73fptho0`, commit `76fec7db0f4f86fb
 Verifiche completate: 3 test Brevo con Java 21 passati; 56 test Angular passati e build production riuscita con gli avvisi sui budget già presenti. Browser pubblico /register: pulsante Registrati abilitato. API pubblica: health 200, username portfolio-demo già esistente respinto con 409 USERNAME_ALREADY_EXISTS (anche tramite proxy Vercel), token verifica inesistente 400, accesso anonimo alle spese 401, login demo 200 e lettura spese autenticata 200. La prova del duplicato non crea utenti e non invia email.
 
 Resta da verificare con un indirizzo reale: registrazione nuova, accettazione/consegna Brevo, ricezione del link, conferma e login del nuovo account. Nessuna email reale inviata durante questi controlli. Le precedenti note su test non eseguibili sono superate per i test mirati citati; non è stata rieseguita l'intera suite backend con MySQL.
+
+## Registrazione e risveglio Render — 2026-10-26
+
+La registrazione pubblica resta attiva e separata dall'accesso demo condiviso, come documentato nello stato corrente del README. Le note del 12 ottobre sul form bloccato descrivono lo stato storico precedente.
+
+In produzione (`demo: true`) la registrazione attende `GET /health`, con timeout di 15 secondi per richiesta e retry fino a quattro minuti. Dopo una risposta `{ "status": "up" }`, il client invia un solo `POST /auth/register` con timeout di 15 secondi. Nessun errore del POST o del servizio email viene ritentato automaticamente. In locale la registrazione invia direttamente il POST.
+
+HTTP 503 `EMAIL_DELIVERY_FAILED` mantiene il contratto del backend attuale: l'invio email fallisce e la registrazione viene annullata. La UI conserva il form e non espone dettagli del provider. Se invece manca la risposta del POST, non è possibile dedurre se l'account sia stato creato: controllare l'email prima di riprovare. Dopo il successo, il messaggio ricorda il link valido dieci minuti e la cartella Spam.
+
+Non è stato introdotto un nuovo flag frontend per disabilitare la registrazione. Il backend mantiene il controllo `REGISTRATION_ENABLED`; il provider, i segreti, gli URL e la configurazione del deploy non sono stati modificati da questa integrazione.

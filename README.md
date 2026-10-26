@@ -104,6 +104,8 @@ Il backend usa ancora il branch `demo/render-aiven-setup`, allineato al merge fu
 
 **Prova la demo** usa un account condiviso: le modifiche sono visibili agli altri visitatori, quindi inserire solo dati fittizi. Banner DEMO e nota Account condiviso compaiono solo per quella sessione; gli account personali non mostrano questi avvisi. L'impostazione production `demo: true` non blocca il form di registrazione. Render può richiedere un'attesa al primo accesso dopo sospensione.
 
+Prima della registrazione online, il client attende il risveglio del server tramite `GET /health`, con retry limitati a quattro minuti. Invia poi un solo `POST /auth/register`, con timeout di 15 secondi e senza retry automatici. Se la risposta del POST non arriva, la UI invita a controllare l'email prima di riprovare, perché l'account potrebbe essere stato creato. La conferma ricorda la validità del link di dieci minuti e il controllo della cartella Spam.
+
 Dettagli e cronologia: [deploy](docs/DEPLOYMENT.md). Convenzioni UI: [style guide](codex/style.md).
 
 ## Avvio locale

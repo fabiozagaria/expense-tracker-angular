@@ -112,3 +112,9 @@ Verifiche: build frontend e 62 test Angular passati; 6 test backend mirati passa
 ## Verifica MySQL completata — 2026-10-25
 
 Supera la precedente nota sulla suite database non eseguita. Suite Maven completa: 14 test, zero fallimenti/errori/skipped, Java 21.0.13 e MySQL Community 8.0.46 locale temporaneo. Database dedicato `expense_tracker_verification`, connessione su loopback, processo arrestato a fine prova; nessun dato online usato. Incluso `incomeCrudSearchAndOwnership`: GET/PUT/PATCH/DELETE altrui respinti con 404, CRUD proprietario, mese, titolo/descrizione, importo con virgola e date ISO/italiane. Test esistenti auth/spese/demo e 3 test Brevo inclusi. Frontend: build e 62 test passati; link entrate dalla dashboard corretto nel commit b12238f0f2ec953d8a2f31280a8601dc266493c6, stato Vercel success. Il proprietario ha confermato il caricamento delle liste. Resta il controllo browser completo desktop/mobile e temi.
+
+## Integrazione preparazione email — 26 ottobre 2026
+
+Recuperati dalla precedente bozza i miglioramenti del cold start senza ripristinare il blocco della registrazione: `GET /health` prima del POST in produzione, attesa massima di quattro minuti e timeout POST di 15 secondi, senza retry delle scritture. Conservati versione 1.0.0, registrazione pubblica attiva, `auth.isDemoSession()` e codice server `EMAIL_DELIVERY_FAILED`.
+
+La conferma ricorda il link valido dieci minuti e la cartella Spam. Un timeout della risposta POST non viene presentato come prova che l'account non sia stato creato. Le verifiche usano API simulate e indirizzi `.test`, senza nuove registrazioni o email reali.

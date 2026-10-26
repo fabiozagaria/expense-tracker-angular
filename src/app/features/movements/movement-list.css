@@ -1,0 +1,12 @@
+.filters, .edit-form { display:flex; flex-wrap:wrap; gap:16px; align-items:end; margin-bottom:24px; }
+label { display:flex; flex-direction:column; gap:8px; flex:1 1 180px; color:var(--ui-text); }
+select { background:var(--ui-surface); color:var(--ui-text); border:1px solid var(--ui-border); border-radius:6px; padding:12px; min-height:44px; }
+small { flex-basis:100%; color:var(--ui-muted); }
+.movements { display:grid; gap:16px; }
+.movement { display:flex; align-items:center; flex-wrap:wrap; gap:16px; }
+.movement > div:first-child { flex:1 1 200px; overflow-wrap:anywhere; }
+.movement h2 { font-size:18px; margin:0 0 8px; }
+.movement strong { font-size:22px; overflow-wrap:anywhere; max-width:100%; }
+.confirmation { flex-basis:100%; display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+.ui-actions { flex-wrap:wrap; } input { max-width:100%; min-width:0; }
+@media(max-width:700px) { .movement { align-items:flex-start; } .movement > .ui-actions { flex-basis:100%; } }

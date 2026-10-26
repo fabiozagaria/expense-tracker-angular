@@ -1,5 +1,19 @@
 # Contesto tecnico — Gestionale Spese Frontend
 
+## Stato corrente — 25 ottobre 2026
+
+**Progetto concluso, versione 1.0.0**, salvo correzioni di bug, refactoring e funzionalità future. Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
+
+- Frontend Vercel e backend Render con MySQL Aiven/TLS; registrazione online e Brevo HTTPS attivi. Registrazione reale e caricamento liste confermati dal proprietario.
+- CRUD completo spese/entrate e liste /api/{expenses,incomes}/search con paginazione, mese/anno, ordine data/ID e ricerca titolo/descrizione/importo/data.
+- Render esistente segue demo/render-aiven-setup, allineato al merge funzionale di master; render.yaml indica master. Aggiornare master non certifica da solo il deploy di quel servizio.
+- Suite backend completa: 14 test passati con Java 21.0.13 e MySQL 8.0.46 temporaneo, zero fallimenti/errori/skipped. Nessun dato online utilizzato.
+- Frontend: 62 test e build production riusciti; avvisi sui budget iniziale e CSS login/dashboard. Correzione link entrate dalla dashboard pubblicata su Vercel.
+- Restano il controllo visivo sistematico desktop/mobile e temi, il percorso integrale nel browser locale con Mailpit e la verifica completa del Compose originale senza i precedenti problemi del proxy TLS.
+- Versioni dei manifest allineate a 1.0.0. Nessun tag Git o GitHub Release creato da questo aggiornamento.
+
+## Cronologia e dettagli tecnici
+
 Aggiornato: 2026-10-12
 
 ## Obiettivo corrente
@@ -26,7 +40,7 @@ Completare e verificare localmente il verticale registrazione → verifica email
 - Il frontend dell'editing inline è funzionalmente verificato.
 - Resta da rieseguire il percorso manuale nel browser dopo la correzione della verifica email.
 - Gli URL API Angular usano `http://localhost:8080` in sviluppo e URL relativi con proxy Vercel in produzione. Il link email backend è configurabile tramite `FRONTEND_URL`; in locale usa localhost.
-- La registrazione pubblica resta disabilitata nel frontend e nel backend demo finché non sarà integrato il servizio email HTTPS. Il form resta visibile online; non viene aggirata la verifica email.
+- Il form può inviare anche in modalità demo; il backend con Brevo deve essere configurato e abilitato prima del deploy frontend. La verifica email resta obbligatoria.
 
 ## Prossima azione
 Eseguire il percorso manuale completo nel browser e verificare la scadenza/rotazione della sessione.
@@ -71,6 +85,36 @@ Tutte le 10 pagine canoniche e i componenti di spesa sono migrati a PrimeNG 21/A
 
 Verifica: 55 test Angular passati; build production riuscita, bundle iniziale circa 622 kB (prima circa 894 kB), entro limite massimo 1 MB. Browser: tutte le 10 pagine su desktop chiaro e mobile scuro, nessun overflow o errore JS; form di entrambe le transazioni con POST simulato verificano 4,20 € -> 4.2 e data ISO senza scritture nel DB condiviso. Verificati anche stati vuoti/errori/404 e successo/errore verifica email con risposte simulate e un solo POST per token. Con API reali verificati login, refresh, tema, filtri, CRUD completo di una spesa fittizia poi eliminata, logout e blocco signup demo. Il provider email pubblico resta da integrare.
 
-## Preparazione email HTTPS — 2026-10-12
+## Registrazione online — 2026-10-25
 
-Registrazione controllata da `registrationEnabled` separatamente da `demo`: in produzione false/true rispettivamente, in locale true/false. Il pulsante demo resta disponibile dopo l’apertura degli account personali. Gestito HTTP 503 EMAIL_DELIVERY_UNAVAILABLE senza mostrare dettagli provider o simulare successo. Nessuna API key email nel client. Attivazione pubblica ancora in attesa di account/mittente Brevo, configurazione Render e prova reale.
+Rimosso il blocco `environment.demo` dal submit di registrazione e dal pulsante. Login demo condiviso conservato. L'errore backend 503 EMAIL_DELIVERY_FAILED mostra un messaggio specifico, senza successo prematuro e con possibilità di retry. Aggiornati i test di registrazione online e il testo nel login.
+
+Distribuire prima il backend con Brevo configurato (MAIL_PROVIDER, BREVO_API_KEY, MAIL_FROM, FRONTEND_URL e REGISTRATION_ENABLED), poi questo frontend. Build e test Angular non eseguiti in questo ambiente privo delle dipendenze del progetto; la prova completa con invio reale resta aperta. Le sezioni datate 12 ottobre descrivono lo stato storico precedente.
+
+## Verifica deploy registrazione — 2026-10-25
+
+Backend Render live: deploy `dep-dbf1v8ek1f9s73fptho0`, commit `76fec7db0f4f86fb9764ca087836e12df7c094c7`. Il servizio segue ancora `demo/render-aiven-setup`, avanzato senza force dal vecchio commit alla versione integrata in master. Profilo demo conservato; MAIL_PROVIDER=brevo e REGISTRATION_ENABLED=true configurati su Render preservando i segreti esistenti.
+
+Verifiche completate: 3 test Brevo con Java 21 passati; 56 test Angular passati e build production riuscita con gli avvisi sui budget già presenti. Browser pubblico /register: pulsante Registrati abilitato. API pubblica: health 200, username portfolio-demo già esistente respinto con 409 USERNAME_ALREADY_EXISTS (anche tramite proxy Vercel), token verifica inesistente 400, accesso anonimo alle spese 401, login demo 200 e lettura spese autenticata 200. La prova del duplicato non crea utenti e non invia email.
+
+Resta da verificare con un indirizzo reale: registrazione nuova, accettazione/consegna Brevo, ricezione del link, conferma e login del nuovo account. Nessuna email reale inviata durante questi controlli. Le precedenti note su test non eseguibili sono superate per i test mirati citati; non è stata rieseguita l'intera suite backend con MySQL.
+
+## Avvisi della sessione demo — 2026-10-25
+
+La registrazione pubblica e la ricezione dell'email sono state confermate dal proprietario. Il banner DEMO e la nota Spazio demo nella sidebar ora compaiono soltanto per il subject JWT portfolio-demo, anche dopo refresh. Il decoding del token serve soltanto alla presentazione: autenticazione e autorizzazione restano sul backend. Login demo disponibile e environment.demo conservato per il relativo pulsante. Rimosso il tooltip che dichiarava la registrazione indisponibile. Verifica: 60 test Angular passati; build production riuscita con i consueti avvisi sui budget.
+
+## CRUD entrate e liste — 2026-10-25, branch in verifica
+
+Scope autorizzato: CRUD completo entrate, liste paginate dal database, ordinamento data/ID, mese/anno, ricerca titolo/descrizione/importo/data e firma fabiozagariadev con portfolio e GitHub. Nessuna modifica agli endpoint array usati dai grafici. Nuovi endpoint /api/{expenses,incomes}/search. Angular /summary e /incomes usano un componente condiviso con client HTTP dedicato, gestione errori, modifica completa e conferma cancellazione.
+
+Verifiche: build frontend e 62 test Angular passati; 6 test backend mirati passati con Java 21 e Mockito agent esterno. Nuova regressione MySQL aggiunta ad AuthExpenseFlowTests, ancora da eseguire su database isolato. Nessun dato o configurazione del deploy alterato. Prima del merge: suite con MySQL e controllo browser desktop/mobile, chiaro/scuro; poi deploy backend e frontend coordinati.
+
+## Verifica MySQL completata — 2026-10-25
+
+Supera la precedente nota sulla suite database non eseguita. Suite Maven completa: 14 test, zero fallimenti/errori/skipped, Java 21.0.13 e MySQL Community 8.0.46 locale temporaneo. Database dedicato `expense_tracker_verification`, connessione su loopback, processo arrestato a fine prova; nessun dato online usato. Incluso `incomeCrudSearchAndOwnership`: GET/PUT/PATCH/DELETE altrui respinti con 404, CRUD proprietario, mese, titolo/descrizione, importo con virgola e date ISO/italiane. Test esistenti auth/spese/demo e 3 test Brevo inclusi. Frontend: build e 62 test passati; link entrate dalla dashboard corretto nel commit b12238f0f2ec953d8a2f31280a8601dc266493c6, stato Vercel success. Il proprietario ha confermato il caricamento delle liste. Resta il controllo browser completo desktop/mobile e temi.
+
+## Integrazione preparazione email — 26 ottobre 2026
+
+Recuperati dalla precedente bozza i miglioramenti del cold start senza ripristinare il blocco della registrazione: `GET /health` prima del POST in produzione, attesa massima di quattro minuti e timeout POST di 15 secondi, senza retry delle scritture. Conservati versione 1.0.0, registrazione pubblica attiva, `auth.isDemoSession()` e codice server `EMAIL_DELIVERY_FAILED`.
+
+La conferma ricorda il link valido dieci minuti e la cartella Spam. Un timeout della risposta POST non viene presentato come prova che l'account non sia stato creato. Le verifiche usano API simulate e indirizzi `.test`, senza nuove registrazioni o email reali.

@@ -1,105 +1,116 @@
 # Gestionale Spese — Frontend Angular
 
-![Versione](https://img.shields.io/badge/versione-0.3.0-blue)
-![Stato](https://img.shields.io/badge/stato-in%20sviluppo-orange)
+![Versione](https://img.shields.io/badge/versione-1.0.0-blue)
+![Stato](https://img.shields.io/badge/progetto-concluso-success)
 
-**Versione attuale: 0.3.0 — applicazione full stack in consolidamento.**
+**Progetto concluso al 25 ottobre 2026 — versione 1.0.0.**
 
-Frontend del progetto full stack **Gestionale Spese**, con spese personali, inserimento entrate e dashboard.
+Il perimetro funzionale è completato. Sono possibili correzioni di bug, refactoring e funzionalità future, gestite con nuove versioni. Non sono previste ulteriori funzionalità per chiudere questa versione.
 
-L'applicazione è sviluppata con Angular e comunica tramite API REST con un backend Spring Boot mantenuto in un repository separato.
+Applicazione full stack per gestire spese ed entrate personali, con autenticazione, verifica email, dashboard e liste modificabili con ricerca, filtri e paginazione.
 
-- [Demo frontend](https://gestionale-spese.vercel.app/)
-- [Repository backend](https://github.com/fabiozagaria/expense-tracker-api)
+- [Applicazione online](https://gestionale-spese.vercel.app/)
+- [Backend Spring Boot](https://github.com/fabiozagaria/expense-tracker-api)
+- [Portfolio](https://fabio-zagaria-portfolio.vercel.app/)
+- [GitHub di Fabio Zagaria](https://github.com/fabiozagaria)
 
-## Interfaccia PrimeNG/Aura
+## Funzionalità
 
-Tutte le pagine e i componenti usano PrimeNG 21, Aura e PrimeIcons: home, dashboard, login, registrazione, verifica email, scelta movimento, form spesa/entrata, elenco, card e dettaglio spese. Bootstrap è stato rimosso dalle dipendenze, dagli stili e dagli script. Colori, spaziatura, form e messaggi seguono [codex/style.md](codex/style.md), con tema chiaro/scuro, layout responsive e animazioni GSAP che rispettano il movimento ridotto. Tutte le pagine sono caricate al bisogno.
+- Registrazione con verifica email, login, rinnovo sessione e logout.
+- Accesso rapido tramite **Prova la demo**, con account condiviso.
+- Creazione, visualizzazione, modifica di tutti i campi ed eliminazione di spese ed entrate.
+- Conferma prima dell'eliminazione e messaggi di caricamento, lista vuota ed errore.
+- Liste paginate dal database, 10 movimenti per pagina.
+- Filtro per mese/anno e ordine dalle più recenti o meno recenti.
+- Ricerca per titolo/descrizione, importo esatto o data esatta.
+- Dashboard con saldo, totali, ripartizione entrate/spese e ultimi sei movimenti.
+- Collegamenti dalla dashboard al dettaglio spese e alla lista entrate.
+- Tema chiaro/scuro, navigazione responsive e animazioni che rispettano il movimento ridotto.
+- Footer con firma **fabiozagariadev**, portfolio e GitHub; favicon originale.
 
-## Stato del progetto
+## Stack e struttura
 
-**In consolidamento: funzionalità presenti, verifica completa nel browser ancora aperta.**
+Angular 21, TypeScript 5.9, Signals, Reactive Forms, HttpClient, RxJS, PrimeNG 21/Aura, PrimeIcons, GSAP e Vitest. Il progetto include configurazione SSR; le pagine sono caricate tramite route lazy. Il flusso di verifica email viene eseguito solo sul client.
 
-Il verticale delle spese è collegato alle API. Registrazione, verifica email, login, rinnovo della sessione e spese personali sono disponibili in locale con backend, MySQL e Mailpit avviati. La demo pubblica è online e collegata al backend Render: il pulsante **Prova la demo** usa un account condiviso con dati fittizi. Il form `/register` è visibile anche online, ma l'invio è disabilitato in attesa del servizio email HTTPS per la verifica dell'account. Le route protette `/dashboard`, `/add-income` e `/add-transaction` sono presenti nel codice; login demo, sessione, dashboard e CRUD spese sono verificati nel browser; la registrazione locale con email e la creazione di entrate sul database condiviso restano verifiche separate.
+| Percorso | Responsabilità |
+| --- | --- |
+| `src/app/core/layout/` | Header, navigazione e footer |
+| `src/app/core/theme.service.ts` | Tema e preferenza locale |
+| `src/app/core/ui/` | Direttiva condivisa per animazioni |
+| `src/app/features/auth/` | Form auth, verifica email, sessione, guard e interceptor |
+| `src/app/features/movements/` | Lista condivisa spese/entrate, modifica completa e client HTTP paginato |
+| `src/app/features/expenses/` | Modelli, servizi, creazione e dettaglio delle spese; componenti dedicati |
+| `src/app/features/income/` | Modelli, servizi e form di creazione entrate |
+| `src/app/features/dashboard/` | Dashboard e composizione dei movimenti recenti |
+| `src/app/features/transactions/` | Scelta tra nuova spesa e nuova entrata |
+| `src/app/features/home/` | Pagina iniziale |
+| `src/app/app.routes.ts` | Route, guard e titoli |
+| `src/environments/` | URL backend locale e URL relativi production |
+| `src/styles.css`, `codex/style.md` | Token, stili e convenzioni UI |
+| `public/` | Asset statici e favicon |
+| `vercel.json` | Proxy verso Render e intestazioni anti-cache |
 
-## Scopo e confine della versione
+I componenti gestiscono form e stato UI; i servizi dedicati incapsulano le chiamate HTTP. L'access token rimane in memoria, il refresh token in un cookie HttpOnly gestito dal backend.
 
-Client Angular del prodotto full stack Expense Tracker: integra UI, form, chiamate REST e autenticazione con il backend. Il prossimo traguardo è un flusso riproducibile nel browser per autenticazione, spese, entrate e riepilogo; nuove funzionalità vengono scelte dopo questa verifica.
+## Route
 
-## Funzionalità presenti
+| Route | Scopo | Autenticazione |
+| --- | --- | --- |
+| `/` | Home | Pubblica |
+| `/login`, `/register` | Accesso e registrazione | Pubbliche |
+| `/registrati` | Redirect a `/register` | Pubblica |
+| `/verify-email?token=...` | Conferma email | Pubblica |
+| `/dashboard` | Totali e ultimi movimenti | Richiesta |
+| `/summary` | Lista paginata e modifica spese | Richiesta |
+| `/incomes` | Lista paginata e modifica entrate | Richiesta |
+| `/expenses/:id` | Dettaglio spesa | Richiesta |
+| `/add-transaction` | Scelta movimento | Richiesta |
+| `/add-expense`, `/add-income` | Creazione movimento | Richiesta |
 
-- navigazione tra home, elenco spese, aggiunta e dettaglio;
-- form reattivo per l'inserimento delle spese;
-- validazione di titolo, importo, categoria, descrizione e data;
-- stato applicativo gestito con Angular Signals;
-- caricamento dell'elenco delle spese tramite API;
-- aggiunta, modifica e rimozione di una spesa;
-- pagina di riepilogo e route di dettaglio;
-- gestione iniziale degli stati di caricamento ed errore;
-- client HTTP tipizzato per le operazioni REST previste.
-- registrazione, verifica email e login con JWT per le spese personali;
-- rinnovo dell'access token tramite cookie HttpOnly e `POST /auth/refresh`;
-- logout e protezione delle route applicative;
-- form per inserire entrate e pagina di scelta del tipo di movimento;
-- dashboard con totale entrate, totale spese e saldo.
+## Integrazione REST
 
-## Tecnologie
+| Uso | Endpoint |
+| --- | --- |
+| Liste paginate | `GET /api/expenses/search`, `GET /api/incomes/search` |
+| Creazione | `POST /api/expenses`, `POST /api/incomes` |
+| Modifica completa dalle liste | `PUT /api/expenses/{id}`, `PUT /api/incomes/{id}` |
+| Eliminazione | `DELETE /api/expenses/{id}`, `DELETE /api/incomes/{id}` |
+| Dettaglio spesa | `GET /api/expenses/{id}` |
+| Modifica parziale spese | `PATCH /api/expenses/{id}` nel client dedicato |
+| Movimenti dashboard | `GET /api/expenses` e `GET /api/incomes`, risposta array |
+| Totali dashboard | `GET /api/dashboard/summary` |
+| Sessione | `POST /auth/register`, `/verify-email`, `/login`, `/refresh`, `/logout`, `/demo` |
 
-- Angular 21
-- TypeScript 5.9
-- Angular Signals
-- Reactive Forms
-- Angular Router
-- Angular HttpClient
-- RxJS
-- PrimeNG 21, Aura e PrimeIcons
-- GSAP
-- Vitest
+Il backend espone inoltre dettaglio e PATCH delle entrate. Il [README API](https://github.com/fabiozagaria/expense-tracker-api#readme) è la fonte completa del contratto.
 
-## Architettura frontend
+Le liste inviano `page` (da 0), `size=10`, `month=yyyy-MM`, `order=newest|oldest` e `query`. Il server restituisce `content`, `number`, `size`, `totalElements` e `totalPages`. La ricerca testuale è parziale su titolo e descrizione; importi e date sono esatti. Esempi: `25,50`, `25.50`, `2026-10-25` o `25/10/2026`.
 
-| Area                  | Responsabilità                                                              |
-| --------------------- | --------------------------------------------------------------------------- |
-| `ExpenseApiService`   | Espone le chiamate HTTP verso il backend                                    |
-| `ExpenseService`      | Mantiene lo stato con Signals e coordina caricamento, creazione e rimozione |
-| `expense.ts`          | Definisce modello, categorie e tipi delle richieste                         |
-| Componenti `expenses` | Gestiscono form, lista, riepilogo e dettaglio                               |
-| `app.routes.ts`       | Definisce le rotte e i titoli delle pagine                                  |
-| `AuthService`         | Gestisce registrazione, login, refresh e logout con access token in memoria |
-| `authInterceptor`     | Aggiunge il Bearer alle API e riprova dopo un refresh riuscito             |
-| `authGuard`           | Protegge spese, entrate e dashboard e ripristina la sessione dal cookie |
+La dashboard usa gli array completi e i totali dedicati: non calcola il saldo sulla sola pagina corrente. L'isolamento tra utenti è imposto dal backend.
 
-## Integrazione con il backend
+L'interceptor aggiunge il Bearer alle API e gestisce il rinnovo su 401. Il guard tenta il ripristino della sessione dal cookie. Duplicati in registrazione e fallimenti dell'invio email mostrano messaggi dedicati; il login richiede email verificata.
 
-Il client utilizza in sviluppo:
+## Deploy
 
-```text
-http://localhost:8080/api/expenses
-```
+| Componente | Ambiente |
+| --- | --- |
+| Frontend | Vercel: `https://gestionale-spese.vercel.app` |
+| Backend | Render: `https://expense-tracker-api-demo-plb9.onrender.com` |
+| Database | MySQL Aiven con TLS, accessibile solo dal backend |
+| Email online | Brevo via HTTPS; SMTP/Mailpit in locale |
 
-Contratto REST previsto dal frontend:
+In produzione `apiBaseUrl` è vuoto: il browser usa URL relativi. `vercel.json` inoltra `/health`, `/auth/*` e `/api/*` a Render e imposta `Cache-Control: no-store` per questi percorsi. Il cookie refresh online è HttpOnly, Secure, SameSite=Strict, Path `/auth`; il backend verifica l'Origin delle POST auth nel profilo demo.
 
-| Metodo   | Endpoint             | Utilizzo               |
-| -------- | -------------------- | ---------------------- |
-| `GET`    | `/api/expenses`      | Elenco delle spese     |
-| `GET`    | `/api/expenses/{id}` | Dettaglio di una spesa |
-| `POST`   | `/api/expenses`      | Creazione              |
-| `PUT`    | `/api/expenses/{id}` | Aggiornamento completo |
-| `PATCH`  | `/api/expenses/{id}` | Aggiornamento parziale |
-| `DELETE` | `/api/expenses/{id}` | Eliminazione           |
+Il backend usa ancora il branch `demo/render-aiven-setup`, allineato al merge funzionale di `master` il 25 ottobre 2026; il suo Blueprint indica `master`. Registrazione pubblica e verifica email sono abilitate sul deploy.
 
-Il backend espone l'intero CRUD del dominio `Expense`, `GET`/`POST /api/incomes` e `GET /api/dashboard/summary`. Le entrate non hanno ancora update/delete. Alcune integrazioni frontend e la gestione completa degli stati UI sono ancora in consolidamento.
+**Prova la demo** usa un account condiviso: le modifiche sono visibili agli altri visitatori, quindi inserire solo dati fittizi. Banner DEMO e nota Account condiviso compaiono solo per quella sessione; gli account personali non mostrano questi avvisi. L'impostazione production `demo: true` non blocca il form di registrazione. Render può richiedere un'attesa al primo accesso dopo sospensione.
 
-L'autenticazione locale usa `POST /auth/register`, `POST /auth/verify-email`, `POST /auth/login`, `POST /auth/refresh` e `POST /auth/logout`. Il backend restituisce l'access token nel corpo del login/refresh e conserva il refresh token in un cookie HttpOnly. Il frontend invia il cookie con `withCredentials` e protegge le rotte `/summary`, `/add-expense`, `/expenses/:id`, `/dashboard`, `/add-income` e `/add-transaction`.
+Prima della registrazione online, il client attende il risveglio del server tramite `GET /health`, con retry limitati a quattro minuti. Invia poi un solo `POST /auth/register`, con timeout di 15 secondi e senza retry automatici. Se la risposta del POST non arriva, la UI invita a controllare l'email prima di riprovare, perché l'account potrebbe essere stato creato. La conferma ricorda la validità del link di dieci minuti e il controllo della cartella Spam.
 
-La pagina canonica di registrazione è `/register`; `/registrati` reindirizza alla stessa pagina. Il form valida username, email e password e invia il DTO a `POST /auth/register` solo in locale. Dopo il successo richiede la verifica email prima del login. Le risposte `409` con `errorName` `USERNAME_ALREADY_EXISTS` o `EMAIL_ALREADY_EXISTS` mostrano quale campo è già registrato. Nella demo il form è consultabile e l'invio è bloccato sia nella UI sia nel backend: l'integrazione del servizio email HTTPS resta un passo successivo.
+Dettagli e cronologia: [deploy](docs/DEPLOYMENT.md). Convenzioni UI: [style guide](codex/style.md).
 
 ## Avvio locale
 
-### Requisiti
-
-- Node.js in versione LTS
-- npm
+Requisiti: Node.js `20.19+` nella linea 20, `22.12+` nella linea 22 oppure `24+`; npm e backend raggiungibile.
 
 ```bash
 git clone https://github.com/fabiozagaria/expense-tracker-angular.git
@@ -108,46 +119,39 @@ npm ci
 npm start
 ```
 
-Il frontend sarà disponibile su `http://localhost:4200`.
+Frontend: `http://localhost:4200`. In sviluppo `apiBaseUrl=http://localhost:8080`.
 
-Per le funzionalità collegate ai dati è necessario avviare anche il [backend Spring Boot](https://github.com/fabiozagaria/expense-tracker-api).
-Per provare la registrazione, nel repository backend configurare `.env` e avviare `docker compose up --build -d`: partiranno API, MySQL e Mailpit. Il link di verifica è visibile su `http://localhost:8025`. L'integrazione API è configurata per `http://localhost:8080` e richiede il frontend su `http://localhost:4200`.
+Per avviare API, MySQL e Mailpit seguire il [README backend](https://github.com/fabiozagaria/expense-tracker-api#avvio-da-un-clone-pulito): compilare prima il suo `.env`, validare Compose e avviare lo stack. Il frontend va avviato separatamente. Le email locali sono consultabili in Mailpit su `http://localhost:8025`.
 
 ## Verifiche
 
 ```bash
-npm test
+npm test -- --watch=false
 npm run build
 ```
 
-## Prossimi sviluppi
+Esiti del **25 ottobre 2026**:
 
-1. verificare nel browser registrazione, email, login, refresh e logout con lo stack backend avviato;
-2. riprovare CRUD spese, editing inline, inserimento entrate e aggiornamento della dashboard;
-3. verificare isolamento fra utenti e comportamento sugli errori;
-4. uniformare loading, conferme ed errori e ampliare i test mirati;
-5. integrare il servizio email HTTPS prima di abilitare la registrazione online.
+- **62 test Angular passati**, inclusi auth, sessione demo/personale, gestione errori e nuove liste.
+- **Build production riuscita**, con avvisi sui budget del bundle iniziale e CSS login/dashboard; budget non aumentati per nasconderli.
+- **14 test backend passati** con Java 21 e MySQL 8.0.46 temporaneo, senza fallimenti/errori/skipped: autenticazione, CRUD, ricerca e isolamento tra utenti, oltre ai test mirati.
+- Registrazione online con email reale e caricamento delle liste confermati dal proprietario.
+- Deploy Vercel della correzione ai link entrate confermato.
 
-L'editing inline è già presente; il prossimo passo è verificarlo nel flusso completo. La demo pubblica usa il backend Render; la registrazione online resta disabilitata.
+I test non certificano tutti i casi limite né sostituiscono una verifica browser completa. Restano il controllo visivo sistematico desktop/mobile nei due temi e il percorso integrale nel browser locale con Angular e Mailpit. Queste verifiche non richiedono nuove funzionalità.
 
-## Versioning
+## Versioning e manutenzione
 
-Il progetto segue [Semantic Versioning](https://semver.org/):
+Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Versione allineata al backend nei rispettivi manifest.
 
-- `0.x.y`: sviluppo attivo, API e funzionalità ancora soggette a cambiamenti;
-- incremento `PATCH` (`0.3.1`) per correzioni compatibili;
-- incremento `MINOR` (`0.4.0`) per nuove funzionalità durante lo sviluppo;
-- `1.0.0` quando l'MVP sarà stabile, verificato e distribuibile.
+- **PATCH** (`1.0.1`): correzioni compatibili e manutenzione/refactoring senza cambiare il contratto pubblico.
+- **MINOR** (`1.1.0`): nuove funzionalità compatibili.
+- **MAJOR** (`2.0.0`): modifiche incompatibili del contratto pubblico.
+
+Il cambio dei manifest non crea automaticamente un tag Git o una GitHub Release.
 
 ## Autore
 
-Fabio Zagaria — Junior Backend Developer con competenze full stack.
+**Fabio Zagaria · fabiozagariadev** — Junior Backend Developer con competenze full stack.
 
-## Tema della pagina
-
-Il pulsante sole/luna nella navigazione alterna tema chiaro e scuro. Al primo accesso segue il dispositivo; la scelta manuale viene ricordata nel browser.
-
-
-## Demo pubblica
-
-Frontend Vercel e backend Render sono online: vedere [deploy e verifiche](docs/DEPLOYMENT.md). **Prova la demo** apre l'account condiviso; le modifiche sono visibili agli altri visitatori. Usare solo dati fittizi. La registrazione online attende il servizio email HTTPS, mentre in locale resta disponibile con verifica email tramite SMTP/Mailpit.
+[Portfolio](https://fabio-zagaria-portfolio.vercel.app/) · [GitHub](https://github.com/fabiozagaria)

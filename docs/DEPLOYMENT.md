@@ -1,5 +1,19 @@
 # Demo portfolio: Render + Aiven + Vercel
 
+## Stato corrente — 25 ottobre 2026
+
+**Progetto concluso, versione 1.0.0**, salvo correzioni di bug, refactoring e funzionalità future. Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
+
+- Frontend Vercel e backend Render con MySQL Aiven/TLS; registrazione online e Brevo HTTPS attivi. Registrazione reale e caricamento liste confermati dal proprietario.
+- CRUD completo spese/entrate e liste /api/{expenses,incomes}/search con paginazione, mese/anno, ordine data/ID e ricerca titolo/descrizione/importo/data.
+- Render esistente segue demo/render-aiven-setup, allineato al merge funzionale di master; render.yaml indica master. Aggiornare master non certifica da solo il deploy di quel servizio.
+- Suite backend completa: 14 test passati con Java 21.0.13 e MySQL 8.0.46 temporaneo, zero fallimenti/errori/skipped. Nessun dato online utilizzato.
+- Frontend: 62 test e build production riusciti; avvisi sui budget iniziale e CSS login/dashboard. Correzione link entrate dalla dashboard pubblicata su Vercel.
+- Restano il controllo visivo sistematico desktop/mobile e temi, il percorso integrale nel browser locale con Mailpit e la verifica completa del Compose originale senza i precedenti problemi del proxy TLS.
+- Versioni dei manifest allineate a 1.0.0. Nessun tag Git o GitHub Release creato da questo aggiornamento.
+
+## Cronologia e dettagli tecnici
+
 Preparazione del codice; pubblicazione e verifica nel browser ancora da completare.
 
 ## Backend
@@ -50,12 +64,20 @@ Deploy Render `dep-db6g54ad0e5s73akjl20` live. `/health`, login demo, lettura sp
 
 `/register` espone un form ReactiveForms con username, email e password; `/registrati` è un alias. Il form locale usa POST /auth/register e il flusso di verifica email. Nella demo pubblica i campi sono visibili, ma il submit è bloccato finché non viene configurato un provider email adatto al deploy. Nessuna verifica email viene simulata. Gestiti i conflitti di username/email con errorName specifico e HTTP 409. 44 test Angular passati e build production riuscita; 7 test backend con MySQL passati.
 
-## Attivazione email HTTPS
+## Verifica deploy registrazione — 2026-10-25
 
-Il backend supporta Brevo Free via HTTPS; seguire [EMAIL.md nel repository API](https://github.com/fabiozagaria/expense-tracker-api/blob/feature/emailservice/docs/EMAIL.md) per mittente verificato, chiave API e limiti. Nessuna credenziale del provider deve arrivare ad Angular.
+Backend Render live: deploy `dep-dbf1v8ek1f9s73fptho0`, commit `76fec7db0f4f86fb9764ca087836e12df7c094c7`. Il servizio segue ancora `demo/render-aiven-setup`, avanzato senza force dal vecchio commit alla versione integrata in master. Profilo demo conservato; MAIL_PROVIDER=brevo e REGISTRATION_ENABLED=true configurati su Render preservando i segreti esistenti.
 
-`environment.production.ts` conserva `demo: true` e `registrationEnabled: false`. La registrazione è un’impostazione separata dal pulsante «Prova la demo»: dopo configurazione backend e prova reale della consegna, impostare soltanto `registrationEnabled: true` e pubblicare una nuova build. La build di sviluppo usa `registrationEnabled: true` per Mailpit. Un frontend abilitato non sostituisce il controllo server `REGISTRATION_ENABLED`.
+Verifiche completate: 3 test Brevo con Java 21 passati; 56 test Angular passati e build production riuscita con gli avvisi sui budget già presenti. Browser pubblico /register: pulsante Registrati abilitato. API pubblica: health 200, username portfolio-demo già esistente respinto con 409 USERNAME_ALREADY_EXISTS (anche tramite proxy Vercel), token verifica inesistente 400, accesso anonimo alle spese 401, login demo 200 e lettura spese autenticata 200. La prova del duplicato non crea utenti e non invia email.
 
-HTTP 503 `EMAIL_DELIVERY_UNAVAILABLE` comunica che l'account non è stato creato; il form conserva i campi e permette un nuovo tentativo manuale. La pagina non ripete il POST automaticamente. La conferma di registrazione ricorda i 10 minuti del link e il controllo Spam.
+Resta da verificare con un indirizzo reale: registrazione nuova, accettazione/consegna Brevo, ricezione del link, conferma e login del nuovo account. Nessuna email reale inviata durante questi controlli. Le precedenti note su test non eseguibili sono superate per i test mirati citati; non è stata rieseguita l'intera suite backend con MySQL.
 
-Su Render, anche la registrazione attende `/health` (massimo 4 minuti) prima di un unico POST con timeout di 15 secondi. I retry riguardano soltanto il GET di risveglio; errori email e POST non sono ripetuti automaticamente.
+## Registrazione e risveglio Render — 2026-10-26
+
+La registrazione pubblica resta attiva e separata dall'accesso demo condiviso, come documentato nello stato corrente del README. Le note del 12 ottobre sul form bloccato descrivono lo stato storico precedente.
+
+In produzione (`demo: true`) la registrazione attende `GET /health`, con timeout di 15 secondi per richiesta e retry fino a quattro minuti. Dopo una risposta `{ "status": "up" }`, il client invia un solo `POST /auth/register` con timeout di 15 secondi. Nessun errore del POST o del servizio email viene ritentato automaticamente. In locale la registrazione invia direttamente il POST.
+
+HTTP 503 `EMAIL_DELIVERY_FAILED` mantiene il contratto del backend attuale: l'invio email fallisce e la registrazione viene annullata. La UI conserva il form e non espone dettagli del provider. Se invece manca la risposta del POST, non è possibile dedurre se l'account sia stato creato: controllare l'email prima di riprovare. Dopo il successo, il messaggio ricorda il link valido dieci minuti e la cartella Spam.
+
+Non è stato introdotto un nuovo flag frontend per disabilitare la registrazione. Il backend mantiene il controllo `REGISTRATION_ENABLED`; il provider, i segreti, gli URL e la configurazione del deploy non sono stati modificati da questa integrazione.

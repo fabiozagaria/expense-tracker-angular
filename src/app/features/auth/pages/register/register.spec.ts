@@ -7,12 +7,12 @@ import { environment } from '../../../../../environments/environment';
 import { routes } from '../../../../app.routes';
 import { AuthService } from '../../services/auth.service';
 import { Register } from './register';
+import { vi } from 'vitest';
 
 describe('Register', () => {
   let fixture: ComponentFixture<Register>;
   let requests: HttpTestingController;
   const initialDemo = environment.demo;
-  const initialRegistrationEnabled = environment.registrationEnabled;
   const initialApiBaseUrl = environment.apiBaseUrl;
   const registrationUrl = `${initialApiBaseUrl}/auth/register`;
 
@@ -26,7 +26,6 @@ describe('Register', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
-    environment.registrationEnabled = initialRegistrationEnabled;
     environment.apiBaseUrl = initialApiBaseUrl;
     requests.verify();
   });
@@ -36,8 +35,15 @@ describe('Register', () => {
     fixture.detectChanges();
   }
 
-  function fillForm(overrides: Partial<Record<'username' | 'email' | 'password', string>> = {}): void {
-    const values = { username: 'verticaluser1', email: 'vertical@example.test', password: 'secret123', ...overrides };
+  function fillForm(
+    overrides: Partial<Record<'username' | 'email' | 'password', string>> = {},
+  ): void {
+    const values = {
+      username: 'verticaluser1',
+      email: 'vertical@example.test',
+      password: 'secret123',
+      ...overrides,
+    };
     for (const [name, value] of Object.entries(values)) {
       const input = fixture.nativeElement.querySelector(`#register-${name}`) as HTMLInputElement;
       input.value = value;
@@ -46,7 +52,9 @@ describe('Register', () => {
   }
 
   function submitForm(): void {
-    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    fixture.nativeElement
+      .querySelector('form')
+      .dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
     fixture.detectChanges();
   }
 
@@ -58,13 +66,17 @@ describe('Register', () => {
     const request = requests.expectOne(registrationUrl);
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual({
-      username: 'verticaluser1', email: 'vertical@example.test', password: 'secret123',
+      username: 'verticaluser1',
+      email: 'vertical@example.test',
+      password: 'secret123',
     });
     expect(fixture.nativeElement.textContent).not.toContain('Account creato.');
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(true);
     request.flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('Controlla la tua email e apri il link di verifica prima di accedere.');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Controlla la tua email e apri il link di verifica prima di accedere.',
+    );
     expect(fixture.nativeElement.querySelector('form')).toBeNull();
     expect(fixture.nativeElement.querySelector('a').getAttribute('href')).toBe('/login');
     expect(TestBed.inject(AuthService).accessToken()).toBeNull();
@@ -78,24 +90,25 @@ describe('Register', () => {
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
   });
 
-  it.each([
-    { username: 'short' },
-    { email: 'invalid-address' },
-    { password: '12345' },
-  ])('blocks invalid field values: %o', values => {
-    createForm();
-    fillForm(values);
-    submitForm();
-    requests.expectNone(registrationUrl);
-    expect(fixture.nativeElement.querySelector('input[aria-invalid="true"]')).toBeTruthy();
-  });
+  it.each([{ username: 'short' }, { email: 'invalid-address' }, { password: '12345' }])(
+    'blocks invalid field values: %o',
+    (values) => {
+      createForm();
+      fillForm(values);
+      submitForm();
+      requests.expectNone(registrationUrl);
+      expect(fixture.nativeElement.querySelector('input[aria-invalid="true"]')).toBeTruthy();
+    },
+  );
 
   it('prevents another request while registration is in progress', () => {
     createForm();
     fillForm();
     submitForm();
     submitForm();
-    requests.expectOne(registrationUrl).flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
+    requests
+      .expectOne(registrationUrl)
+      .flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
   });
 
   it.each([
@@ -106,63 +119,102 @@ describe('Register', () => {
     createForm();
     fillForm();
     submitForm();
-    requests.expectOne(registrationUrl).flush({ errorName }, { status: 409, statusText: 'Conflict' });
+    requests
+      .expectOne(registrationUrl)
+      .flush({ errorName }, { status: 409, statusText: 'Conflict' });
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain(expectedMessage);
+    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain(
+      expectedMessage,
+    );
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
-    expect((fixture.nativeElement.querySelector('#register-username') as HTMLInputElement).value).toBe('verticaluser1');
+    expect(
+      (fixture.nativeElement.querySelector('#register-username') as HTMLInputElement).value,
+    ).toBe('verticaluser1');
     expect(fixture.nativeElement.textContent).not.toContain('Account creato.');
   });
 
-  it.each([0, 503])('shows a connection message for status %s', status => {
+  it('shows a connection message when the server is unavailable', () => {
     createForm();
     fillForm();
     submitForm();
-    requests.expectOne(registrationUrl).flush(null, { status, statusText: 'Unavailable' });
+    requests.expectOne(registrationUrl).flush(null, { status: 503, statusText: 'Unavailable' });
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain('Server non disponibile. Controlla la connessione');
+    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain(
+      'Server non disponibile. Controlla la connessione',
+    );
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
   });
 
-  it('shows the demo form but blocks registration even if a submit event is triggered', () => {
+  it('does not claim registration failed when the POST response is lost', () => {
+    createForm();
+    fillForm();
+    submitForm();
+    requests.expectOne(registrationUrl).error(new ProgressEvent('timeout'));
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain(
+      'La registrazione potrebbe essere stata completata',
+    );
+    expect(fixture.nativeElement.textContent).not.toContain('Account non creato');
+    expect(fixture.nativeElement.querySelector('form')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
+    requests.expectNone(registrationUrl);
+  });
+
+  it('submits registration online while retaining the demo login', () => {
     environment.demo = true;
-    environment.registrationEnabled = false;
     environment.apiBaseUrl = '';
     createForm();
-    expect(fixture.nativeElement.querySelectorAll('form input').length).toBe(3);
-    expect(fixture.nativeElement.textContent).toContain('La registrazione online non è ancora disponibile.');
-    expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(true);
-    fillForm();
-    submitForm();
-    requests.expectNone(request => request.url.endsWith('/auth/register'));
-    expect(fixture.nativeElement.textContent).not.toContain('Account creato.');
-    expect(fixture.nativeElement.querySelector('a').getAttribute('href')).toBe('/login');
-  });
-
-  it('allows personal registration while demo login remains enabled', () => {
-    environment.demo = true;
-    environment.registrationEnabled = true;
-    createForm();
-    fillForm();
-    submitForm();
-    requests.expectNone(registrationUrl);
-    requests.expectOne(`${initialApiBaseUrl}/health`).flush({ status: 'up' });
-    requests.expectOne(registrationUrl).flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
-    fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('10 minuti');
-    expect(fixture.nativeElement.textContent).not.toContain('La registrazione online non è ancora disponibile.');
-  });
-
-  it('shows an email delivery failure without claiming the account was created or retrying', () => {
-    createForm();
-    fillForm();
-    submitForm();
-    requests.expectOne(registrationUrl).flush({ errorName: 'EMAIL_DELIVERY_UNAVAILABLE', message: 'private details' },
-      { status: 503, statusText: 'Unavailable' });
-    fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('Account non creato: riprova più tardi.');
-    expect(fixture.nativeElement.textContent).not.toContain('private details');
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
+    fillForm();
+    submitForm();
+    requests.expectNone('/auth/register');
+    requests.expectOne('/health').flush({ status: 'up' });
+    const request = requests.expectOne('/auth/register');
+    expect(request.request.method).toBe('POST');
+    request.flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Account creato.');
+    expect(fixture.nativeElement.textContent).toContain('10 minuti');
+    expect(fixture.nativeElement.textContent).toContain('Spam');
+  });
+
+  it('cancels wake-up on leaving the form instead of registering later', async () => {
+    vi.useFakeTimers();
+    try {
+      environment.demo = true;
+      environment.apiBaseUrl = '';
+      createForm();
+      fillForm();
+      submitForm();
+      requests.expectOne('/health').flush(null, { status: 503, statusText: 'Unavailable' });
+      fixture.destroy();
+      await vi.advanceTimersByTimeAsync(5000);
+      requests.expectNone('/health');
+      requests.expectNone('/auth/register');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('explains email delivery failure and allows retry', () => {
+    createForm();
+    fillForm();
+    submitForm();
+    requests
+      .expectOne(registrationUrl)
+      .flush(
+        { errorName: 'EMAIL_DELIVERY_FAILED', message: 'private provider details' },
+        { status: 503, statusText: 'Service Unavailable' },
+      );
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Invio email non riuscito.');
+    expect(fixture.nativeElement.textContent).toContain('Account non creato');
+    expect(fixture.nativeElement.textContent).not.toContain('private provider details');
+    expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
+    expect(fixture.nativeElement.textContent).not.toContain('Account creato.');
+    expect((fixture.nativeElement.querySelector('#register-email') as HTMLInputElement).value).toBe(
+      'vertical@example.test',
+    );
     requests.expectNone(registrationUrl);
   });
 
@@ -174,4 +226,3 @@ describe('Register', () => {
     expect(harness.routeNativeElement?.textContent).toContain('Crea un account');
   });
 });
-

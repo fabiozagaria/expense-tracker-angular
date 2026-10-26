@@ -10,7 +10,6 @@ describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
   const initialDemo = environment.demo;
-  const initialRegistrationEnabled = environment.registrationEnabled;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,7 +24,6 @@ describe('Login', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
-    environment.registrationEnabled = initialRegistrationEnabled;
     TestBed.inject(HttpTestingController).verify();
   });
 
@@ -35,21 +33,11 @@ describe('Login', () => {
 
   it('links to the registration form in the demo and explains online availability', () => {
     environment.demo = true;
-    environment.registrationEnabled = false;
     fixture = TestBed.createComponent(Login);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('a[href="/register"]')?.textContent).toContain('Registrati');
-    expect(fixture.nativeElement.textContent).toContain('la registrazione online attende il servizio email di verifica');
+    expect(fixture.nativeElement.textContent).toContain('registrati e conferma il link ricevuto via email');
     expect(fixture.nativeElement.textContent).toContain('Prova la demo');
-  });
-
-  it('keeps demo login available after enabling personal registration', () => {
-    environment.demo = true;
-    environment.registrationEnabled = true;
-    fixture = TestBed.createComponent(Login);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('Prova la demo');
-    expect(fixture.nativeElement.textContent).not.toContain('la registrazione online attende il servizio email');
   });
 
   it('submits credentials to the backend and shows an invalid credentials error', () => {

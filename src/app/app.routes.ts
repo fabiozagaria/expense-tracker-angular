@@ -34,8 +34,14 @@ export const routes: Routes = [
   {
     path: 'summary',
     canActivate: [authGuard],
-    loadComponent: () => import('./features/expenses/pages/expense-summary/expense-summary').then(m => m.ExpenseSummary),
+    loadComponent: () => import('./features/movements/movement-list').then(m => m.MovementList),
+    data: {kind: 'expenses'},
     title: 'Riepilogo | Gestionale Spese'
+  },
+  {
+    path: 'incomes', canActivate: [authGuard],
+    loadComponent: () => import('./features/movements/movement-list').then(m => m.MovementList),
+    data: {kind: 'incomes'}, title: 'Entrate | Gestionale Spese'
   },
   {
     path: 'expenses/:id',

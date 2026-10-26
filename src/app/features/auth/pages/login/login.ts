@@ -23,7 +23,6 @@ export class Login {
   private readonly route = inject(ActivatedRoute);
 
   protected readonly demo = environment.demo;
-  protected readonly registrationEnabled = environment.registrationEnabled;
   protected readonly loading = signal(false);
   protected readonly error = signal('');
   protected readonly form = new FormGroup({

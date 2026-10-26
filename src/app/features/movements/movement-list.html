@@ -1,0 +1,39 @@
+<section class="ui-page">
+  <header class="ui-page-header"><div><span class="ui-eyebrow">I tuoi movimenti</span><h1>Le tue {{ label }}</h1><p class="ui-subtitle">Consulta, modifica e organizza i tuoi movimenti.</p></div>
+    <div class="ui-actions"><a pButton severity="secondary" [outlined]="true" [routerLink]="income ? '/summary' : '/incomes'">{{ income ? 'Spese' : 'Entrate' }}</a><a pButton [routerLink]="income ? '/add-income' : '/add-expense'">Aggiungi {{ income ? 'entrata' : 'spesa' }}</a></div>
+  </header>
+  <form class="ui-panel filters" [formGroup]="filters" (ngSubmit)="reload()">
+    <label>Mese e anno<input pInputText type="month" formControlName="month"></label>
+    <label>Ricerca<input pInputText type="search" formControlName="query" maxlength="100" placeholder="Titolo, descrizione, importo o data"></label>
+    <label>Ordine<select formControlName="order"><option value="newest">Più recenti</option><option value="oldest">Meno recenti</option></select></label>
+    <button pButton type="submit" [disabled]="busy() || filters.invalid">Filtra</button><button pButton type="button" severity="secondary" [disabled]="busy()" (click)="reset()">Azzera</button>
+    <small>Importo esatto (es. 25,50) o data esatta (aaaa-mm-gg oppure gg/mm/aaaa).</small>
+  </form>
+  @if (error()) { <p-message severity="error" role="alert">{{ error() }}</p-message> }
+  @if (editing(); as item) {
+    <section class="ui-panel" aria-labelledby="edit-heading"><h2 id="edit-heading">Modifica {{ item.title }}</h2>
+      <form class="edit-form" [formGroup]="form" (ngSubmit)="save()">
+        <label>Titolo<input pInputText formControlName="title" minlength="3" maxlength="15" required></label>
+        <label>Importo (€)<input pInputText type="number" formControlName="amount" min="0.01" step="0.01" required></label>
+        <label>Categoria<select formControlName="category">@for (category of categories; track category) { <option [value]="category">{{ categoryLabels[category] }}</option> }</select></label>
+        <label>Data<input pInputText type="date" formControlName="date" [max]="today" required></label>
+        <label>Descrizione<input pInputText formControlName="description" maxlength="30"></label>
+        @if (form.invalid && form.touched) { <p-message severity="error">Controlla titolo (3–15 caratteri), importo positivo e data odierna o passata.</p-message> }
+        <div class="ui-actions"><button pButton type="submit" [disabled]="busy()">Salva modifiche</button><button pButton type="button" severity="secondary" [disabled]="busy()" (click)="editing.set(null)">Annulla</button></div>
+      </form>
+    </section>
+  }
+  <section class="movements" [attr.aria-busy]="loading()" aria-label="Elenco movimenti">
+    @if (loading()) { <p role="status">Caricamento…</p> }
+    @if (result(); as page) {
+      <p role="status">{{ page.totalElements }} movimenti trovati</p>
+      @for (item of page.content; track item.id) {
+        <article class="ui-panel movement"><div><h2>{{ item.title }}</h2><p>{{ item.date | date:'dd/MM/yyyy' }} · {{ categoryLabels[item.category] }}</p><p>{{ item.description }}</p></div><strong>{{ item.amount | currency:'EUR' }}</strong>
+          <div class="ui-actions"><button pButton type="button" severity="secondary" [disabled]="busy()" (click)="edit(item)" [attr.aria-label]="'Modifica ' + item.title">Modifica</button><button pButton type="button" severity="danger" [outlined]="true" [disabled]="busy()" (click)="deleting.set(item.id)" [attr.aria-label]="'Elimina ' + item.title">Elimina</button></div>
+          @if (deleting() === item.id) { <div class="confirmation"><p>Eliminare definitivamente {{ item.title }}?</p><button pButton type="button" severity="danger" [disabled]="busy()" (click)="remove(item.id)">Conferma eliminazione</button><button pButton type="button" severity="secondary" [disabled]="busy()" (click)="deleting.set(null)">Annulla</button></div> }
+        </article>
+      } @empty { <p class="ui-panel">Nessun movimento trovato. Modifica i filtri o aggiungi un movimento.</p> }
+      <nav class="ui-actions" aria-label="Paginazione"><button pButton type="button" severity="secondary" [disabled]="page.number === 0 || busy()" (click)="reload(page.number - 1)">Precedente</button><span>Pagina {{ page.number + 1 }} di {{ page.totalPages || 1 }}</span><button pButton type="button" severity="secondary" [disabled]="page.number + 1 >= page.totalPages || busy()" (click)="reload(page.number + 1)">Successiva</button></nav>
+    }
+  </section>
+</section>

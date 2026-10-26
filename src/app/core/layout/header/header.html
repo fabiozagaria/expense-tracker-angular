@@ -35,6 +35,7 @@
           ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
           <i class="pi pi-chart-pie" aria-hidden="true"></i><span>Dashboard</span>
         </a>
+        <a class="workspace-link" routerLink="/incomes" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="menuOpen.set(false)"><i class="pi pi-arrow-down-left" aria-hidden="true"></i><span>Entrate</span></a>
         <a class="workspace-link" [routerLink]="['/summary']" routerLinkActive="active"
           ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
           <i class="pi pi-receipt" aria-hidden="true"></i><span>Spese</span>
@@ -51,17 +52,17 @@
         </a>
         <a class="workspace-link" routerLink="/register" routerLinkActive="active"
           ariaCurrentWhenActive="page" (click)="menuOpen.set(false)"
-          [attr.title]="!registrationEnabled ? 'Form di registrazione; registrazione online non ancora disponibile' : null">
+          title="Crea un account personale">
           <i class="pi pi-user-plus" aria-hidden="true"></i><span>Registrati</span>
         </a>
       }
     </div>
 
     <div class="navigation-bottom">
-      @if (demo) {
+      @if (auth.isDemoSession()) {
         <div class="workspace-note">
           <span class="demo-dot" aria-hidden="true"></span>
-          <div><strong>Spazio demo</strong><span>Accesso demo disponibile</span></div>
+          <div><strong>Spazio demo</strong><span>Account condiviso</span></div>
         </div>
       }
       <button pButton [text]="true" severity="secondary"

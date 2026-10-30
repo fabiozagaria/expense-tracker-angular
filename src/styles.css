@@ -133,3 +133,17 @@ html[data-theme='dark'] app-login .demo-button.p-button:hover {
   border-color: var(--ui-accent);
   background: var(--ui-accent-soft);
 }
+
+html[data-theme='dark'] app-register .register-field input.p-inputtext {
+  border-color: var(--ui-border);
+  background: var(--ui-surface-alt);
+  color: var(--ui-text);
+}
+html[data-theme='dark'] app-register .register-field input.p-inputtext::placeholder {
+  color: var(--ui-muted);
+  opacity: 1;
+}
+html[data-theme='dark'] app-register .register-field input.p-inputtext:focus {
+  border-color: var(--ui-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-accent) 18%, transparent);
+}

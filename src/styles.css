@@ -10,6 +10,16 @@
   --ui-error-text: #ac5245;
   --ui-accent: #08765b;
   --ui-accent-soft: #eaf5ed;
+  --ui-income-surface: #eaf5ed;
+  --ui-income-text: #21795b;
+  --ui-expense-surface: #fbf1e9;
+  --ui-expense-text: #af7650;
+  --ui-quick-surface: #edf4e9;
+  --ui-quick-border: #e1eade;
+  --ui-quick-kicker: #526a51;
+  --ui-quick-title: #345539;
+  --ui-quick-text: #526a51;
+  --ui-quick-link: #355e3e;
 }
 html[data-theme='dark'] {
   --ui-bg: #111d19;
@@ -21,6 +31,16 @@ html[data-theme='dark'] {
   --ui-error-text: #f0a394;
   --ui-accent: #74cfa9;
   --ui-accent-soft: #243f32;
+  --ui-income-surface: #243f32;
+  --ui-income-text: #74cfa9;
+  --ui-expense-surface: #3a2d26;
+  --ui-expense-text: #e6b08e;
+  --ui-quick-surface: #1d2e27;
+  --ui-quick-border: #2b3c33;
+  --ui-quick-kicker: #a2b5a8;
+  --ui-quick-title: #e2eee7;
+  --ui-quick-text: #a2b5a8;
+  --ui-quick-link: #74cfa9;
 }
 *, *::before, *::after { box-sizing: border-box; }
 html, body { min-height: 100%; }

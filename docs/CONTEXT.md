@@ -2,7 +2,7 @@
 
 ## Stato corrente — 25 ottobre 2026
 
-**Progetto concluso, versione 1.0.0**, salvo correzioni di bug, refactoring e funzionalità future. Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
+**Versione corrente 1.0.1**, salvo correzioni di bug, refactoring e funzionalità future. Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
 
 - Frontend Vercel e backend Render con MySQL Aiven/TLS; registrazione online e Brevo HTTPS attivi. Registrazione reale e caricamento liste confermati dal proprietario.
 - CRUD completo spese/entrate e liste /api/{expenses,incomes}/search con paginazione, mese/anno, ordine data/ID e ricerca titolo/descrizione/importo/data.
@@ -10,7 +10,7 @@
 - Suite backend completa: 14 test passati con Java 21.0.13 e MySQL 8.0.46 temporaneo, zero fallimenti/errori/skipped. Nessun dato online utilizzato.
 - Frontend: 62 test e build production riusciti; avvisi sui budget iniziale e CSS login/dashboard. Correzione link entrate dalla dashboard pubblicata su Vercel.
 - Restano il controllo visivo sistematico desktop/mobile e temi, il percorso integrale nel browser locale con Mailpit e la verifica completa del Compose originale senza i precedenti problemi del proxy TLS.
-- Versioni dei manifest allineate a 1.0.0. Nessun tag Git o GitHub Release creato da questo aggiornamento.
+- Versioni dei manifest allineate a 1.0.1. Nessun tag Git o GitHub Release creato da questo aggiornamento.
 
 ## Cronologia e dettagli tecnici
 
@@ -20,7 +20,7 @@ Aggiornato: 2026-10-12
 Completare e verificare localmente il verticale registrazione → verifica email → login → spese personali → refresh/logout.
 
 ## Stato osservato
-- Versione dichiarata: 0.3.0.
+- Versione storica alla data di questa nota: 0.3.0; versione corrente indicata in apertura.
 - Angular 21, TypeScript 5.9, Signals, Reactive Forms, HttpClient e RxJS.
 - CRUD Expense collegato al backend: GET, POST, PATCH e DELETE verificati manualmente end-to-end con persistenza MySQL.
 - Editing inline convertito a un unico `FormGroup`: rimossi i signal duplicati, submit invalido bloccato, valori letti con `getRawValue()`.
@@ -62,7 +62,7 @@ Pulsante sole/luna accessibile nell’intestazione, tema coerente con i colori e
 
 ## Anteprima UI — 2026-10-12
 
-Il branch `feature/newui` introduce PrimeNG 21.1.10 (compatibile con Angular 21), Aura, PrimeIcons e GSAP. Prima fase: sidebar desktop/menu mobile, login e dashboard; Bootstrap resta per le pagine non ancora migrate. Login e dashboard usano `loadComponent` per evitare di caricare tutta la nuova UI all'avvio. I movimenti recenti provengono da `GET /api/expenses` e `GET /api/incomes`, combinati e ordinati per data dal service; il riepilogo usa sempre `GET /api/dashboard/summary`. Non vengono aggiunti endpoint o statistiche mensili senza dati. Gli errori API non vengono presentati come saldo zero. Le animazioni partono sul browser e vengono saltate con `prefers-reduced-motion`. Credenziali, cookie, login demo e invio registrazione restano gestiti dai service esistenti.
+Il branch `feature/newui` introduce PrimeNG 21.1.10 (compatibile con Angular 21), Aura, PrimeIcons e GSAP. Prima fase: sidebar desktop/menu mobile, login e dashboard; Bootstrap resta per le pagine non ancora migrate. Login e dashboard usano `loadComponent` per evitare di caricare tutta la nuova UI all'avvio. I movimenti recenti provengono da `GET /api/expenses/search?page=0&size=10` e `GET /api/incomes`, combinati e ordinati per data dal service; il riepilogo spese usa la ricerca paginata con filtri. Il riepilogo dashboard usa sempre `GET /api/dashboard/summary`. Non vengono aggiunti endpoint o statistiche mensili senza dati. Gli errori API non vengono presentati come saldo zero. Le animazioni partono sul browser e vengono saltate con `prefers-reduced-motion`. Credenziali, cookie, login demo e invio registrazione restano gestiti dai service esistenti.
 
 Verifica della UI prima del merge: build production riuscita, 47 test Angular passati, incluso errore 503 del riepilogo con importi indisponibili e movimenti ancora visibili. Restano avvisi sui budget di dimensione (iniziale circa 894 kB, CSS login/dashboard sotto il limite massimo di 8 kB). L'anteprima visuale locale usa risposte API simulate con dati fittizi, senza scrivere nel database condiviso.
 

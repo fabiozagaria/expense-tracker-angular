@@ -31,7 +31,10 @@ describe('DashboardService', () => {
     let movements: DashboardMovement[] | undefined;
 
     service.getMovements().subscribe(result => movements = result);
-    http.expectOne(`${environment.apiBaseUrl}/api/expenses`).flush(expenses);
+    http.expectOne(request => request.url === `${environment.apiBaseUrl}/api/expenses/search`
+      && request.params.get('page') === '0'
+      && request.params.get('size') === '10')
+      .flush({ content: expenses, number: 0, size: 10, totalElements: expenses.length, totalPages: 1 });
     expect(movements).toBeUndefined();
     http.expectOne(`${environment.apiBaseUrl}/api/incomes`).flush(incomes);
 

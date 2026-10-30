@@ -47,11 +47,16 @@
       </div>
       <div class="login-field">
         <label for="login-password">Password</label>
-        <input pInputText class="login-input" id="login-password" type="password" formControlName="password"
+        <div class="password-input-wrapper">
+          <input pInputText class="login-input" id="login-password" [type]="passwordVisible() ? 'text' : 'password'" formControlName="password"
           autocomplete="current-password" required placeholder="La tua password"
           [invalid]="form.controls.password.touched && form.controls.password.invalid"
           [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
           [attr.aria-describedby]="form.controls.password.touched && form.controls.password.invalid ? 'password-error' : null">
+          <button class="password-toggle" type="button" [attr.aria-label]="passwordVisible() ? 'Nascondi password' : 'Mostra password'" [attr.aria-pressed]="passwordVisible()" (click)="passwordVisible.update(visible => !visible)">
+            <i class="pi" [class.pi-eye]="!passwordVisible()" [class.pi-eye-slash]="passwordVisible()" aria-hidden="true"></i>
+          </button>
+        </div>
         @if (form.controls.password.touched && form.controls.password.invalid) {
           <div id="password-error" class="field-error">Inserisci la password.</div>
         }

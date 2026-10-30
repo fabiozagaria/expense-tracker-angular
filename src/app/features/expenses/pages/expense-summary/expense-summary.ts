@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -6,6 +6,8 @@ import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
+import { InputTextModule } from 'primeng/inputtext';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
 import { ExpenseCard } from '../../components/expense-card/expense-card';
 import { ExpenseService } from '../../services/expense.service';
@@ -13,7 +15,7 @@ import { UpdateExpenseEvent } from '../../models/expense.model';
 
 @Component({
   selector: 'app-expense-summary',
-  imports: [CurrencyPipe, DatePipe, RouterLink, ButtonModule, CardModule, MessageModule, SkeletonModule, TagModule, RevealDirective, ExpenseCard],
+  imports: [CurrencyPipe, DatePipe, RouterLink, ButtonModule, CardModule, MessageModule, SkeletonModule, TagModule, InputTextModule, PaginatorModule, RevealDirective, ExpenseCard],
   templateUrl: './expense-summary.html',
   styleUrl: './expense-summary.css',
 })
@@ -23,6 +25,10 @@ export class ExpenseSummary implements OnInit {
   protected readonly expenseList = this.expenseService.expensesList;
   protected readonly loading = this.expenseService.loading;
   protected readonly error = this.expenseService.error;
+  protected readonly currentPage = this.expenseService.currentPage;
+  protected readonly pageSize = this.expenseService.pageSize;
+  protected readonly totalElements = this.expenseService.totalElements;
+  protected readonly query = signal(this.expenseService.query());
   protected readonly totalExpense = computed(() => this.expenseList().reduce((total, expense) => total + expense.amount, 0));
   protected readonly latestExpenseDate = computed(() => this.expenseList().reduce((latest, expense) => expense.date > latest ? expense.date : latest, '') || null);
   protected readonly unavailable = computed(() => !!this.error() && this.expenseList().length === 0);
@@ -32,7 +38,19 @@ export class ExpenseSummary implements OnInit {
   }
 
   protected reloadExpenses(): void {
-    this.expenseService.loadExpenses();
+    this.expenseService.loadExpenses(this.currentPage());
+  }
+
+  protected updateQuery(event: Event): void {
+    this.query.set((event.target as HTMLInputElement).value);
+  }
+
+  protected searchExpenses(): void {
+    this.expenseService.loadExpenses(0, this.query().trim());
+  }
+
+  protected onPageChange(event: PaginatorState): void {
+    this.expenseService.loadExpenses(event.page ?? 0);
   }
 
   removeExpense(id: number): void {

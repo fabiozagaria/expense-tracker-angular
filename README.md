@@ -1,9 +1,9 @@
 # Gestionale Spese — Frontend Angular
 
-![Versione](https://img.shields.io/badge/versione-1.0.0-blue)
+![Versione](https://img.shields.io/badge/versione-1.0.1-blue)
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)
 
-**Progetto concluso al 25 ottobre 2026 — versione 1.0.0.**
+**Versione corrente: 1.0.1 — aggiornamento del 30 ottobre 2026.**
 
 Il perimetro funzionale è completato. Sono possibili correzioni di bug, refactoring e funzionalità future, gestite con nuove versioni. Non sono previste ulteriori funzionalità per chiudere questa versione.
 
@@ -77,7 +77,7 @@ I componenti gestiscono form e stato UI; i servizi dedicati incapsulano le chiam
 | Eliminazione | `DELETE /api/expenses/{id}`, `DELETE /api/incomes/{id}` |
 | Dettaglio spesa | `GET /api/expenses/{id}` |
 | Modifica parziale spese | `PATCH /api/expenses/{id}` nel client dedicato |
-| Movimenti dashboard | `GET /api/expenses` e `GET /api/incomes`, risposta array |
+| Movimenti dashboard | `GET /api/expenses/search?page=0&size=10` e `GET /api/incomes` |
 | Totali dashboard | `GET /api/dashboard/summary` |
 | Sessione | `POST /auth/register`, `/verify-email`, `/login`, `/refresh`, `/logout`, `/demo` |
 

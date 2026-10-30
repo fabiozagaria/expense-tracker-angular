@@ -33,3 +33,11 @@ export type UpdateExpenseEvent = {
 }
 
 export type ExpensesList = Expense[];
+
+export interface ExpensePage {
+  content: Expense[];
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}

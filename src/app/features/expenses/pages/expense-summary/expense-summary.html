@@ -10,32 +10,37 @@
 
   <div class="expense-metrics" data-reveal [attr.aria-busy]="loading()">
     <p-card styleClass="ui-card">
-      <div class="metric-heading"><span>Totale spese registrate</span><i class="pi pi-wallet" aria-hidden="true"></i></div>
+      <div class="metric-heading"><span>Totale in questa pagina</span><i class="pi pi-wallet" aria-hidden="true"></i></div>
       @if (loading() && !expenseList().length) { <p-skeleton width="75%" height="2.5rem" /> }
       @else { <strong class="metric-value">{{ unavailable() ? '—' : (totalExpense() | currency:'EUR') }}</strong> }
       <p class="metric-note">Tutti gli importi presenti nell’elenco</p>
     </p-card>
     <p-card styleClass="ui-card">
-      <div class="metric-heading"><span>Spese registrate</span><i class="pi pi-receipt" aria-hidden="true"></i></div>
+      <div class="metric-heading"><span>Risultati totali</span><i class="pi pi-receipt" aria-hidden="true"></i></div>
       @if (loading() && !expenseList().length) { <p-skeleton width="35%" height="2.5rem" /> }
-      @else { <strong class="metric-value">{{ unavailable() ? '—' : expenseList().length }}</strong> }
-      <p class="metric-note">I movimenti del tuo account</p>
+      @else { <strong class="metric-value">{{ unavailable() ? '—' : totalElements() }}</strong> }
+      <p class="metric-note">Spese corrispondenti ai filtri</p>
     </p-card>
     <p-card styleClass="ui-card">
       <div class="metric-heading"><span>Ultima spesa</span><i class="pi pi-calendar" aria-hidden="true"></i></div>
       @if (loading() && !expenseList().length) { <p-skeleton width="65%" height="2.5rem" /> }
       @else { <strong class="metric-value metric-date">{{ latestExpenseDate() ? (latestExpenseDate() | date:'dd MMM yyyy') : '—' }}</strong> }
-      <p class="metric-note">La data più recente nell’elenco</p>
+      <p class="metric-note">La data più recente in questa pagina</p>
     </p-card>
   </div>
 
   <section class="expense-list-section" aria-labelledby="expense-list-heading" data-reveal>
     <div class="list-heading">
-      <div><h2 id="expense-list-heading">Le tue spese</h2><p>Consulta un movimento o aggiorna titolo e descrizione.</p></div>
+      <div><h2 id="expense-list-heading">Le tue spese</h2><p>Consulta, filtra o aggiorna un movimento.</p></div>
       <div class="ui-actions">
-        @if (!loading() && !unavailable()) { <p-tag severity="secondary" [value]="expenseList().length + (expenseList().length === 1 ? ' spesa' : ' spese')" [rounded]="true" /> }
+        @if (!loading() && !unavailable()) { <p-tag severity="secondary" [value]="totalElements() + (totalElements() === 1 ? ' spesa' : ' spese')" [rounded]="true" /> }
         <button pButton type="button" severity="secondary" [outlined]="true" [loading]="loading()" [disabled]="loading()" (click)="reloadExpenses()"><i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i><span pButtonLabel>Aggiorna</span></button>
       </div>
+    </div>
+
+    <div class="ui-actions" role="search" aria-label="Cerca tra le spese">
+      <input pInputText type="search" maxlength="100" aria-label="Cerca per testo, importo o data" placeholder="Cerca spesa, importo o data" [value]="query()" (input)="updateQuery($event)" (keydown.enter)="searchExpenses()" />
+      <button pButton type="button" severity="secondary" [outlined]="true" [loading]="loading()" [disabled]="loading()" (click)="searchExpenses()"><i pButtonIcon class="pi pi-search" aria-hidden="true"></i><span pButtonLabel>Cerca</span></button>
     </div>
 
     @if (error()) {
@@ -80,5 +85,13 @@
         </p-card>
       }
     </div>
+    @if (!unavailable() && totalElements() > pageSize()) {
+      <p-paginator
+        [first]="currentPage() * pageSize()"
+        [rows]="pageSize()"
+        [totalRecords]="totalElements()"
+        [showFirstLastIcon]="true"
+        (onPageChange)="onPageChange($event)" />
+    }
   </section>
 </section>

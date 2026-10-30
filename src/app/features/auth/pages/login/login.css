@@ -44,3 +44,46 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ui-accent, #067
 @media (max-width: 1199.98px) { .login-introduction { padding: 42px 30px 30px; }.login-card { padding: 42px 32px 32px; }.login-page { margin-top: 30px; } }
 @media (max-width: 767.98px) { .login-page { display: block; max-width: 480px; min-height: 0; margin: 12px auto 10px; }.login-introduction { padding: 27px 29px; }.login-introduction h2 { margin: 15px 0 10px; font-size: 34px; letter-spacing: -1.4px; }.login-introduction > p { font-size: 13px; }.login-illustration, .intro-footnote { display: none; }.login-card { padding: 30px 29px; }.welcome-icon { display: none; }.login-card h1 { font-size: 23px; } }
 @media (max-width: 399.98px) { .login-card, .login-introduction { padding-inline: 22px; } }
+
+/* Dark theme */
+html[data-theme='dark'] .login-introduction {
+  background: var(--ui-surface-alt);
+  color: var(--ui-text);
+}
+html[data-theme='dark'] .login-introduction h2 { color: var(--ui-text); }
+html[data-theme='dark'] .login-introduction > p,
+html[data-theme='dark'] .intro-footnote { color: var(--ui-muted); }
+html[data-theme='dark'] .section-eyebrow { color: var(--ui-muted); }
+html[data-theme='dark'] .section-eyebrow > span { background: var(--ui-accent); }
+html[data-theme='dark'] .login-illustration {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-text);
+  box-shadow: none;
+}
+html[data-theme='dark'] .illustration-heading,
+html[data-theme='dark'] .illustration-item { color: var(--ui-muted); }
+html[data-theme='dark'] .illustration-rule { background: var(--ui-border); }
+html[data-theme='dark'] .illustration-bars span { background: var(--ui-accent-soft); }
+html[data-theme='dark'] .illustration-bars span:nth-child(7n) { background: var(--ui-accent); }
+html[data-theme='dark'] .illustration-bars span:nth-child(11) { background: var(--ui-accent); }
+html[data-theme='dark'] .illustration-bars span:nth-child(12) { background: var(--ui-muted); }
+html[data-theme='dark'] .illustration-icon {
+  background: var(--ui-accent-soft);
+  color: var(--ui-accent);
+}
+html[data-theme='dark'] .illustration-icon.expense {
+  background: var(--ui-surface-alt);
+  color: var(--ui-muted);
+}
+html[data-theme='dark'] .illustration-line { background: var(--ui-border); }
+html[data-theme='dark'] .illustration-line.short { background: var(--ui-surface-alt); }
+html[data-theme='dark'] .demo-button.p-button {
+  border-color: var(--ui-border);
+  color: var(--ui-text);
+  background: var(--ui-surface-alt);
+}
+html[data-theme='dark'] .demo-button.p-button:hover {
+  border-color: var(--ui-accent);
+  background: var(--ui-accent-soft);
+}

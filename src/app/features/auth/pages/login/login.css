@@ -87,3 +87,9 @@ html[data-theme='dark'] .demo-button.p-button:hover {
   border-color: var(--ui-accent);
   background: var(--ui-accent-soft);
 }
+
+.password-input-wrapper { position: relative; }
+.password-input-wrapper .login-input.p-inputtext { padding-right: 44px; }
+.password-toggle { position: absolute; top: 50%; right: 8px; display: grid; place-items: center; width: 30px; height: 30px; transform: translateY(-50%); border: 0; border-radius: 5px; background: transparent; color: var(--ui-muted, #77837d); cursor: pointer; }
+.password-toggle:hover { color: var(--ui-text, #263c30); background: var(--ui-surface-alt); }
+.password-toggle:focus-visible { outline: 2px solid var(--ui-accent, #06735c); outline-offset: 1px; }

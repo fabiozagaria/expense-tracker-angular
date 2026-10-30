@@ -33,6 +33,7 @@ export class Register {
   protected readonly loading = signal(false);
   protected readonly registered = signal(false);
   protected readonly error = signal('');
+  protected readonly passwordVisible = signal(false);
   protected readonly form = new FormGroup({
     username: new FormControl('', {
       nonNullable: true,

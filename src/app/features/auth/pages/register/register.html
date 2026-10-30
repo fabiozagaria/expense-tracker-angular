@@ -114,22 +114,22 @@
             <label for="register-password">Password</label>
             <div class="register-password-control">
               <input
-              pInputText
-              id="register-password"
-              [type]="passwordVisible() ? 'text' : 'password'"
-              formControlName="password"
-              autocomplete="new-password"
-              required
-              placeholder="Scegli la tua password"
-              [invalid]="form.controls.password.touched && form.controls.password.invalid"
-              [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
-              [attr.aria-describedby]="
-                form.controls.password.touched && form.controls.password.invalid
-                  ? 'register-password-hint register-password-error'
-                  : 'register-password-hint'
-              "
+                pInputText
+                id="register-password"
+                [type]="passwordVisible() ? 'text' : 'password'"
+                formControlName="password"
+                autocomplete="new-password"
+                required
+                placeholder="Scegli la tua password"
+                [invalid]="form.controls.password.touched && form.controls.password.invalid"
+                [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+                [attr.aria-describedby]="
+                  form.controls.password.touched && form.controls.password.invalid
+                    ? 'register-password-hint register-password-error'
+                    : 'register-password-hint'
+                "
               />
-              <button class="password-toggle" type="button" [attr.aria-label]="passwordVisible() ? 'Nascondi password' : 'Mostra password'" [attr.aria-pressed]="passwordVisible()" (click)="passwordVisible.update(visible => !visible)">
+              <button class="password-toggle" type="button" [attr.aria-label]="passwordVisible() ? 'Nascondi password' : 'Mostra password'" [attr.aria-pressed]="passwordVisible()" (click)="passwordVisible.set(!passwordVisible())">
                 <i class="pi" [class.pi-eye]="!passwordVisible()" [class.pi-eye-slash]="passwordVisible()" aria-hidden="true"></i>
               </button>
             </div>

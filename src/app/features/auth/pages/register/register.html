@@ -112,10 +112,11 @@
           </div>
           <div class="ui-field register-field">
             <label for="register-password">Password</label>
-            <input
+            <div class="register-password-control">
+              <input
               pInputText
               id="register-password"
-              type="password"
+              [type]="passwordVisible() ? 'text' : 'password'"
               formControlName="password"
               autocomplete="new-password"
               required
@@ -127,7 +128,11 @@
                   ? 'register-password-hint register-password-error'
                   : 'register-password-hint'
               "
-            />
+              />
+              <button class="password-toggle" type="button" [attr.aria-label]="passwordVisible() ? 'Nascondi password' : 'Mostra password'" [attr.aria-pressed]="passwordVisible()" (click)="passwordVisible.update(visible => !visible)">
+                <i class="pi" [class.pi-eye]="!passwordVisible()" [class.pi-eye-slash]="passwordVisible()" aria-hidden="true"></i>
+              </button>
+            </div>
             <p id="register-password-hint" class="register-hint">Da 6 a 12 caratteri.</p>
             @if (form.controls.password.touched && form.controls.password.invalid) {
               <p id="register-password-error" class="ui-field-error">Usa da 6 a 12 caratteri.</p>

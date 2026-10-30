@@ -53,7 +53,7 @@
           [invalid]="form.controls.password.touched && form.controls.password.invalid"
           [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
           [attr.aria-describedby]="form.controls.password.touched && form.controls.password.invalid ? 'password-error' : null">
-          <button class="password-toggle" type="button" [attr.aria-label]="passwordVisible() ? 'Nascondi password' : 'Mostra password'" [attr.aria-pressed]="passwordVisible()" (click)="passwordVisible.update(visible => !visible)">
+          <button class="password-toggle" type="button" [attr.aria-label]="passwordVisible() ? 'Nascondi password' : 'Mostra password'" [attr.aria-pressed]="passwordVisible()" (click)="passwordVisible.set(!passwordVisible())">
             <i class="pi" [class.pi-eye]="!passwordVisible()" [class.pi-eye-slash]="passwordVisible()" aria-hidden="true"></i>
           </button>
         </div>

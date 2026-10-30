@@ -36,3 +36,9 @@
   .register-header h1 { font-size: 30px; }
   .register-steps { gap: 16px; }
 }
+
+.register-password-control { position: relative; }
+.register-password-control input { padding-right: 48px; }
+.register-password-control .password-toggle { position: absolute; top: 22px; right: 8px; display: grid; place-items: center; width: 30px; height: 30px; border: 0; border-radius: 5px; background: transparent; color: var(--ui-muted); cursor: pointer; }
+.register-password-control .password-toggle:hover { color: var(--ui-text); background: var(--ui-accent-soft); }
+.register-password-control .password-toggle:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 1px; }

@@ -1,9 +1,11 @@
 # Gestionale Spese — Frontend Angular
 
-![Versione](https://img.shields.io/badge/versione-1.0.1-blue)
+![Versione](https://img.shields.io/badge/versione-1.0.2-blue)
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)
 
-**Versione corrente: 1.0.1 — aggiornamento del 30 ottobre 2026.**
+**Versione frontend corrente: 1.0.2 — aggiornamento del 30 ottobre 2026.**
+
+Backend compatibile: **1.0.1**. La patch frontend 1.0.2 aggiunge il controllo mostra/nascondi password nei form di login e registrazione e corregge il tema scuro di autenticazione e dashboard.
 
 Il perimetro funzionale è completato. Sono possibili correzioni di bug, refactoring e funzionalità future, gestite con nuove versioni. Non sono previste ulteriori funzionalità per chiudere questa versione.
 
@@ -85,7 +87,7 @@ Il backend espone inoltre dettaglio e PATCH delle entrate. Il [README API](https
 
 Le liste inviano `page` (da 0), `size=10`, `month=yyyy-MM`, `order=newest|oldest` e `query`. Il server restituisce `content`, `number`, `size`, `totalElements` e `totalPages`. La ricerca testuale è parziale su titolo e descrizione; importi e date sono esatti. Esempi: `25,50`, `25.50`, `2026-10-25` o `25/10/2026`.
 
-La dashboard usa gli array completi e i totali dedicati: non calcola il saldo sulla sola pagina corrente. L'isolamento tra utenti è imposto dal backend.
+La dashboard usa la ricerca paginata per le spese, l'elenco delle entrate e i totali dedicati: non calcola il saldo sulla sola pagina corrente. L'isolamento tra utenti è imposto dal backend.
 
 L'interceptor aggiunge il Bearer alle API e gestisce il rinnovo su 401. Il guard tenta il ripristino della sessione dal cookie. Duplicati in registrazione e fallimenti dell'invio email mostrano messaggi dedicati; il login richiede email verificata.
 
@@ -142,7 +144,7 @@ I test non certificano tutti i casi limite né sostituiscono una verifica browse
 
 ## Versioning e manutenzione
 
-Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Versione allineata al backend nei rispettivi manifest.
+Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Le versioni correnti sono distinte: frontend **1.0.2**, backend **1.0.1**.
 
 - **PATCH** (`1.0.1`): correzioni compatibili e manutenzione/refactoring senza cambiare il contratto pubblico.
 - **MINOR** (`1.1.0`): nuove funzionalità compatibili.

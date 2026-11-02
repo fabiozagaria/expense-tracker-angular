@@ -5,7 +5,7 @@
 
 **Versione frontend corrente: 1.0.2 — aggiornamento del 30 ottobre 2026.**
 
-Backend compatibile: **1.0.1**. La patch frontend 1.0.2 aggiunge il controllo mostra/nascondi password nei form di login e registrazione e corregge il tema scuro di autenticazione e dashboard.
+Backend compatibile: **1.0.2**. La patch frontend 1.0.2 aggiunge il controllo mostra/nascondi password nei form di login e registrazione e corregge il tema scuro di autenticazione e dashboard.
 
 Il perimetro funzionale è completato. Sono possibili correzioni di bug, refactoring e funzionalità future, gestite con nuove versioni. Non sono previste ulteriori funzionalità per chiudere questa versione.
 
@@ -144,7 +144,7 @@ I test non certificano tutti i casi limite né sostituiscono una verifica browse
 
 ## Versioning e manutenzione
 
-Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Le versioni correnti sono distinte: frontend **1.0.2**, backend **1.0.1**.
+Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Le versioni correnti sono distinte: frontend **1.0.2**, backend **1.0.2**.
 
 - **PATCH** (`1.0.1`): correzioni compatibili e manutenzione/refactoring senza cambiare il contratto pubblico.
 - **MINOR** (`1.1.0`): nuove funzionalità compatibili.

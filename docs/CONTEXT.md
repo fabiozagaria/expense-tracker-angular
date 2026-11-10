@@ -2,7 +2,7 @@
 
 ## Stato corrente — 10 novembre 2026
 
-**Versione corrente 1.1.0** (backend compatibile 1.0.2). Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
+**Versione corrente 1.1.0** (backend compatibile 1.1.0). Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
 
 - Frontend Vercel e backend Render con MySQL Aiven/TLS; registrazione online e Brevo HTTPS attivi.
 - Client allineato al contratto REST del backend: CRUD e ricerca di spese/entrate, dettaglio di entrambe, recupero password (`/forgot-password`, `/reset-password`), nuovo link di verifica (`/resend-verification`), messaggi `429 RATE_LIMITED`, password fino a 72 byte UTF-8.
@@ -119,7 +119,7 @@ La conferma ricorda il link valido dieci minuti e la cartella Spam. Un timeout d
 
 ## Allineamento al contratto backend — 10 novembre 2026
 
-Confronto con i controller e i DTO di `expense-tracker-api` (master dopo la PR #19). Aggiunte le pagine `/forgot-password`, `/reset-password?token=` (destinazione del link inviato dal backend, prima finiva sulla home) e `/resend-verification`, con link da login (dopo `403 EMAIL_NOT_VERIFIED`) e da verifica email fallita. Il reset chiude la sessione locale perché il server revoca tutti i refresh token. Dettaglio generico `/expenses/:id` e `/incomes/:id` (`GET /api/incomes/{id}` prima non usato); i titoli delle liste e della dashboard aprono il dettaglio. La dashboard legge le entrate da `/api/incomes/search?size=10` invece dell'elenco completo.
+Confronto con i controller e i DTO di `expense-tracker-api` (master dopo la PR #19, poi rilasciato come backend 1.1.0). Aggiunte le pagine `/forgot-password`, `/reset-password?token=` (destinazione del link inviato dal backend, prima finiva sulla home) e `/resend-verification`, con link da login (dopo `403 EMAIL_NOT_VERIFIED`) e da verifica email fallita. Il reset chiude la sessione locale perché il server revoca tutti i refresh token. Dettaglio generico `/expenses/:id` e `/incomes/:id` (`GET /api/incomes/{id}` prima non usato); i titoli delle liste e della dashboard aprono il dettaglio. La dashboard legge le entrate da `/api/incomes/search?size=10` invece dell'elenco completo.
 
 Correzioni di contratto: password di registrazione limitata a 12 caratteri dal client mentre il server accetta 6 caratteri–72 byte UTF-8 (`@MaxUtf8Bytes(72)`); titoli e username di soli spazi ora bloccati come `@NotBlank`; `description` tipizzata `string | null`; messaggi per `429 RATE_LIMITED` con `Retry-After`. Helper condivisi in `src/app/core/api/` (errori `APIError`, validatori, etichette categorie unificate).
 

@@ -1,11 +1,11 @@
 # Gestionale Spese — Frontend Angular
 
-![Versione](https://img.shields.io/badge/versione-1.0.2-blue)
+![Versione](https://img.shields.io/badge/versione-1.1.0-blue)
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)
 
-**Versione frontend corrente: 1.0.2 — aggiornamento del 30 ottobre 2026.**
+**Versione frontend corrente: 1.1.0 — aggiornamento del 10 novembre 2026.**
 
-Backend compatibile: **1.0.2**. La patch frontend 1.0.2 aggiunge il controllo mostra/nascondi password nei form di login e registrazione e corregge il tema scuro di autenticazione e dashboard.
+Backend compatibile: **1.0.2**. La minor 1.1.0 allinea il client al contratto REST del backend: recupero password, nuovo invio del link di verifica, dettaglio delle entrate, limiti della password come sul server e messaggi per il limite di richieste.
 
 Il perimetro funzionale è completato. Sono possibili correzioni di bug, refactoring e funzionalità future, gestite con nuove versioni. Non sono previste ulteriori funzionalità per chiudere questa versione.
 
@@ -149,7 +149,7 @@ I test non certificano tutti i casi limite né sostituiscono una verifica browse
 
 ## Versioning e manutenzione
 
-Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Le versioni correnti sono distinte: frontend **1.0.2**, backend **1.0.2**.
+Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Le versioni correnti sono distinte: frontend **1.1.0**, backend **1.0.2**.
 
 - **PATCH** (`1.0.1`): correzioni compatibili e manutenzione/refactoring senza cambiare il contratto pubblico.
 - **MINOR** (`1.1.0`): nuove funzionalità compatibili.

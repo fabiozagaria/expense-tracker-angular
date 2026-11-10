@@ -13,6 +13,11 @@
 .password-panel h2 { margin: 0 0 8px; font-size: 18px; font-weight: 600; }
 .settings-copy { max-width: 56ch; margin: 0 0 20px; color: var(--ui-muted); line-height: 1.7; overflow-wrap: anywhere; }
 .settings-message { display: flex; width: 100%; margin-bottom: 20px; }
+.settings-message:last-child { margin-bottom: 0; }
+.settings-feedback { margin-bottom: 20px; }
+.settings-feedback:last-child { margin-bottom: 0; }
+.settings-feedback:focus { outline: none; }
+.settings-feedback .settings-message { margin-bottom: 0; }
 .send-link, .retry { min-height: 44px; }
 .screen-reader-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -22,4 +27,3 @@
   .identity h2 { font-size: 22px; }
   .send-link, .retry { width: 100%; justify-content: center; }
 }
-.settings-message:last-child { margin-bottom: 0; }

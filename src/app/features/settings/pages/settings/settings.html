@@ -20,21 +20,27 @@
         <h2 id="password-title">Password</h2>
         @if (auth.isDemoSession()) {
           <p class="settings-copy">La password dell’account demo condiviso non si può cambiare. Con un account personale scegli tu la password e puoi cambiarla quando vuoi.</p>
-        } @else if (sent()) {
-          <p-message class="settings-message" severity="success" [attr.role]="'status'">
-            Link inviato a {{ account.email }}. Il link è valido per 30 minuti: se non lo trovi, controlla la cartella Spam. Potrai chiederne un altro dopo un minuto.
-          </p-message>
         } @else {
-          <p class="settings-copy">Per scegliere una nuova password ti inviamo un link a {{ account.email }}. Il link è valido per 30 minuti e, dopo il cambio, chiude le sessioni aperte su tutti i dispositivi.</p>
+          @if (sent()) {
+            <div class="settings-feedback" tabindex="-1" #feedback>
+              <p-message class="settings-message" severity="success" [attr.role]="'status'">
+                Link inviato a {{ account.email }}. Il link è valido per 30 minuti: se non lo trovi, controlla la cartella Spam. Potrai chiederne un altro dopo un minuto.
+              </p-message>
+            </div>
+          } @else {
+            <p class="settings-copy">Per scegliere una nuova password ti inviamo un link a {{ account.email }}. Il link è valido per 30 minuti e, dopo il cambio, chiude le sessioni aperte su tutti i dispositivi.</p>
+          }
           @if (sending() && demo) {
             <p-message class="settings-message" severity="info" role="status" aria-live="polite">Il primo avvio del server può richiedere 2–3 minuti: non chiudere la pagina.</p-message>
           }
           @if (sendError()) {
             <p-message class="settings-message" severity="error" role="alert">{{ sendError() }}</p-message>
           }
-          <button pButton type="button" class="ui-primary send-link" (click)="sendLink()" [disabled]="sending()" [loading]="sending()">
-            <span>{{ sending() ? 'Invio in corso…' : 'Invia link per cambiare password' }}</span>
-          </button>
+          @if (!sent() || canResend()) {
+            <button pButton type="button" class="send-link" [class.ui-primary]="!sent()" [outlined]="sent()" [severity]="sent() ? 'secondary' : undefined" (click)="sendLink()" [disabled]="sending()" [loading]="sending()">
+              <span>{{ sending() ? 'Invio in corso…' : sent() ? 'Invia di nuovo' : 'Invia link per cambiare password' }}</span>
+            </button>
+          }
         }
       </section>
     } @else if (loading()) {

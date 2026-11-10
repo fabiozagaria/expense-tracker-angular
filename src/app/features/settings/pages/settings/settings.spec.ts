@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { vi } from 'vitest';
 import { provideRouter } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { AuthService } from '../../../auth/services/auth.service';
@@ -33,6 +34,7 @@ describe('Settings', () => {
   const sendButton = () => fixture.nativeElement.querySelector('button.send-link') as HTMLButtonElement | null;
 
   afterEach(() => {
+    vi.useRealTimers();
     environment.demo = initialDemo;
     requests.verify();
   });
@@ -120,5 +122,41 @@ describe('Settings', () => {
     expect(text()).toContain('può richiedere 2–3 minuti');
     health.flush({ status: 'up' });
     requests.expectOne(forgotUrl).flush(null, { status: 202, statusText: 'Accepted' });
+  });
+
+  it('moves focus to the confirmation when the button is replaced', async () => {
+    await create();
+    requests.expectOne(meUrl).flush(profile);
+    fixture.detectChanges();
+    sendButton()!.focus();
+    sendButton()!.click();
+    requests.expectOne(forgotUrl).flush(null, { status: 202, statusText: 'Accepted' });
+    fixture.detectChanges();
+    const feedback = fixture.nativeElement.querySelector('.settings-feedback') as HTMLElement;
+    expect(feedback).toBeTruthy();
+    expect(document.activeElement).toBe(feedback);
+  });
+
+  it('offers a new link only after the one-minute cooldown', async () => {
+    await create();
+    requests.expectOne(meUrl).flush(profile);
+    fixture.detectChanges();
+    vi.useFakeTimers();
+    sendButton()!.click();
+    requests.expectOne(forgotUrl).flush(null, { status: 202, statusText: 'Accepted' });
+    fixture.detectChanges();
+    expect(sendButton()).toBeNull();
+
+    vi.advanceTimersByTime(59_000);
+    fixture.detectChanges();
+    expect(sendButton()).toBeNull();
+
+    vi.advanceTimersByTime(1_000);
+    fixture.detectChanges();
+    expect(sendButton()!.textContent).toContain('Invia di nuovo');
+    sendButton()!.click();
+    requests.expectOne(forgotUrl).flush(null, { status: 202, statusText: 'Accepted' });
+    fixture.detectChanges();
+    expect(sendButton()).toBeNull();
   });
 });

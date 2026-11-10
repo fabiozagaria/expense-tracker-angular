@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, ElementRef, inject, Injector, OnInit, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
@@ -10,6 +10,9 @@ import { RevealDirective } from '../../../../core/ui/reveal.directive';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Profile, ProfileApiService } from '../../services/profile-api.service';
 
+/** Il backend ignora in silenzio una seconda richiesta entro 60 secondi: il pulsante torna dopo questo tempo. */
+const RESEND_AFTER_MS = 60_000;
+
 @Component({
   selector: 'app-settings',
   imports: [ButtonModule, MessageModule, SkeletonModule, RevealDirective],
@@ -19,6 +22,9 @@ import { Profile, ProfileApiService } from '../../services/profile-api.service';
 export class Settings implements OnInit {
   private readonly profileApi = inject(ProfileApiService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly injector = inject(Injector);
+  private readonly feedback = viewChild<ElementRef<HTMLElement>>('feedback');
+  private resendTimer?: ReturnType<typeof setTimeout>;
   protected readonly auth = inject(AuthService);
 
   protected readonly demo = environment.demo;
@@ -27,8 +33,13 @@ export class Settings implements OnInit {
   protected readonly loadFailed = signal(false);
   protected readonly sending = signal(false);
   protected readonly sent = signal(false);
+  protected readonly canResend = signal(false);
   protected readonly sendError = signal('');
   protected readonly initial = computed(() => this.profile()?.username.charAt(0).toUpperCase() ?? '');
+
+  constructor() {
+    this.destroyRef.onDestroy(() => clearTimeout(this.resendTimer));
+  }
 
   ngOnInit(): void {
     this.load();
@@ -58,7 +69,14 @@ export class Settings implements OnInit {
       takeUntilDestroyed(this.destroyRef),
       finalize(() => this.sending.set(false)),
     ).subscribe({
-      next: () => this.sent.set(true),
+      next: () => {
+        this.sent.set(true);
+        this.canResend.set(false);
+        clearTimeout(this.resendTimer);
+        this.resendTimer = setTimeout(() => this.canResend.set(true), RESEND_AFTER_MS);
+        // Il pulsante che aveva il focus sparisce: il focus passa alla conferma, che così viene anche letta.
+        afterNextRender(() => this.feedback()?.nativeElement.focus(), { injector: this.injector });
+      },
       error: (error: unknown) => this.sendError.set(
         apiErrorName(error) === 'EMAIL_DELIVERY_FAILED'
           ? 'Invio email non riuscito. Riprova più tardi.'

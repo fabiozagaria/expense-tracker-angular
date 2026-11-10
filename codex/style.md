@@ -103,7 +103,7 @@ Esempio di template, dopo aver importato `RevealDirective` nel componente:
 - Le fixture per screenshot e anteprime devono essere chiaramente indicate come dati di esempio e rimanere separate dai dati reali.
 - Separare errori del riepilogo ed errori della lista, così una sezione disponibile resta utilizzabile.
 - Il dashboard service combina spese ed entrate e le ordina per data; la UI filtra e mostra gli ultimi sei movimenti. Non implementare chiamate HTTP direttamente nel template o nei componenti di presentazione.
-- Per le entrate, non mostrare azioni di modifica o cancellazione finché non esiste il relativo contratto backend.
+- Spese ed entrate hanno modifica ed eliminazione nelle liste (`PUT` e `DELETE` del backend), con conferma prima di eliminare. Ogni movimento ha una pagina di dettaglio (`/expenses/:id`, `/incomes/:id`).
 
 ## 9. Vincoli funzionali da preservare
 

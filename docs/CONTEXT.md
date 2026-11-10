@@ -10,6 +10,7 @@
 - Frontend: 96 test e build production riusciti; restano gli avvisi di budget su bundle iniziale e CSS login/dashboard.
 - Il percorso reale Impostazioni → email → nuova password → login è stato provato dal proprietario sul sito pubblico il 10 novembre 2026 con un'email vera e funziona: sono quindi online sia il frontend 1.2.0 sia il backend 1.2.0. Il frontend 1.2.0 richiede il backend 1.2.0, per `/api/me`.
 - Manifest a 1.2.0. Tag Git `v1.1.0` e `v1.2.0` e relative release da creare a mano: la sessione non riesce a pubblicare tag.
+- Il proprietario ha dichiarato il progetto concluso (10 novembre 2026). Unica idea futura, rinviata e a suo carico: eliminazione dell'account (vedi `FUTURE.md`).
 
 ## Cronologia e dettagli tecnici
 

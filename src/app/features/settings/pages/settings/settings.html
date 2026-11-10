@@ -1,0 +1,61 @@
+<section class="ui-page settings-page" appReveal aria-labelledby="settings-title">
+  <header class="ui-page-header settings-header" data-reveal>
+    <div>
+      <h1 id="settings-title">Impostazioni</h1>
+      <p class="ui-subtitle">I dati del tuo account e la sicurezza dell’accesso.</p>
+    </div>
+  </header>
+
+  <div class="settings-content" [attr.aria-busy]="loading()">
+    @if (profile(); as account) {
+      <section class="ui-panel identity" aria-labelledby="account-name" data-reveal>
+        <span class="monogram" aria-hidden="true">{{ initial() }}</span>
+        <div class="identity-text">
+          <h2 id="account-name">{{ account.username }}</h2>
+          <p>{{ account.email }}</p>
+        </div>
+      </section>
+
+      <section class="ui-panel password-panel" aria-labelledby="password-title" data-reveal>
+        <h2 id="password-title">Password</h2>
+        @if (auth.isDemoSession()) {
+          <p class="settings-copy">La password dell’account demo condiviso non si può cambiare. Con un account personale scegli tu la password e puoi cambiarla quando vuoi.</p>
+        } @else {
+          @if (sent()) {
+            <div class="settings-feedback" tabindex="-1" #feedback>
+              <p-message class="settings-message" severity="success" [attr.role]="'status'">
+                Link inviato a {{ account.email }}. Il link è valido per 30 minuti: se non lo trovi, controlla la cartella Spam. Potrai chiederne un altro dopo un minuto.
+              </p-message>
+            </div>
+          } @else {
+            <p class="settings-copy">Per scegliere una nuova password ti inviamo un link a {{ account.email }}. Il link è valido per 30 minuti e, dopo il cambio, chiude le sessioni aperte su tutti i dispositivi.</p>
+          }
+          @if (sending() && demo) {
+            <p-message class="settings-message" severity="info" role="status" aria-live="polite">Il primo avvio del server può richiedere 2–3 minuti: non chiudere la pagina.</p-message>
+          }
+          @if (sendError()) {
+            <p-message class="settings-message" severity="error" role="alert">{{ sendError() }}</p-message>
+          }
+          @if (!sent() || canResend()) {
+            <button pButton type="button" class="send-link" [class.ui-primary]="!sent()" [outlined]="sent()" [severity]="sent() ? 'secondary' : undefined" (click)="sendLink()" [disabled]="sending()" [loading]="sending()">
+              <span>{{ sending() ? 'Invio in corso…' : sent() ? 'Invia di nuovo' : 'Invia link per cambiare password' }}</span>
+            </button>
+          }
+        }
+      </section>
+    } @else if (loading()) {
+      <span class="screen-reader-status" role="status">Caricamento dei dati dell’account…</span>
+      <section class="ui-panel identity" aria-hidden="true">
+        <p-skeleton shape="circle" size="64px" />
+        <div class="identity-text"><p-skeleton width="9rem" height="1.6rem" /><p-skeleton width="14rem" height="1rem" styleClass="skeleton-line" /></div>
+      </section>
+    } @else if (loadFailed()) {
+      <section class="ui-panel" data-reveal>
+        <p-message class="settings-message" severity="error" role="alert">Non riusciamo a caricare i dati del tuo account. Riprova tra poco.</p-message>
+        <button pButton type="button" class="ui-primary retry" (click)="load()">
+          <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i><span pButtonLabel>Riprova</span>
+        </button>
+      </section>
+    }
+  </div>
+</section>

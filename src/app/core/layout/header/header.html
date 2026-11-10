@@ -45,6 +45,9 @@
           <i class="pi pi-arrow-right-arrow-left" aria-hidden="true"></i><span>Movimenti</span>
           <span class="nav-plus" aria-hidden="true">+</span>
         </a>
+        <a class="workspace-link" routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
+          <i class="pi pi-cog" aria-hidden="true"></i><span>Impostazioni</span>
+        </a>
       } @else {
         <a class="workspace-link" routerLink="/login" routerLinkActive="active"
           ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">

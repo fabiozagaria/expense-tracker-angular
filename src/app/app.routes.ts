@@ -58,6 +58,12 @@ export const routes: Routes = [
     title: 'Dettaglio Entrata | Gestionale Spese'
   },
   {
+    path: 'settings',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/settings/pages/settings/settings').then(m => m.Settings),
+    title: 'Impostazioni | Gestionale Spese'
+  },
+  {
     path: 'login',
     loadComponent: () => import('./features/auth/pages/login/login').then(m => m.Login),
     title: 'Accedi | Gestionale Spese'

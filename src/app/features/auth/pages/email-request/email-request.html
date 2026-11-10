@@ -8,6 +8,9 @@
   </header>
 
   <p-card class="recovery-panel" styleClass="ui-card" data-reveal>
+    @if (loading() && demo) {
+      <p-message class="recovery-message recovery-wait" severity="info" role="status" aria-live="polite">Il primo avvio del server può richiedere 2–3 minuti: non chiudere la pagina.</p-message>
+    }
     @if (sent()) {
       <p-message class="recovery-message" severity="success" [attr.role]="'status'">{{ copy.sent }}</p-message>
     } @else {

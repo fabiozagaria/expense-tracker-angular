@@ -16,3 +16,4 @@
   .recovery-actions { flex-direction: column; align-items: stretch; }
   .recovery-actions a, .recovery-actions button { justify-content: center; }
 }
+.recovery-wait { margin-bottom: 20px; }

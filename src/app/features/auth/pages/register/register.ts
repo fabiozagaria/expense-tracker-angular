@@ -11,7 +11,7 @@ import { MessageModule } from 'primeng/message';
 import { finalize, TimeoutError } from 'rxjs';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
 import { AuthService } from '../../services/auth.service';
-import { commonAuthErrorMessage } from '../../../../core/api/api-error';
+import { apiErrorName, commonAuthErrorMessage } from '../../../../core/api/api-error';
 import { maxUtf8Bytes, notBlank, PASSWORD_MAX_BYTES } from '../../../../core/api/validators';
 
 @Component({
@@ -87,7 +87,7 @@ export class Register {
       return 'Invio email non riuscito. Account non creato: riprova più tardi.';
     }
     if (error.status === 429) return commonAuthErrorMessage(error)!;
-    if (error.status === 400 && error.error?.errorName === 'VALIDATION_ERROR') {
+    if (apiErrorName(error) === 'VALIDATION_ERROR') {
       return 'Dati non validi. Controlla username, email e password.';
     }
     if (error.status === 0) {

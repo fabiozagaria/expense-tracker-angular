@@ -1,16 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TimeoutError } from 'rxjs';
 
-/** Corpo degli errori del backend (`APIError` in expense-tracker-api). */
-export interface ApiError {
-  errorName: string;
-  details: string;
-  path: string;
-  timestamp: string;
-  status: string;
-}
-
-/** Il codice `errorName` del backend, se la risposta lo contiene. */
+/** Il campo `errorName` del corpo `APIError` del backend, se la risposta lo contiene. */
 export function apiErrorName(error: unknown): string | null {
   if (!(error instanceof HttpErrorResponse)) return null;
   const body: unknown = error.error;

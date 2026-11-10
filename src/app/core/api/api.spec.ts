@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { TimeoutError } from 'rxjs';
 import { apiErrorName, commonAuthErrorMessage, retryAfterSeconds } from './api-error';
 import { categoryLabel } from './categories';
-import { maxUtf8Bytes, notBlank, todayIso } from './validators';
+import { maxUtf8Bytes, notBlank } from './validators';
 
 function httpError(status: number, body: unknown = null, headers?: Record<string, string>) {
   return new HttpErrorResponse({ status, error: body, headers: new HttpHeaders(headers) });
@@ -44,8 +44,7 @@ describe('API contract helpers', () => {
     expect(max(new FormControl('è'.repeat(37)))).not.toBeNull();
   });
 
-  it('formats today as a local ISO date and labels every backend category', () => {
-    expect(todayIso(new Date(2026, 0, 5))).toBe('2026-01-05');
+  it('labels every backend category', () => {
     expect(categoryLabel('groceries')).toBe('Alimentari');
     expect(categoryLabel('salary')).toBe('Stipendio');
     expect(categoryLabel('unknown')).toBe('unknown');

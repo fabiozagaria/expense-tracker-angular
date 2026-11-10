@@ -21,12 +21,6 @@ export class ExpenseApiService {
     return this.http.get<ExpensePage>(`${this.apiUrl}/search`, { params });
   }
 
-  public getExpense(id: number): Observable<Expense> {
-    return this.http.get<Expense>(
-      `${this.apiUrl}/${id}`
-    );
-  }
-
   public postExpense(expense: CreateExpenseRequest): Observable<Expense> {
     return this.http.post<Expense>(this.apiUrl, expense);
   }

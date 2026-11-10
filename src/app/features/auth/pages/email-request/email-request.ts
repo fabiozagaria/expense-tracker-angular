@@ -10,6 +10,7 @@ import { MessageModule } from 'primeng/message';
 import { finalize } from 'rxjs';
 import { apiErrorName, commonAuthErrorMessage } from '../../../../core/api/api-error';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
+import { environment } from '../../../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
 
 /** `password`: POST /auth/forgot-password. `verification`: POST /auth/resend-verification. */
@@ -28,7 +29,7 @@ const COPY = {
     title: 'Nuovo link di verifica',
     subtitle: 'Il link di verifica è scaduto o non è arrivato? Inserisci l’email usata per la registrazione.',
     submit: 'Invia un nuovo link',
-    sent: 'Se l’indirizzo appartiene a un account non ancora verificato, riceverai un nuovo link valido per 10 minuti. Il link precedente non funziona più. Controlla anche la cartella Spam.',
+    sent: 'Se l’indirizzo appartiene a un account non ancora verificato, riceverai un nuovo link valido per 10 minuti, che sostituisce i precedenti. Controlla anche la cartella Spam; puoi chiedere un altro link dopo un minuto.',
   },
 } as const;
 
@@ -45,6 +46,7 @@ export class EmailRequest {
 
   protected readonly mode: EmailRequestMode = this.route.snapshot.data['mode'] === 'verification' ? 'verification' : 'password';
   protected readonly copy = COPY[this.mode];
+  protected readonly demo = environment.demo;
   protected readonly loading = signal(false);
   protected readonly sent = signal(false);
   protected readonly error = signal('');

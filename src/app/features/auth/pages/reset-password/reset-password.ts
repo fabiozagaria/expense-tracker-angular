@@ -11,6 +11,7 @@ import { finalize } from 'rxjs';
 import { apiErrorName, commonAuthErrorMessage } from '../../../../core/api/api-error';
 import { maxUtf8Bytes, PASSWORD_MAX_BYTES } from '../../../../core/api/validators';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
+import { environment } from '../../../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
 
 type ResetState = 'form' | 'success' | 'invalid-link';
@@ -33,6 +34,7 @@ export class ResetPassword {
   private readonly token = inject(ActivatedRoute).snapshot.queryParamMap.get('token')?.trim() ?? '';
 
   protected readonly state = signal<ResetState>(this.token && this.token.length <= 100 ? 'form' : 'invalid-link');
+  protected readonly demo = environment.demo;
   protected readonly loading = signal(false);
   protected readonly error = signal('');
   protected readonly passwordVisible = signal(false);

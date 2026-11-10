@@ -146,6 +146,7 @@ Esiti del **10 novembre 2026** (versione 1.2.0):
 - **Build production riuscita**, con gli stessi avvisi di budget.
 - Pagina `/settings` nel browser sulla build di produzione, con risposte del backend simulate: desktop chiaro, mobile scuro con email molto lunga, invio riuscito, attesa del server, account demo e errore di caricamento, senza overflow né errori JavaScript.
 - **Backend 1.2.0:** 122 test passati in locale con Java 21 e MySQL 8.0 Testcontainers.
+- **Prova reale sul sito pubblico (10 novembre 2026), confermata dal proprietario:** Impostazioni, invio del link con un'email reale, scelta della nuova password e login. Il percorso funziona.
 
 Esiti del **10 novembre 2026** (versione 1.1.0):
 
@@ -161,7 +162,7 @@ Esiti del **25 ottobre 2026**:
 - Registrazione online con email reale e caricamento delle liste confermati dal proprietario.
 - Deploy Vercel della correzione ai link entrate confermato.
 
-I test non certificano tutti i casi limite né sostituiscono una verifica browser completa. Restano il controllo visivo sistematico desktop/mobile nei due temi, il percorso integrale nel browser locale con Angular e Mailpit e la prova reale del reset password con il backend 1.1.0 pubblicato. Queste verifiche non richiedono nuove funzionalità.
+I test non certificano tutti i casi limite né sostituiscono una verifica browser completa. Restano il controllo visivo sistematico desktop/mobile nei due temi, il percorso integrale nel browser locale con Angular e Mailpit (la prova reale del reset password con email vera è stata confermata dal proprietario il 10 novembre 2026). Queste verifiche non richiedono nuove funzionalità.
 
 ## Versioning e manutenzione
 

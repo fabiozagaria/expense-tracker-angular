@@ -3,7 +3,6 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { ExpenseService } from '../../../features/expenses/services/expense.service';
-import { IncomeService } from '../../../features/income/services/income.service';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -18,7 +17,6 @@ export class Header {
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly expenses = inject(ExpenseService);
-  private readonly incomes = inject(IncomeService);
 
   protected logout(): void {
     this.menuOpen.set(false);
@@ -30,7 +28,6 @@ export class Header {
 
   private finishLogout(): void {
     this.expenses.clearExpenses();
-    this.incomes.clearIncomes();
     void this.router.navigateByUrl('/login');
   }
 }

@@ -1,4 +1,5 @@
 import { Component, ElementRef, inject, signal } from '@angular/core';
+import { notBlank } from '../../../../core/api/validators';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CreateExpenseRequest, ExpenseCategory } from '../../models/expense.model';
 import { ExpenseService } from '../../services/expense.service';
@@ -46,6 +47,7 @@ export class AddExpense {
   protected readonly expenseForm = new FormGroup({
     title: new FormControl('', { nonNullable: true, validators: [
       Validators.required,
+      notBlank,
       Validators.minLength(3),
       Validators.maxLength(15),
     ] }),

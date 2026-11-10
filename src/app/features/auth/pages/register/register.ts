@@ -11,6 +11,8 @@ import { MessageModule } from 'primeng/message';
 import { finalize, TimeoutError } from 'rxjs';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
 import { AuthService } from '../../services/auth.service';
+import { apiErrorName, commonAuthErrorMessage } from '../../../../core/api/api-error';
+import { maxUtf8Bytes, notBlank, PASSWORD_MAX_BYTES } from '../../../../core/api/validators';
 
 @Component({
   selector: 'app-register',
@@ -37,7 +39,7 @@ export class Register {
   protected readonly form = new FormGroup({
     username: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(6), Validators.maxLength(20)],
+      validators: [Validators.required, notBlank, Validators.minLength(6), Validators.maxLength(20)],
     }),
     email: new FormControl('', {
       nonNullable: true,
@@ -45,7 +47,7 @@ export class Register {
     }),
     password: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(6), Validators.maxLength(12)],
+      validators: [Validators.required, Validators.minLength(6), maxUtf8Bytes(PASSWORD_MAX_BYTES)],
     }),
   });
 
@@ -83,6 +85,10 @@ export class Register {
     }
     if (error.status === 503 && error.error?.errorName === 'EMAIL_DELIVERY_FAILED') {
       return 'Invio email non riuscito. Account non creato: riprova più tardi.';
+    }
+    if (error.status === 429) return commonAuthErrorMessage(error)!;
+    if (apiErrorName(error) === 'VALIDATION_ERROR') {
+      return 'Dati non validi. Controlla username, email e password.';
     }
     if (error.status === 0) {
       return 'Risposta non ricevuta. La registrazione potrebbe essere stata completata: controlla la tua email prima di riprovare.';

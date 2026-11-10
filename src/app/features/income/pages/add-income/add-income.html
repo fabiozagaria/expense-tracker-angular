@@ -25,7 +25,7 @@
               [attr.aria-invalid]="isInvalidField('title')"
               [attr.aria-describedby]="isInvalidField('title') ? 'income-title-error' : null" aria-required="true">
             @if (isInvalidField('title')) {
-              <p class="ui-field-error" id="income-title-error">Inserisci un titolo da 3 a 15 caratteri.</p>
+              <p class="ui-field-error" id="income-title-error">Inserisci un titolo da 3 a 15 caratteri, non solo spazi.</p>
             }
           </div>
           <div class="ui-field">

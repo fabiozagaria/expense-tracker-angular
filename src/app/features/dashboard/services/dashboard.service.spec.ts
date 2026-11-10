@@ -36,7 +36,11 @@ describe('DashboardService', () => {
       && request.params.get('size') === '10')
       .flush({ content: expenses, number: 0, size: 10, totalElements: expenses.length, totalPages: 1 });
     expect(movements).toBeUndefined();
-    http.expectOne(`${environment.apiBaseUrl}/api/incomes`).flush(incomes);
+    http.expectOne(request => request.url === `${environment.apiBaseUrl}/api/incomes/search`
+      && request.params.get('page') === '0'
+      && request.params.get('size') === '10'
+      && request.params.get('order') === 'newest')
+      .flush({ content: incomes, number: 0, size: 10, totalElements: incomes.length, totalPages: 1 });
 
     expect(movements?.map(({ id, kind, title, amount, category, date }) => ({ id, kind, title, amount, category, date }))).toEqual([
       { id: 3, kind: 'expense', title: 'Biglietto treno', amount: 25, category: ExpenseCategory.Transport, date: '2026-10-12' },

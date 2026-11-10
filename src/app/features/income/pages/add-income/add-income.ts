@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, ElementRef, inject, signal } from '@angular/core';
+import { notBlank } from '../../../../core/api/validators';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -41,7 +42,7 @@ export class AddIncome {
   protected readonly maxDate = new Date();
 
   protected readonly incomeForm = new FormGroup({
-    title: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3), Validators.maxLength(15)] }),
+    title: new FormControl('', { nonNullable: true, validators: [Validators.required, notBlank, Validators.minLength(3), Validators.maxLength(15)] }),
     amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.01)]),
     category: new FormControl<IncomeCategory | ''>('', { nonNullable: true, validators: Validators.required }),
     description: new FormControl('', { nonNullable: true, validators: Validators.maxLength(30) }),

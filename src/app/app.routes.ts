@@ -46,8 +46,16 @@ export const routes: Routes = [
   {
     path: 'expenses/:id',
     canActivate: [authGuard],
-    loadComponent: () => import('./features/expenses/pages/expense-detail/expense-detail').then(m => m.ExpenseDetail),
+    loadComponent: () => import('./features/movements/movement-detail/movement-detail').then(m => m.MovementDetail),
+    data: { kind: 'expenses' },
     title: 'Dettaglio Spesa | Gestionale Spese'
+  },
+  {
+    path: 'incomes/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/movements/movement-detail/movement-detail').then(m => m.MovementDetail),
+    data: { kind: 'incomes' },
+    title: 'Dettaglio Entrata | Gestionale Spese'
   },
   {
     path: 'login',
@@ -68,6 +76,23 @@ export const routes: Routes = [
     path: 'verify-email',
     title: 'Verifica email | Gestionale Spese',
     loadComponent: () => import('./features/auth/pages/verify-email/verify-email').then(m => m.VerifyEmail),
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () => import('./features/auth/pages/email-request/email-request').then(m => m.EmailRequest),
+    data: { mode: 'password' },
+    title: 'Password dimenticata | Gestionale Spese',
+  },
+  {
+    path: 'resend-verification',
+    loadComponent: () => import('./features/auth/pages/email-request/email-request').then(m => m.EmailRequest),
+    data: { mode: 'verification' },
+    title: 'Nuovo link di verifica | Gestionale Spese',
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./features/auth/pages/reset-password/reset-password').then(m => m.ResetPassword),
+    title: 'Nuova password | Gestionale Spese',
   },
   {
     path: '**',

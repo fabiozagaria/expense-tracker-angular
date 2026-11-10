@@ -6,6 +6,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { apiErrorName, commonAuthErrorMessage } from '../../../../core/api/api-error';
+import { maxUtf8Bytes, PASSWORD_MAX_BYTES } from '../../../../core/api/validators';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
@@ -25,20 +27,26 @@ export class Login {
   protected readonly demo = environment.demo;
   protected readonly loading = signal(false);
   protected readonly error = signal('');
+  /** 403 EMAIL_NOT_VERIFIED: la pagina offre il reinvio del link di verifica. */
+  protected readonly emailNotVerified = signal(false);
   protected readonly passwordVisible = signal(false);
   protected readonly form = new FormGroup({
     username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required, maxUtf8Bytes(PASSWORD_MAX_BYTES)] }),
   });
 
   protected tryDemo(): void {
     if (this.loading()) return;
     this.loading.set(true);
     this.error.set('');
+    this.emailNotVerified.set(false);
     // Do not automatically retry the POST: a retry could create another session.
     this.auth.demoLogin().pipe(timeout(270000), finalize(() => this.loading.set(false))).subscribe({
       next: () => { void this.router.navigateByUrl('/dashboard'); },
-      error: () => this.error.set('Il server demo non è ancora disponibile. Attendi qualche istante e riprova.'),
+      error: (error: unknown) => this.error.set(
+        error instanceof HttpErrorResponse && error.status === 429
+          ? commonAuthErrorMessage(error)!
+          : 'Il server demo non è ancora disponibile. Attendi qualche istante e riprova.'),
     });
   }
 
@@ -50,6 +58,7 @@ export class Login {
     }
     this.loading.set(true);
     this.error.set('');
+    this.emailNotVerified.set(false);
     const { username, password } = this.form.getRawValue();
     this.auth.login(username, password).pipe(finalize(() => this.loading.set(false))).subscribe({
       next: () => {
@@ -58,11 +67,16 @@ export class Login {
           ? requested : '/dashboard';
         void this.router.navigateByUrl(destination);
       },
-      error: (error: HttpErrorResponse) => this.error.set(
-        error.status === 403 ? 'Verifica prima la tua email.' :
-        error.status === 401 ? 'Username o password non corretti.' :
-        'Accesso non riuscito. Riprova più tardi.'
-      ),
+      error: (error: unknown) => {
+        const name = apiErrorName(error);
+        this.emailNotVerified.set(name === 'EMAIL_NOT_VERIFIED');
+        this.error.set(
+          name === 'EMAIL_NOT_VERIFIED' ? 'Verifica prima la tua email: apri il link ricevuto dopo la registrazione.' :
+          name === 'INVALID_CREDENTIALS' || (error instanceof HttpErrorResponse && error.status === 401)
+            ? 'Username o password non corretti.' :
+          commonAuthErrorMessage(error) ?? 'Accesso non riuscito. Riprova più tardi.'
+        );
+      },
     });
   }
 }

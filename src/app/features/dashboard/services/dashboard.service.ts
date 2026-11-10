@@ -2,8 +2,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { forkJoin, map, Observable } from 'rxjs';
-import { ExpensePage } from '../../expenses/models/expense.model';
-import { Income } from '../../income/models/income.model';
+import { MovementPage } from '../../movements/movement-api.service';
 
 export interface DashboardSummary { totalIncome: number; totalExpense: number; balance: number; }
 export interface DashboardMovement {
@@ -23,13 +22,16 @@ export class DashboardService {
   }
   getMovements(): Observable<DashboardMovement[]> {
     return forkJoin({
-      expenses: this.http.get<ExpensePage>(`${environment.apiBaseUrl}/api/expenses/search`, {
+      expenses: this.http.get<MovementPage>(`${environment.apiBaseUrl}/api/expenses/search`, {
         params: { page: 0, size: 10, query: '', month: '', order: 'newest' },
       }),
-      incomes: this.http.get<Income[]>(`${environment.apiBaseUrl}/api/incomes`),
+      // Stessa pagina per entrambi: GET /api/incomes restituirebbe fino a 1000 elementi.
+      incomes: this.http.get<MovementPage>(`${environment.apiBaseUrl}/api/incomes/search`, {
+        params: { page: 0, size: 10, query: '', month: '', order: 'newest' },
+      }),
     }).pipe(map(({ expenses, incomes }) => [
       ...expenses.content.map(item => ({ ...item, kind: 'expense' as const })),
-      ...incomes.map(item => ({ ...item, kind: 'income' as const })),
+      ...incomes.content.map(item => ({ ...item, kind: 'income' as const })),
     ].sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id)));
   }
 }

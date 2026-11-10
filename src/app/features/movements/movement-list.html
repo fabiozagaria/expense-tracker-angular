@@ -15,7 +15,7 @@
       <form class="edit-form" [formGroup]="form" (ngSubmit)="save()">
         <label>Titolo<input pInputText formControlName="title" minlength="3" maxlength="15" required></label>
         <label>Importo (€)<input pInputText type="number" formControlName="amount" min="0.01" step="0.01" required></label>
-        <label>Categoria<select formControlName="category">@for (category of categories; track category) { <option [value]="category">{{ categoryLabels[category] }}</option> }</select></label>
+        <label>Categoria<select formControlName="category">@for (category of categories; track category) { <option [value]="category">{{ categoryLabel(category) }}</option> }</select></label>
         <label>Data<input pInputText type="date" formControlName="date" [max]="today" required></label>
         <label>Descrizione<input pInputText formControlName="description" maxlength="30"></label>
         @if (form.invalid && form.touched) { <p-message severity="error">Controlla titolo (3–15 caratteri), importo positivo e data odierna o passata.</p-message> }
@@ -28,7 +28,7 @@
     @if (result(); as page) {
       <p role="status">{{ page.totalElements }} movimenti trovati</p>
       @for (item of page.content; track item.id) {
-        <article class="ui-panel movement"><div><h2>{{ item.title }}</h2><p>{{ item.date | date:'dd/MM/yyyy' }} · {{ categoryLabels[item.category] }}</p><p>{{ item.description }}</p></div><strong>{{ item.amount | currency:'EUR' }}</strong>
+        <article class="ui-panel movement"><div><h2><a [routerLink]="[income ? '/incomes' : '/expenses', item.id]">{{ item.title }}</a></h2><p>{{ item.date | date:'dd/MM/yyyy' }} · {{ categoryLabel(item.category) }}</p><p>{{ item.description }}</p></div><strong>{{ item.amount | currency:'EUR' }}</strong>
           <div class="ui-actions"><button pButton type="button" severity="secondary" [disabled]="busy()" (click)="edit(item)" [attr.aria-label]="'Modifica ' + item.title">Modifica</button><button pButton type="button" severity="danger" [outlined]="true" [disabled]="busy()" (click)="deleting.set(item.id)" [attr.aria-label]="'Elimina ' + item.title">Elimina</button></div>
           @if (deleting() === item.id) { <div class="confirmation"><p>Eliminare definitivamente {{ item.title }}?</p><button pButton type="button" severity="danger" [disabled]="busy()" (click)="remove(item.id)">Conferma eliminazione</button><button pButton type="button" severity="secondary" [disabled]="busy()" (click)="deleting.set(null)">Annulla</button></div> }
         </article>

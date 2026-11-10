@@ -56,9 +56,6 @@ export class ExpenseService {
     return this.expenses().find(expense => expense.id === id);
   }
 
-  public loadExpenseById(id: number): Observable<Expense> {
-    return this.expenseApiService.getExpense(id);
-  }
 
   addExpense(request: CreateExpenseRequest): Observable<Expense> {
     return this.expenseApiService.postExpense(request).pipe(

@@ -30,7 +30,11 @@
       <a pButton class="ui-primary" routerLink="/login">
         <span>Vai al login</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
       </a>
-      <a pButton [text]="true" routerLink="/register">Torna alla registrazione</a>
+      @if (state() === 'error') {
+        <a pButton [text]="true" routerLink="/resend-verification">Ricevi un nuovo link</a>
+      } @else {
+        <a pButton [text]="true" routerLink="/register">Torna alla registrazione</a>
+      }
     </div>
   </p-card>
 </section>

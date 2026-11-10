@@ -58,10 +58,16 @@
           </button>
         </div>
         @if (form.controls.password.touched && form.controls.password.invalid) {
-          <div id="password-error" class="field-error">Inserisci la password.</div>
+          <div id="password-error" class="field-error">{{ form.controls.password.hasError('maxUtf8Bytes') ? 'Password troppo lunga (massimo 72 byte).' : 'Inserisci la password.' }}</div>
         }
+        <a class="forgot-link" routerLink="/forgot-password">Password dimenticata?</a>
       </div>
-      @if (error()) { <p-message severity="error" class="login-error" role="alert">{{ error() }}</p-message> }
+      @if (error()) {
+        <p-message severity="error" class="login-error" role="alert">
+          {{ error() }}
+          @if (emailNotVerified()) { <a class="login-inline-link" routerLink="/resend-verification">Ricevi un nuovo link</a> }
+        </p-message>
+      }
       <button pButton class="login-submit" type="submit" [disabled]="loading()">
         <span>{{ loading() ? 'Accesso in corso…' : 'Accedi' }}</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
       </button>

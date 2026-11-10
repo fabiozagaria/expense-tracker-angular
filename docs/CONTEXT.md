@@ -118,3 +118,12 @@ Supera la precedente nota sulla suite database non eseguita. Suite Maven complet
 Recuperati dalla precedente bozza i miglioramenti del cold start senza ripristinare il blocco della registrazione: `GET /health` prima del POST in produzione, attesa massima di quattro minuti e timeout POST di 15 secondi, senza retry delle scritture. Conservati versione 1.0.0, registrazione pubblica attiva, `auth.isDemoSession()` e codice server `EMAIL_DELIVERY_FAILED`.
 
 La conferma ricorda il link valido dieci minuti e la cartella Spam. Un timeout della risposta POST non viene presentato come prova che l'account non sia stato creato. Le verifiche usano API simulate e indirizzi `.test`, senza nuove registrazioni o email reali.
+
+## Allineamento al contratto backend — 10 novembre 2026
+
+Confronto con i controller e i DTO di `expense-tracker-api` (master dopo la PR #19). Aggiunte le pagine `/forgot-password`, `/reset-password?token=` (destinazione del link inviato dal backend, prima finiva sulla home) e `/resend-verification`, con link da login (dopo `403 EMAIL_NOT_VERIFIED`) e da verifica email fallita. Il reset chiude la sessione locale perché il server revoca tutti i refresh token. Dettaglio generico `/expenses/:id` e `/incomes/:id` (`GET /api/incomes/{id}` prima non usato); i titoli delle liste e della dashboard aprono il dettaglio. La dashboard legge le entrate da `/api/incomes/search?size=10` invece dell'elenco completo.
+
+Correzioni di contratto: password di registrazione limitata a 12 caratteri dal client mentre il server accetta 6 caratteri–72 byte UTF-8 (`@MaxUtf8Bytes(72)`); titoli e username di soli spazi ora bloccati come `@NotBlank`; `description` tipizzata `string | null`; messaggi per `429 RATE_LIMITED` con `Retry-After`. Helper condivisi in `src/app/core/api/` (errori `APIError`, validatori, etichette categorie unificate).
+
+Verifiche: 87 test Angular passati (erano 67); build production riuscita con i soli avvisi di budget già noti; controllo visivo di login, password dimenticata e nuova password (desktop chiaro, mobile scuro) su SSR locale senza overflow né errori JS. Nessun backend avviato: il percorso reale reset → email → nuova password resta da provare con Mailpit o Brevo.
+

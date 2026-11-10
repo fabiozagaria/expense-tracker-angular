@@ -18,7 +18,8 @@ Applicazione full stack per gestire spese ed entrate personali, con autenticazio
 
 ## Funzionalità
 
-- Registrazione con verifica email, login, rinnovo sessione e logout.
+- Registrazione con verifica email, nuovo invio del link di verifica, login, rinnovo sessione e logout.
+- Password dimenticata: richiesta del link via email e scelta della nuova password.
 - Accesso rapido tramite **Prova la demo**, con account condiviso.
 - Creazione, visualizzazione, modifica di tutti i campi ed eliminazione di spese ed entrate.
 - Conferma prima dell'eliminazione e messaggi di caricamento, lista vuota ed errore.
@@ -26,7 +27,7 @@ Applicazione full stack per gestire spese ed entrate personali, con autenticazio
 - Filtro per mese/anno e ordine dalle più recenti o meno recenti.
 - Ricerca per titolo/descrizione, importo esatto o data esatta.
 - Dashboard con saldo, totali, ripartizione entrate/spese e ultimi sei movimenti.
-- Collegamenti dalla dashboard al dettaglio spese e alla lista entrate.
+- Dettaglio di spese ed entrate, raggiungibile dalla dashboard e dalle liste.
 - Tema chiaro/scuro, navigazione responsive e animazioni che rispettano il movimento ridotto.
 - Footer con firma **fabiozagariadev**, portfolio e GitHub; favicon originale.
 
@@ -62,10 +63,13 @@ I componenti gestiscono form e stato UI; i servizi dedicati incapsulano le chiam
 | `/login`, `/register` | Accesso e registrazione | Pubbliche |
 | `/registrati` | Redirect a `/register` | Pubblica |
 | `/verify-email?token=...` | Conferma email | Pubblica |
+| `/resend-verification` | Nuovo link di verifica | Pubblica |
+| `/forgot-password` | Richiesta link di reimpostazione | Pubblica |
+| `/reset-password?token=...` | Nuova password (link dell'email) | Pubblica |
 | `/dashboard` | Totali e ultimi movimenti | Richiesta |
 | `/summary` | Lista paginata e modifica spese | Richiesta |
 | `/incomes` | Lista paginata e modifica entrate | Richiesta |
-| `/expenses/:id` | Dettaglio spesa | Richiesta |
+| `/expenses/:id`, `/incomes/:id` | Dettaglio spesa o entrata | Richiesta |
 | `/add-transaction` | Scelta movimento | Richiesta |
 | `/add-expense`, `/add-income` | Creazione movimento | Richiesta |
 
@@ -77,19 +81,20 @@ I componenti gestiscono form e stato UI; i servizi dedicati incapsulano le chiam
 | Creazione | `POST /api/expenses`, `POST /api/incomes` |
 | Modifica completa dalle liste | `PUT /api/expenses/{id}`, `PUT /api/incomes/{id}` |
 | Eliminazione | `DELETE /api/expenses/{id}`, `DELETE /api/incomes/{id}` |
-| Dettaglio spesa | `GET /api/expenses/{id}` |
+| Dettaglio | `GET /api/expenses/{id}`, `GET /api/incomes/{id}` |
 | Modifica parziale spese | `PATCH /api/expenses/{id}` nel client dedicato |
-| Movimenti dashboard | `GET /api/expenses/search?page=0&size=10` e `GET /api/incomes` |
+| Movimenti dashboard | `GET /api/expenses/search?page=0&size=10` e `GET /api/incomes/search?page=0&size=10` |
 | Totali dashboard | `GET /api/dashboard/summary` |
 | Sessione | `POST /auth/register`, `/verify-email`, `/login`, `/refresh`, `/logout`, `/demo` |
+| Recupero account | `POST /auth/resend-verification`, `/forgot-password`, `/reset-password` |
 
-Il backend espone inoltre dettaglio e PATCH delle entrate. Il [README API](https://github.com/fabiozagaria/expense-tracker-api#readme) è la fonte completa del contratto.
+Il backend espone inoltre il PATCH delle entrate e gli elenchi completi `GET /api/{expenses,incomes}` (massimo 1000 elementi), non usati dal client. Il [README API](https://github.com/fabiozagaria/expense-tracker-api#readme) è la fonte completa del contratto.
 
 Le liste inviano `page` (da 0), `size=10`, `month=yyyy-MM`, `order=newest|oldest` e `query`. Il server restituisce `content`, `number`, `size`, `totalElements` e `totalPages`. La ricerca testuale è parziale su titolo e descrizione; importi e date sono esatti. Esempi: `25,50`, `25.50`, `2026-10-25` o `25/10/2026`.
 
-La dashboard usa la ricerca paginata per le spese, l'elenco delle entrate e i totali dedicati: non calcola il saldo sulla sola pagina corrente. L'isolamento tra utenti è imposto dal backend.
+La dashboard usa la prima pagina della ricerca per spese ed entrate e i totali dedicati: non calcola il saldo sulla sola pagina corrente. L'isolamento tra utenti è imposto dal backend.
 
-L'interceptor aggiunge il Bearer alle API e gestisce il rinnovo su 401. Il guard tenta il ripristino della sessione dal cookie. Duplicati in registrazione e fallimenti dell'invio email mostrano messaggi dedicati; il login richiede email verificata.
+L'interceptor aggiunge il Bearer alle API e gestisce il rinnovo su 401. Il guard tenta il ripristino della sessione dal cookie. Gli errori seguono il formato `APIError` del backend (`errorName`, `details`, ...): duplicati in registrazione, invio email fallito, email non verificata (con link al nuovo invio), link di reset non valido e limite di richieste `429 RATE_LIMITED` (attesa letta da `Retry-After`) mostrano messaggi dedicati. I form replicano i vincoli dei DTO, inclusa la password fino a 72 byte UTF-8 e i titoli non composti solo da spazi.
 
 ## Deploy
 

@@ -1,0 +1,44 @@
+<section class="ui-page recovery-page" appReveal aria-labelledby="email-request-title">
+  <header class="ui-page-header recovery-header" data-reveal>
+    <div>
+      <span class="ui-eyebrow">{{ copy.eyebrow }}</span>
+      <h1 id="email-request-title">{{ copy.title }}</h1>
+      <p class="ui-subtitle">{{ copy.subtitle }}</p>
+    </div>
+  </header>
+
+  <p-card class="recovery-panel" styleClass="ui-card" data-reveal>
+    @if (loading() && demo) {
+      <p-message class="recovery-message recovery-wait" severity="info" role="status" aria-live="polite">Il primo avvio del server può richiedere 2–3 minuti: non chiudere la pagina.</p-message>
+    }
+    @if (sent()) {
+      <p-message class="recovery-message" severity="success" [attr.role]="'status'">{{ copy.sent }}</p-message>
+    } @else {
+      <form class="recovery-form" [formGroup]="form" (ngSubmit)="submit()" novalidate [attr.aria-busy]="loading()">
+        <div class="ui-field">
+          <label for="recovery-email">Email</label>
+          <input pInputText id="recovery-email" type="email" formControlName="email" autocomplete="email" required
+            placeholder="nome@esempio.it"
+            [invalid]="email.touched && email.invalid"
+            [attr.aria-invalid]="email.touched && email.invalid"
+            [attr.aria-describedby]="email.touched && email.invalid ? 'recovery-email-error' : null" />
+          @if (email.touched && email.invalid) {
+            <p id="recovery-email-error" class="ui-field-error">Inserisci un indirizzo email valido (massimo 50 caratteri).</p>
+          }
+        </div>
+        @if (error()) {
+          <p-message class="recovery-message" severity="error" role="alert">{{ error() }}</p-message>
+        }
+        <div class="ui-actions">
+          <button pButton class="ui-primary" type="submit" [disabled]="loading()" [loading]="loading()">
+            <span>{{ loading() ? 'Invio in corso…' : copy.submit }}</span>
+          </button>
+        </div>
+      </form>
+    }
+
+    <div class="ui-actions recovery-actions">
+      <a pButton [text]="true" routerLink="/login">Torna al login</a>
+    </div>
+  </p-card>
+</section>

@@ -53,9 +53,34 @@ export class AuthService {
   });
 
   register(request: RegistrationRequest): Observable<{ msg: string }> {
-    const send = () =>
-      this.http.post<{ msg: string }>(`${this.apiUrl}/register`, request, { timeout: 15000 });
-    // Retry only the safe health check; never repeat account creation or email delivery.
+    return this.afterWakeUp(() =>
+      this.http.post<{ msg: string }>(`${this.apiUrl}/register`, request, { timeout: 15000 }),
+    );
+  }
+
+  /** `POST /auth/resend-verification`: 202 anche se l'email non esiste o è già verificata. */
+  resendVerification(email: string): Observable<void> {
+    return this.afterWakeUp(() =>
+      this.http.post<void>(`${this.apiUrl}/resend-verification`, { email }, { timeout: 15000 }),
+    );
+  }
+
+  /** `POST /auth/forgot-password`: 202 anche se l'email non esiste. */
+  forgotPassword(email: string): Observable<void> {
+    return this.afterWakeUp(() =>
+      this.http.post<void>(`${this.apiUrl}/forgot-password`, { email }, { timeout: 15000 }),
+    );
+  }
+
+  /** `POST /auth/reset-password`: 204; il server chiude tutte le sessioni dell'utente. */
+  resetPassword(token: string, newPassword: string): Observable<void> {
+    return this.afterWakeUp(() =>
+      this.http.post<void>(`${this.apiUrl}/reset-password`, { token, newPassword }, { timeout: 15000 }),
+    );
+  }
+
+  // Retry only the safe health check; never repeat a POST that sends email or consumes a token.
+  private afterWakeUp<T>(send: () => Observable<T>): Observable<T> {
     return environment.demo ? this.warmDemoServer().pipe(switchMap(send)) : send();
   }
 

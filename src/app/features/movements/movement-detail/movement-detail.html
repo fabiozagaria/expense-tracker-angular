@@ -1,0 +1,59 @@
+<section class="ui-page expense-detail" appReveal>
+  <header class="ui-page-header" data-reveal>
+    <div>
+      <span class="ui-eyebrow">IL MOVIMENTO NEL DETTAGLIO</span>
+      <h1>Dettaglio {{ noun }}</h1>
+      <p class="ui-subtitle">Le informazioni del movimento registrato nel tuo account.</p>
+    </div>
+    <a pButton severity="secondary" [outlined]="true" [routerLink]="listUrl"><i pButtonIcon class="pi pi-arrow-left" aria-hidden="true"></i><span pButtonLabel>Torna alle {{ income ? 'entrate' : 'spese' }}</span></a>
+  </header>
+
+  <div class="detail-content" [attr.aria-busy]="loading()" data-reveal>
+    @if (movement(); as movement) {
+      <p-card styleClass="ui-card">
+        <article aria-labelledby="movement-detail-title">
+          <div class="detail-heading">
+            <div class="detail-title">
+              <span class="detail-icon" [class.income-icon]="income" aria-hidden="true"><i [class]="income ? 'pi pi-arrow-down-left' : 'pi pi-arrow-up-right'"></i></span>
+              <div><span class="ui-eyebrow">{{ income ? 'ENTRATA REGISTRATA' : 'SPESA REGISTRATA' }}</span><h2 id="movement-detail-title">{{ movement.title }}</h2></div>
+            </div>
+            <div class="detail-amount"><span>Importo {{ income ? 'dell’entrata' : 'della spesa' }}</span><strong [class.income-amount]="income">{{ income ? '+' : '−' }} {{ movement.amount | currency:'EUR' }}</strong></div>
+          </div>
+          <dl class="detail-data">
+            <div><dt>Categoria</dt><dd><p-tag severity="secondary" [value]="categoryLabel(movement.category)" [rounded]="true" /></dd></div>
+            <div><dt>Data</dt><dd><time [attr.datetime]="movement.date">{{ movement.date | date:'dd MMMM yyyy' }}</time></dd></div>
+            <div><dt>ID {{ noun }}</dt><dd class="expense-reference">#{{ movement.id }}</dd></div>
+            <div class="description-data"><dt>Descrizione</dt><dd>{{ movement.description || 'Nessuna descrizione.' }}</dd></div>
+          </dl>
+          <div class="detail-footer"><i class="pi pi-info-circle" aria-hidden="true"></i><span>Puoi modificare o eliminare il movimento dall’elenco delle {{ income ? 'entrate' : 'spese' }}.</span><a [routerLink]="listUrl">Vai alle {{ income ? 'entrate' : 'spese' }}<i class="pi pi-arrow-right" aria-hidden="true"></i></a></div>
+        </article>
+      </p-card>
+    } @else if (loading()) {
+      <span class="screen-reader-status" role="status">Caricamento {{ noun }}…</span>
+      <p-card styleClass="ui-card" aria-hidden="true">
+        <div class="detail-skeleton-heading"><p-skeleton width="60%" height="3rem" /><p-skeleton width="100%" height="3rem" /></div>
+        <div class="detail-skeleton-data"><p-skeleton height="3.5rem" /><p-skeleton height="3.5rem" /><p-skeleton height="3.5rem" /></div>
+        <p-skeleton width="40%" height="1rem" />
+        <p-skeleton width="75%" height="1.5rem" />
+      </p-card>
+    } @else if (error()) {
+      <p-card styleClass="ui-card">
+        <div class="detail-state">
+          <span class="state-icon"><i class="pi pi-cloud" aria-hidden="true"></i></span>
+          <h2>{{ income ? 'L’entrata' : 'La spesa' }} non è disponibile</h2>
+          <p-message severity="error" icon="pi pi-exclamation-circle">{{ error() }}</p-message>
+          <button pButton type="button" class="ui-primary" (click)="load()"><i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i><span pButtonLabel>Riprova</span></button>
+        </div>
+      </p-card>
+    } @else if (notFound()) {
+      <p-card styleClass="ui-card">
+        <div class="detail-state" role="status">
+          <span class="state-icon"><i class="pi pi-search" aria-hidden="true"></i></span>
+          <h2>Nessuna {{ noun }} trovata</h2>
+          <p>Il movimento potrebbe essere stato eliminato o il collegamento potrebbe non essere valido.</p>
+          <a pButton class="ui-primary" [routerLink]="listUrl"><i pButtonIcon class="pi pi-arrow-left" aria-hidden="true"></i><span pButtonLabel>Torna alle {{ income ? 'entrate' : 'spese' }}</span></a>
+        </div>
+      </p-card>
+    }
+  </div>
+</section>

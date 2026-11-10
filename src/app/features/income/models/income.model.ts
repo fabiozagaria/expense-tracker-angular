@@ -16,6 +16,7 @@ export interface Income {
   title: string;
   amount: number;
   category: IncomeCategory;
-  description: string;
+  /** Facoltativa nel backend: può arrivare null. */
+  description: string | null;
   date: ISODate;
 }

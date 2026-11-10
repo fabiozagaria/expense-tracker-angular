@@ -28,6 +28,7 @@
               <p class="ui-field-error" id="expense-title-error">
                 @if (hasFieldError('title', 'required')) { Il titolo è obbligatorio. }
                 @if (hasFieldError('title', 'minlength')) { Inserisci almeno 3 caratteri. }
+                @if (hasFieldError('title', 'blank')) { Il titolo non può contenere solo spazi. }
                 @if (hasFieldError('title', 'maxlength')) { Inserisci al massimo 15 caratteri. }
               </p>
             }

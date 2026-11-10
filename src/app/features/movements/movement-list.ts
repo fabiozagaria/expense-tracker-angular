@@ -7,6 +7,8 @@ import { Subject, switchMap, catchError, of, finalize } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { categoryLabel } from '../../core/api/categories';
+import { notBlank } from '../../core/api/validators';
 import { ExpenseCategory } from '../expenses/models/expense.model';
 import { IncomeCategory } from '../income/models/income.model';
 import { Movement, MovementApiService, MovementKind, MovementPage } from './movement-api.service';
@@ -22,7 +24,7 @@ export class MovementList {
   protected readonly income = this.kind === 'incomes';
   protected readonly label = this.income ? 'entrate' : 'spese';
   protected readonly categories = Object.values(this.income ? IncomeCategory : ExpenseCategory);
-  protected readonly categoryLabels: Record<string, string> = { salary: 'Stipendio', freelance: 'Lavoro autonomo', bonus: 'Bonus', refund: 'Rimborso', investment: 'Investimenti', gift: 'Regalo', rental: 'Affitto', other: 'Altro', groceries: 'Spesa alimentare', car: 'Auto', gifts: 'Regali', installments: 'Rate', loan: 'Prestito', health: 'Salute', transport: 'Trasporti', bills: 'Bollette', housing: 'Casa', leisure: 'Tempo libero' };
+  protected readonly categoryLabel = categoryLabel;
   protected readonly result = signal<MovementPage | null>(null);
   protected readonly loading = signal(false);
   protected readonly busy = signal(false);
@@ -35,7 +37,7 @@ export class MovementList {
     order: new FormControl('newest', {nonNullable: true}),
   });
   protected readonly form = new FormGroup({
-    title: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/\S/)]}),
+    title: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.minLength(3), Validators.maxLength(15), notBlank]}),
     amount: new FormControl(0, {nonNullable: true, validators: [Validators.required, Validators.min(0.01)]}),
     description: new FormControl('', {nonNullable: true, validators: Validators.maxLength(30)}),
     category: new FormControl('', {nonNullable: true, validators: Validators.required}),

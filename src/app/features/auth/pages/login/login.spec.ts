@@ -57,5 +57,21 @@ describe('Login', () => {
     expect(fixture.nativeElement.textContent).toContain('Username o password non corretti.');
     TestBed.inject(HttpTestingController).verify();
   });
-});
 
+  it('offers the forgot-password page and a new verification link after 403 EMAIL_NOT_VERIFIED', () => {
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('a[href="/forgot-password"]')).toBeTruthy();
+    const username = fixture.nativeElement.querySelector('#login-username') as HTMLInputElement;
+    const password = fixture.nativeElement.querySelector('#login-password') as HTMLInputElement;
+    username.value = 'unverified1';
+    username.dispatchEvent(new Event('input'));
+    password.value = 'secret123';
+    password.dispatchEvent(new Event('input'));
+    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    TestBed.inject(HttpTestingController).expectOne('http://localhost:8080/auth/login')
+      .flush({ errorName: 'EMAIL_NOT_VERIFIED' }, { status: 403, statusText: 'Forbidden' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Verifica prima la tua email');
+    expect(fixture.nativeElement.querySelector('a[href="/resend-verification"]')).toBeTruthy();
+  });
+});

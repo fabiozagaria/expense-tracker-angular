@@ -133,9 +133,11 @@
                 <i class="pi" [class.pi-eye]="!passwordVisible()" [class.pi-eye-slash]="passwordVisible()" aria-hidden="true"></i>
               </button>
             </div>
-            <p id="register-password-hint" class="register-hint">Da 6 a 12 caratteri.</p>
+            <p id="register-password-hint" class="register-hint">Almeno 6 caratteri.</p>
             @if (form.controls.password.touched && form.controls.password.invalid) {
-              <p id="register-password-error" class="ui-field-error">Usa da 6 a 12 caratteri.</p>
+              <p id="register-password-error" class="ui-field-error">
+                {{ form.controls.password.hasError('maxUtf8Bytes') ? 'Password troppo lunga (massimo 72 byte).' : 'Usa almeno 6 caratteri.' }}
+              </p>
             }
           </div>
           @if (error()) {

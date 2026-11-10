@@ -11,6 +11,9 @@ export class MovementApiService {
   search(kind: MovementKind, params: {page: number; size: number; month: string; query: string; order: string}) {
     return this.http.get<MovementPage>(`${this.url(kind)}/search`, { params });
   }
+  get(kind: MovementKind, id: number) {
+    return this.http.get<Movement>(`${this.url(kind)}/${id}`);
+  }
   update(kind: MovementKind, movement: Movement) {
     return this.http.put<Movement>(`${this.url(kind)}/${movement.id}`, movement);
   }

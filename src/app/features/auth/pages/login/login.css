@@ -50,3 +50,5 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ui-accent, #067
 .password-toggle { position: absolute; top: 50%; right: 8px; display: grid; place-items: center; width: 30px; height: 30px; transform: translateY(-50%); border: 0; border-radius: 5px; background: transparent; color: var(--ui-muted, #77837d); cursor: pointer; }
 .password-toggle:hover { color: var(--ui-text, #263c30); background: var(--ui-surface-alt); }
 .password-toggle:focus-visible { outline: 2px solid var(--ui-accent, #06735c); outline-offset: 1px; }
+.forgot-link { display: inline-block; margin-top: 8px; color: var(--ui-accent); font-size: 11px; font-weight: 600; text-decoration: none; }.forgot-link:hover, .login-inline-link:hover { text-decoration: underline; }
+.login-inline-link { margin-left: 4px; color: inherit; font-weight: 600; }

@@ -90,7 +90,7 @@ describe('Register', () => {
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
   });
 
-  it.each([{ username: 'short' }, { email: 'invalid-address' }, { password: '12345' }])(
+  it.each([{ username: 'short' }, { username: '       ' }, { email: 'invalid-address' }, { password: '12345' }, { password: 'è'.repeat(37) }])(
     'blocks invalid field values: %o',
     (values) => {
       createForm();
@@ -100,6 +100,27 @@ describe('Register', () => {
       expect(fixture.nativeElement.querySelector('input[aria-invalid="true"]')).toBeTruthy();
     },
   );
+
+  it('accepts passwords longer than 12 characters up to the backend 72-byte limit', () => {
+    createForm();
+    fillForm({ password: 'a'.repeat(72) });
+    submitForm();
+    const request = requests.expectOne(registrationUrl);
+    expect(request.request.body.password).toHaveLength(72);
+    request.flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
+  });
+
+  it('explains the rate limit with the Retry-After wait', () => {
+    createForm();
+    fillForm();
+    submitForm();
+    requests.expectOne(registrationUrl).flush(
+      { errorName: 'RATE_LIMITED' },
+      { status: 429, statusText: 'Too Many Requests', headers: { 'Retry-After': '1200' } },
+    );
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Troppi tentativi. Riprova tra 20 minuti.');
+  });
 
   it('prevents another request while registration is in progress', () => {
     createForm();

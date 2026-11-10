@@ -195,3 +195,41 @@ describe('AuthService demo wake-up', () => {
     expect(auth.isDemoSession()).toBe(false);
   });
 });
+
+describe('AuthService account recovery', () => {
+  let auth: AuthService;
+  let requests: HttpTestingController;
+  const initialDemo = environment.demo;
+
+  beforeEach(() => {
+    environment.demo = false;
+    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    auth = TestBed.inject(AuthService);
+    requests = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    environment.demo = initialDemo;
+    requests.verify();
+  });
+
+  it('sends the backend DTOs for resend-verification, forgot-password and reset-password', () => {
+    auth.resendVerification('user@example.test').subscribe();
+    const resend = requests.expectOne(`${environment.apiBaseUrl}/auth/resend-verification`);
+    expect(resend.request.method).toBe('POST');
+    expect(resend.request.body).toEqual({ email: 'user@example.test' });
+    resend.flush(null, { status: 202, statusText: 'Accepted' });
+
+    auth.forgotPassword('user@example.test').subscribe();
+    const forgot = requests.expectOne(`${environment.apiBaseUrl}/auth/forgot-password`);
+    expect(forgot.request.body).toEqual({ email: 'user@example.test' });
+    expect(forgot.request.timeout).toBe(15000);
+    forgot.flush(null, { status: 202, statusText: 'Accepted' });
+
+    auth.resetPassword('raw-token', 'nuova-password').subscribe();
+    const reset = requests.expectOne(`${environment.apiBaseUrl}/auth/reset-password`);
+    expect(reset.request.body).toEqual({ token: 'raw-token', newPassword: 'nuova-password' });
+    expect(reset.request.headers.has('Authorization')).toBe(false);
+    reset.flush(null, { status: 204, statusText: 'No Content' });
+  });
+});

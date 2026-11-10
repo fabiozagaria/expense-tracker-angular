@@ -7,6 +7,7 @@ import { TableModule } from 'primeng/table';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SkeletonModule } from 'primeng/skeleton';
 import { MessageModule } from 'primeng/message';
+import { categoryLabel } from '../../../../core/api/categories';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
 import { DashboardMovement, DashboardService, DashboardSummary } from '../../services/dashboard.service';
 
@@ -31,7 +32,6 @@ export class Dashboard implements OnInit {
     const { totalIncome = 0, totalExpense = 0 } = this.summary() ?? {};
     return totalIncome + totalExpense > 0 ? totalIncome / (totalIncome + totalExpense) * 100 : 0;
   });
-  private readonly categories: Record<string, string> = { groceries: 'Alimentari', car: 'Auto', gifts: 'Regali', installments: 'Rate', loan: 'Prestito', health: 'Salute', transport: 'Trasporti', bills: 'Bollette', housing: 'Casa', leisure: 'Tempo libero', other: 'Altro', salary: 'Stipendio', freelance: 'Lavoro autonomo', bonus: 'Bonus', refund: 'Rimborso', investment: 'Investimenti', gift: 'Regalo', rental: 'Affitto' };
 
   ngOnInit(): void {
     this.dashboardService.getSummary().subscribe({
@@ -46,5 +46,5 @@ export class Dashboard implements OnInit {
   protected euro(value: number | null | undefined): string {
     return value == null ? '—' : new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(value);
   }
-  protected category(value: string): string { return this.categories[value] ?? value; }
+  protected readonly category = categoryLabel;
 }

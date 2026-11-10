@@ -17,7 +17,8 @@ export enum ExpenseCategory {
 export interface Expense {
   id: number;
   title: string;
-  description: string;
+  /** Facoltativa nel backend: può arrivare null. */
+  description: string | null;
   amount: number;
   category: ExpenseCategory;
   date: ISODate;

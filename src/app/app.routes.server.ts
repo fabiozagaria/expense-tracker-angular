@@ -26,7 +26,19 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client
   },
   {
+    path: 'incomes',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'incomes/:id',
+    renderMode: RenderMode.Client
+  },
+  {
     path: 'verify-email',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'reset-password',
     renderMode: RenderMode.Client
   },
   {

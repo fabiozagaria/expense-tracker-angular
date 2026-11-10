@@ -7,6 +7,7 @@ import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RevealDirective } from '../../../../core/ui/reveal.directive';
+import { commonAuthErrorMessage } from '../../../../core/api/api-error';
 import { EmailVerificationApiService } from '../../services/email-verification-api.service';
 
 type VerificationState = 'loading' | 'success' | 'error';
@@ -42,7 +43,8 @@ export class VerifyEmail implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         this.setError(error.status === 400
-          ? 'Il link di verifica non è valido o è scaduto.'
+          ? 'Il link di verifica non è valido o è scaduto. Puoi riceverne uno nuovo.'
+          : error.status === 429 ? commonAuthErrorMessage(error)!
           : 'Non è stato possibile verificare l’email. Controlla la connessione e riprova.');
       },
     });

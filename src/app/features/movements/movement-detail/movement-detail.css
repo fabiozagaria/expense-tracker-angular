@@ -37,3 +37,5 @@ h2 { color: var(--ui-text); font-size: 26px; font-weight: 600; margin: 8px 0 0; 
   .detail-state { padding: 24px 0; }
   .detail-skeleton-heading { grid-template-columns: 1fr; }
 }
+.detail-icon.income-icon { background: var(--ui-income-surface); color: var(--ui-income-text); }
+.detail-amount strong.income-amount { color: var(--ui-accent); }

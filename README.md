@@ -1,11 +1,11 @@
 # Gestionale Spese — Frontend Angular
 
-![Versione](https://img.shields.io/badge/versione-1.1.0-blue)
+![Versione](https://img.shields.io/badge/versione-1.2.0-blue)
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)
 
-**Versione frontend corrente: 1.1.0 — aggiornamento del 10 novembre 2026.**
+**Versione frontend corrente: 1.2.0 — aggiornamento del 10 novembre 2026.**
 
-Backend compatibile: **1.1.0**. La minor 1.1.0 allinea il client al contratto REST del backend: recupero password, nuovo invio del link di verifica, dettaglio delle entrate, limiti della password come sul server e messaggi per il limite di richieste.
+Backend compatibile: **1.2.0**. La minor 1.2.0 aggiunge la pagina Impostazioni per l'utente loggato: dati dell'account e link per cambiare la password, senza riscrivere l'email (usa il nuovo `GET /api/me` del backend). La minor 1.1.0 allinea il client al contratto REST del backend: recupero password, nuovo invio del link di verifica, dettaglio delle entrate, limiti della password come sul server e messaggi per il limite di richieste.
 
 Il perimetro funzionale è completato. Sono possibili correzioni di bug, refactoring e funzionalità future, gestite con nuove versioni. Non sono previste ulteriori funzionalità per chiudere questa versione.
 
@@ -28,6 +28,7 @@ Applicazione full stack per gestire spese ed entrate personali, con autenticazio
 - Ricerca per titolo/descrizione, importo esatto o data esatta.
 - Dashboard con saldo, totali, ripartizione entrate/spese e ultimi sei movimenti.
 - Dettaglio di spese ed entrate, raggiungibile dalla dashboard e dalle liste.
+- Impostazioni (`/settings`): username ed email dell'account e invio del link per cambiare la password; sull'account demo condiviso la scheda Password è solo una nota.
 - Tema chiaro/scuro, navigazione responsive e animazioni che rispettano il movimento ridotto.
 - Footer con firma **fabiozagariadev**, portfolio e GitHub; favicon originale.
 
@@ -70,6 +71,7 @@ I componenti gestiscono form e stato UI; i servizi dedicati incapsulano le chiam
 | `/summary` | Lista paginata e modifica spese | Richiesta |
 | `/incomes` | Lista paginata e modifica entrate | Richiesta |
 | `/expenses/:id`, `/incomes/:id` | Dettaglio spesa o entrata | Richiesta |
+| `/settings` | Dati dell'account e cambio password via email | Richiesta |
 | `/add-transaction` | Scelta movimento | Richiesta |
 | `/add-expense`, `/add-income` | Creazione movimento | Richiesta |
 
@@ -87,6 +89,7 @@ I componenti gestiscono form e stato UI; i servizi dedicati incapsulano le chiam
 | Totali dashboard | `GET /api/dashboard/summary` |
 | Sessione | `POST /auth/register`, `/verify-email`, `/login`, `/refresh`, `/logout`, `/demo` |
 | Recupero account | `POST /auth/resend-verification`, `/forgot-password`, `/reset-password` |
+| Profilo | `GET /api/me` (username ed email dell'utente del token) |
 
 Il backend espone inoltre il PATCH delle entrate e gli elenchi completi `GET /api/{expenses,incomes}` (massimo 1000 elementi), non usati dal client. Il [README API](https://github.com/fabiozagaria/expense-tracker-api#readme) è la fonte completa del contratto.
 
@@ -136,6 +139,13 @@ Per avviare API, MySQL e Mailpit seguire il [README backend](https://github.com/
 npm test -- --watch=false
 npm run build
 ```
+
+Esiti del **10 novembre 2026** (versione 1.2.0):
+
+- **96 test Angular passati**, inclusi pagina Impostazioni (profilo, invio del link, account demo, errore di caricamento, 429, consegna email fallita, avviso di avvio del server) e servizio del profilo.
+- **Build production riuscita**, con gli stessi avvisi di budget.
+- Pagina `/settings` nel browser sulla build di produzione, con risposte del backend simulate: desktop chiaro, mobile scuro con email molto lunga, invio riuscito, attesa del server, account demo e errore di caricamento, senza overflow né errori JavaScript.
+- **Backend 1.2.0:** 122 test passati in locale con Java 21 e MySQL 8.0 Testcontainers.
 
 Esiti del **10 novembre 2026** (versione 1.1.0):
 

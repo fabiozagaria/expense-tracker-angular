@@ -10,10 +10,6 @@ export class IncomeService {
 
   readonly incomesList = this.incomes.asReadonly();
 
-  loadIncomes(): void {
-    this.api.getIncomes().subscribe({ next: incomes => this.incomes.set(incomes) });
-  }
-
   addIncome(request: CreateIncomeRequest): Observable<Income> {
     return this.api.postIncome(request).pipe(
       tap(income => this.incomes.update(previous => [...previous, income]))

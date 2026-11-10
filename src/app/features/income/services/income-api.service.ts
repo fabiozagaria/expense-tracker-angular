@@ -11,10 +11,6 @@ export class IncomeApiService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiBaseUrl}/api/incomes`;
 
-  getIncomes(): Observable<Income[]> {
-    return this.http.get<Income[]>(this.apiUrl);
-  }
-
   postIncome(income: CreateIncomeRequest): Observable<Income> {
     return this.http.post<Income>(this.apiUrl, income);
   }

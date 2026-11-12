@@ -32,6 +32,7 @@ export class Register {
   private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   protected readonly demo = environment.demo;
+  protected readonly maintenance = environment.maintenance;
   protected readonly loading = signal(false);
   protected readonly registered = signal(false);
   protected readonly error = signal('');
@@ -52,7 +53,7 @@ export class Register {
   });
 
   protected submit(): void {
-    if (this.loading()) return;
+    if (this.loading() || this.maintenance) return;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

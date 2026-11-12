@@ -148,7 +148,7 @@
               pButton
               class="ui-primary register-submit"
               type="submit"
-              [disabled]="loading()"
+              [disabled]="loading() || maintenance"
               [loading]="loading()"
             >
               <span>{{ loading() ? 'Registrazione in corso…' : 'Registrati' }}</span>

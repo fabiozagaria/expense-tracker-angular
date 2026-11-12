@@ -9,6 +9,9 @@
         @if (auth.accessToken()) {
           <a pButton class="ui-primary" routerLink="/dashboard"><span>Vai alla dashboard</span><i class="pi pi-arrow-right" aria-hidden="true"></i></a>
           <a pButton [outlined]="true" class="home-secondary" routerLink="/add-transaction"><i class="pi pi-plus" aria-hidden="true"></i><span>Nuovo movimento</span></a>
+        } @else if (maintenance) {
+          <button pButton type="button" class="ui-primary" disabled><span>Accedi al tuo spazio</span><i class="pi pi-arrow-right" aria-hidden="true"></i></button>
+          <button pButton type="button" [outlined]="true" class="home-secondary" disabled><span>Registrati</span><i class="pi pi-user-plus" aria-hidden="true"></i></button>
         } @else {
           <a pButton class="ui-primary" routerLink="/login"><span>Accedi al tuo spazio</span><i class="pi pi-arrow-right" aria-hidden="true"></i></a>
           <a pButton [outlined]="true" class="home-secondary" routerLink="/register"><span>Registrati</span><i class="pi pi-user-plus" aria-hidden="true"></i></a>

@@ -13,6 +13,7 @@ describe('Register', () => {
   let fixture: ComponentFixture<Register>;
   let requests: HttpTestingController;
   const initialDemo = environment.demo;
+  const initialMaintenance = environment.maintenance;
   const initialApiBaseUrl = environment.apiBaseUrl;
   const registrationUrl = `${initialApiBaseUrl}/auth/register`;
 
@@ -26,6 +27,7 @@ describe('Register', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
+    environment.maintenance = initialMaintenance;
     environment.apiBaseUrl = initialApiBaseUrl;
     requests.verify();
   });
@@ -245,5 +247,14 @@ describe('Register', () => {
     expect(TestBed.inject(Router).url).toBe('/register');
     expect(harness.routeNativeElement?.querySelector('form')).toBeTruthy();
     expect(harness.routeNativeElement?.textContent).toContain('Crea un account');
+  });
+
+  it('disables registration during maintenance and sends nothing', () => {
+    environment.maintenance = true;
+    createForm();
+    const button = fixture.nativeElement.querySelector('button[type="submit"]') as HTMLButtonElement;
+    expect(button.disabled).toBe(true);
+    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
+    requests.expectNone(() => true);
   });
 });

@@ -48,6 +48,13 @@
         <a class="workspace-link" routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">
           <i class="pi pi-cog" aria-hidden="true"></i><span>Impostazioni</span>
         </a>
+      } @else if (maintenance) {
+        <span class="workspace-link is-disabled" aria-disabled="true" title="Non disponibile durante la manutenzione">
+          <i class="pi pi-sign-in" aria-hidden="true"></i><span>Accedi</span>
+        </span>
+        <span class="workspace-link is-disabled" aria-disabled="true" title="Non disponibile durante la manutenzione">
+          <i class="pi pi-user-plus" aria-hidden="true"></i><span>Registrati</span>
+        </span>
       } @else {
         <a class="workspace-link" routerLink="/login" routerLinkActive="active"
           ariaCurrentWhenActive="page" (click)="menuOpen.set(false)">

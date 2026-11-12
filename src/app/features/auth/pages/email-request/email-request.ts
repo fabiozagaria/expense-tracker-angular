@@ -47,6 +47,7 @@ export class EmailRequest {
   protected readonly mode: EmailRequestMode = this.route.snapshot.data['mode'] === 'verification' ? 'verification' : 'password';
   protected readonly copy = COPY[this.mode];
   protected readonly demo = environment.demo;
+  protected readonly maintenance = environment.maintenance;
   protected readonly loading = signal(false);
   protected readonly sent = signal(false);
   protected readonly error = signal('');
@@ -59,7 +60,7 @@ export class EmailRequest {
   protected readonly email = this.form.controls.email;
 
   protected submit(): void {
-    if (this.loading()) return;
+    if (this.loading() || this.maintenance) return;
     if (this.email.invalid) {
       this.email.markAsTouched();
       return;

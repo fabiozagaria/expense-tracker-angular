@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { environment } from '../../../../../environments/environment';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -14,5 +15,6 @@ import { RevealDirective } from '../../../../core/ui/reveal.directive';
 })
 export class HomePage {
   protected readonly auth = inject(AuthService);
+  protected readonly maintenance = environment.maintenance;
   protected title = signal('Gestore di Spese');
 }

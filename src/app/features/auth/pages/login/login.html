@@ -68,7 +68,7 @@
           @if (emailNotVerified()) { <a class="login-inline-link" routerLink="/resend-verification">Ricevi un nuovo link</a> }
         </p-message>
       }
-      <button pButton class="login-submit" type="submit" [disabled]="loading()">
+      <button pButton class="login-submit" type="submit" [disabled]="loading() || maintenance">
         <span>{{ loading() ? 'Accesso in corso…' : 'Accedi' }}</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
       </button>
     </form>

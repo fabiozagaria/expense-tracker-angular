@@ -9,6 +9,7 @@ describe('EmailRequest', () => {
   let fixture: ComponentFixture<EmailRequest>;
   let requests: HttpTestingController;
   const initialDemo = environment.demo;
+  const initialMaintenance = environment.maintenance;
 
   async function create(mode: EmailRequestMode, email?: string) {
     environment.demo = false;
@@ -37,6 +38,7 @@ describe('EmailRequest', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
+    environment.maintenance = initialMaintenance;
     requests.verify();
   });
 
@@ -74,5 +76,14 @@ describe('EmailRequest', () => {
       .flush({ errorName: 'SERVICE_UNAVAILABLE' }, { status: 503, statusText: 'Service Unavailable' });
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('non è disponibile in questo momento');
+  });
+
+  it('disables the request during maintenance and sends nothing', async () => {
+    environment.maintenance = true;
+    await create('password');
+    type('user@example.test');
+    expect((fixture.nativeElement.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(true);
+    submit();
+    requests.expectNone(() => true);
   });
 });

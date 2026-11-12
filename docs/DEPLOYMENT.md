@@ -8,7 +8,7 @@
 - Frontend Vercel e backend Render con MySQL Aiven/TLS; registrazione online e Brevo HTTPS attivi fino al 10 novembre 2026.
 - Client allineato al contratto REST del backend: CRUD e ricerca di spese/entrate, dettaglio di entrambe, recupero password (`/forgot-password`, `/reset-password`), nuovo link di verifica (`/resend-verification`), messaggi `429 RATE_LIMITED`, password fino a 72 byte UTF-8.
 - Pagina Impostazioni (`/settings`, solo utenti loggati, voce nel menu): username ed email da `GET /api/me`, invio del link per cambiare la password con l'email del profilo (riuso di `forgot-password` e `/reset-password`). Sull'account demo condiviso (email `portfolio-demo@example.invalid`, non raggiungibile) la scheda Password mostra solo una nota.
-- Frontend: 102 test e build production riusciti; restano gli avvisi di budget su bundle iniziale e CSS login/dashboard.
+- Frontend: 106 test e build production riusciti; restano gli avvisi di budget su bundle iniziale e CSS login/dashboard.
 - Il percorso reale Impostazioni → email → nuova password → login è stato provato dal proprietario sul sito pubblico il 10 novembre 2026 con un'email vera e funziona: sono quindi online sia il frontend 1.2.0 sia il backend 1.2.0. Il frontend 1.2.0 richiede il backend 1.2.0, per `/api/me`.
 - Manifest a 1.2.0. Tag Git `v1.1.0` e `v1.2.0` e relative release da creare a mano: la sessione non riesce a pubblicare tag.
 - Il proprietario ha dichiarato il progetto concluso (10 novembre 2026). Unica idea futura, rinviata e a suo carico: eliminazione dell'account (vedi `FUTURE.md`).

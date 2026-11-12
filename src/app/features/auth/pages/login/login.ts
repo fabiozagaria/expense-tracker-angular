@@ -52,7 +52,7 @@ export class Login {
   }
 
   protected submit(): void {
-    if (this.loading()) return;
+    if (this.loading() || this.maintenance) return;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

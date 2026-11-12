@@ -12,6 +12,7 @@ describe('ResetPassword', () => {
   let requests: HttpTestingController;
   const url = `${environment.apiBaseUrl}/auth/reset-password`;
   const initialDemo = environment.demo;
+  const initialMaintenance = environment.maintenance;
 
   async function create(token: string | null) {
     environment.demo = false;
@@ -39,6 +40,7 @@ describe('ResetPassword', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
+    environment.maintenance = initialMaintenance;
     requests.verify();
   });
 
@@ -79,5 +81,13 @@ describe('ResetPassword', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('è già stato usato');
     expect(fixture.nativeElement.querySelector('form')).toBeNull();
+  });
+
+  it('disables the reset during maintenance and sends nothing', async () => {
+    environment.maintenance = true;
+    await create('valid-token');
+    expect((fixture.nativeElement.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(true);
+    fill('newpassword1');
+    requests.expectNone(() => true);
   });
 });

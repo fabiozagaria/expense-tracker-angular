@@ -35,6 +35,7 @@ export class ResetPassword {
 
   protected readonly state = signal<ResetState>(this.token && this.token.length <= 100 ? 'form' : 'invalid-link');
   protected readonly demo = environment.demo;
+  protected readonly maintenance = environment.maintenance;
   protected readonly loading = signal(false);
   protected readonly error = signal('');
   protected readonly passwordVisible = signal(false);
@@ -47,7 +48,7 @@ export class ResetPassword {
   }, { validators: samePassword });
 
   protected submit(): void {
-    if (this.loading() || this.state() !== 'form') return;
+    if (this.loading() || this.maintenance || this.state() !== 'form') return;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

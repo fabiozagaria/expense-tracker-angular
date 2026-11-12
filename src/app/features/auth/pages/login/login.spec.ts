@@ -87,4 +87,14 @@ describe('Login', () => {
     button.click();
     TestBed.inject(HttpTestingController).expectNone(() => true);
   });
+
+  it('disables the login submit during maintenance and sends nothing', () => {
+    environment.maintenance = true;
+    fixture = TestBed.createComponent(Login);
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('.login-submit') as HTMLButtonElement;
+    expect(button.disabled).toBe(true);
+    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
+    TestBed.inject(HttpTestingController).expectNone(() => true);
+  });
 });

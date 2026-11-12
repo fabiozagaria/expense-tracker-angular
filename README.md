@@ -2,6 +2,10 @@
 
 ![Versione](https://img.shields.io/badge/versione-1.2.0-blue)
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)
+![Demo](https://img.shields.io/badge/demo_online-sospesa-orange)
+
+> [!WARNING]
+> **Demo online sospesa (aggiornamento del 12 novembre 2026).** Il database MySQL della demo, ospitato su Aiven, non è più disponibile perché il provider ha ritirato il piano gratuito. Accesso, registrazione e dati online non funzionano e il sito mostra un avviso fisso. Il ripristino è previsto entro 24–48 ore; se cambia, questo avviso viene aggiornato. Il codice del progetto non è interessato e resta avviabile in locale (vedi [Avvio locale](#avvio-locale)).
 
 **Versione frontend corrente: 1.2.0 — aggiornamento del 10 novembre 2026.**
 

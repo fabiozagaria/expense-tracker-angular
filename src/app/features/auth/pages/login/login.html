@@ -24,7 +24,7 @@
     </div>
 
     @if (demo) {
-      <button pButton class="demo-button" type="button" (click)="tryDemo()" [disabled]="loading()">
+      <button pButton class="demo-button" type="button" (click)="tryDemo()" [disabled]="loading() || maintenance">
         <i class="pi pi-play-circle" aria-hidden="true"></i><span>Prova la demo</span><i class="pi pi-arrow-right" aria-hidden="true"></i>
       </button>
       <p class="demo-explanation">Con «Prova la demo» usi un account condiviso: le modifiche sono visibili agli altri visitatori. Usa solo dati fittizi.</p>

@@ -109,6 +109,8 @@ export class AuthService {
   }
 
   private warmDemoServer(): Observable<void> {
+    // In manutenzione il server non risponde: inutile attendere i quattro minuti del risveglio.
+    if (environment.maintenance) return throwError(() => new Error('Servizio in manutenzione'));
     return this.http.get<unknown>(`${environment.apiBaseUrl}/health`).pipe(
       timeout(15000),
       map((response) => {

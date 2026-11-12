@@ -1,13 +1,14 @@
 # Contesto tecnico — Gestionale Spese Frontend
 
-## Stato corrente — 10 novembre 2026
+## Stato corrente — 12 novembre 2026
 
 **Versione corrente 1.2.0** (backend compatibile 1.2.0). Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
 
-- Frontend Vercel e backend Render con MySQL Aiven/TLS; registrazione online e Brevo HTTPS attivi.
+- **Servizio online sospeso dal 12 novembre 2026.** Il database MySQL Aiven della demo risulta spento e il provider ha ritirato il piano gratuito (nessuna nuova istanza free dal 6 novembre; cancellazione di quelle rimaste il 21 dicembre 2026, secondo la documentazione Aiven letta tramite ricerca, non verificata sulle pagine ufficiali). L'istanza Render va in crash loop all'avvio (`UnknownHostException` sul DNS del database, Flyway non si connette). Il codice non è interessato: il commit solo documentale `d4e5aca` del backend è identico al `40dbcc7` andato online il 10 novembre. Il frontend mostra un avviso fisso (`environment.maintenance` in `environment.production.ts`, componente `MaintenanceBanner`), disabilita «Prova la demo» e non aspetta più il risveglio del server. Ripristino previsto dal proprietario entro 24–48 ore; al ripristino mettere `maintenance: false` e rimuovere gli avvisi dai README.
+- Frontend Vercel e backend Render con MySQL Aiven/TLS; registrazione online e Brevo HTTPS attivi fino al 10 novembre 2026.
 - Client allineato al contratto REST del backend: CRUD e ricerca di spese/entrate, dettaglio di entrambe, recupero password (`/forgot-password`, `/reset-password`), nuovo link di verifica (`/resend-verification`), messaggi `429 RATE_LIMITED`, password fino a 72 byte UTF-8.
 - Pagina Impostazioni (`/settings`, solo utenti loggati, voce nel menu): username ed email da `GET /api/me`, invio del link per cambiare la password con l'email del profilo (riuso di `forgot-password` e `/reset-password`). Sull'account demo condiviso (email `portfolio-demo@example.invalid`, non raggiungibile) la scheda Password mostra solo una nota.
-- Frontend: 96 test e build production riusciti; restano gli avvisi di budget su bundle iniziale e CSS login/dashboard.
+- Frontend: 102 test e build production riusciti; restano gli avvisi di budget su bundle iniziale e CSS login/dashboard.
 - Il percorso reale Impostazioni → email → nuova password → login è stato provato dal proprietario sul sito pubblico il 10 novembre 2026 con un'email vera e funziona: sono quindi online sia il frontend 1.2.0 sia il backend 1.2.0. Il frontend 1.2.0 richiede il backend 1.2.0, per `/api/me`.
 - Manifest a 1.2.0. Tag Git `v1.1.0` e `v1.2.0` e relative release da creare a mano: la sessione non riesce a pubblicare tag.
 - Il proprietario ha dichiarato il progetto concluso (10 novembre 2026). Unica idea futura, rinviata e a suo carico: eliminazione dell'account (vedi `FUTURE.md`).

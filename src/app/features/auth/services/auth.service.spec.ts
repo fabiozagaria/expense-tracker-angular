@@ -12,6 +12,7 @@ describe('AuthService demo wake-up', () => {
   const healthUrl = `${environment.apiBaseUrl}/health`;
   const demoUrl = `${environment.apiBaseUrl}/auth/demo`;
   const initialDemo = environment.demo;
+  const initialMaintenance = environment.maintenance;
 
   beforeEach(() => {
     vi.useFakeTimers();
@@ -24,6 +25,7 @@ describe('AuthService demo wake-up', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
+    environment.maintenance = initialMaintenance;
     requests.verify();
     vi.useRealTimers();
   });
@@ -81,6 +83,18 @@ describe('AuthService demo wake-up', () => {
     requests.expectNone(demoUrl);
     expect(error).toBeInstanceOf(TimeoutError);
     expect(auth.accessToken()).toBeNull();
+  });
+
+  it('fails at once during maintenance instead of waiting four minutes for a server that is down', async () => {
+    environment.maintenance = true;
+    let error: unknown;
+    auth.demoLogin().subscribe({ error: (value) => (error = value) });
+    requests.expectNone(healthUrl);
+    requests.expectNone(demoUrl);
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).message).toContain('manutenzione');
+    await vi.advanceTimersByTimeAsync(240000);
+    requests.expectNone(healthUrl);
   });
 
   it('does not retry a failed login after the server is ready', async () => {

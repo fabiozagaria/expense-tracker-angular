@@ -1,0 +1,6 @@
+:host { display: block; position: sticky; top: 0; z-index: 90; }
+.maintenance-banner { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 24px; padding: 12px 16px; border: 1px solid var(--ui-expense-text); border-radius: 10px; background: var(--ui-expense-surface); color: var(--ui-text); }
+.maintenance-banner .pi { flex-shrink: 0; margin-top: 2px; color: var(--ui-expense-text); font-size: 16px; }
+.maintenance-banner p { margin: 0; font-size: 13px; line-height: 1.6; }
+.maintenance-banner strong { font-weight: 600; }
+@media (max-width: 575.98px) { .maintenance-banner { gap: 10px; padding: 10px 12px; } .maintenance-banner p { font-size: 12.5px; } }

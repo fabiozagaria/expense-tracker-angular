@@ -25,6 +25,7 @@ export class Login {
   private readonly route = inject(ActivatedRoute);
 
   protected readonly demo = environment.demo;
+  protected readonly maintenance = environment.maintenance;
   protected readonly loading = signal(false);
   protected readonly error = signal('');
   /** 403 EMAIL_NOT_VERIFIED: la pagina offre il reinvio del link di verifica. */
@@ -36,7 +37,7 @@ export class Login {
   });
 
   protected tryDemo(): void {
-    if (this.loading()) return;
+    if (this.loading() || this.maintenance) return;
     this.loading.set(true);
     this.error.set('');
     this.emailNotVerified.set(false);

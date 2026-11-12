@@ -10,6 +10,7 @@ describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
   const initialDemo = environment.demo;
+  const initialMaintenance = environment.maintenance;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,6 +25,7 @@ describe('Login', () => {
 
   afterEach(() => {
     environment.demo = initialDemo;
+    environment.maintenance = initialMaintenance;
     TestBed.inject(HttpTestingController).verify();
   });
 
@@ -73,5 +75,16 @@ describe('Login', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Verifica prima la tua email');
     expect(fixture.nativeElement.querySelector('a[href="/resend-verification"]')).toBeTruthy();
+  });
+
+  it('disables the shared demo button during maintenance and sends nothing', () => {
+    environment.demo = true;
+    environment.maintenance = true;
+    fixture = TestBed.createComponent(Login);
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('.demo-button') as HTMLButtonElement;
+    expect(button.disabled).toBe(true);
+    button.click();
+    TestBed.inject(HttpTestingController).expectNone(() => true);
   });
 });

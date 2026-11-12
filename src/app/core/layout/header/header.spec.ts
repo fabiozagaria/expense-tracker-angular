@@ -51,4 +51,19 @@ describe('Header', () => {
     const link = fixture.nativeElement.querySelector('a[href="/settings"]') as HTMLAnchorElement;
     expect(link.textContent).toContain('Impostazioni');
   });
+
+  it('shows login and registration as disabled items during maintenance', () => {
+    const initial = environment.maintenance;
+    environment.maintenance = true;
+    try {
+      fixture = TestBed.createComponent(Header);
+      fixture.detectChanges();
+      const el = fixture.nativeElement as HTMLElement;
+      const disabled = el.querySelectorAll('.workspace-link.is-disabled[aria-disabled="true"]');
+      expect(disabled.length).toBe(2);
+      expect(el.querySelector('a[href="/login"], a[href="/register"]')).toBeNull();
+    } finally {
+      environment.maintenance = initial;
+    }
+  });
 });

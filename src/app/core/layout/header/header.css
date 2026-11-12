@@ -61,3 +61,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid #a5e4c0; outline-offs
 
 .workspace-link.p-button { justify-content: flex-start; }
 .mobile-theme-toggle.p-button, .menu-toggle.p-button { background: #1c3830; color: #e1eee7; border-color: #365349; }
+
+.workspace-link.is-disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(0.8); }
+.workspace-link.is-disabled:hover { color: #aec1b9; background: transparent; }

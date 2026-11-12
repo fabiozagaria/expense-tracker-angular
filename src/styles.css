@@ -149,4 +149,13 @@ html[data-theme='dark'] app-register .register-field input.p-inputtext:focus {
 }
 
 /* Pulsanti spenti: devono sembrare evidentemente non cliccabili (es. durante la manutenzione). */
-.p-button:disabled, .p-button.p-disabled { opacity: 0.45 !important; cursor: not-allowed !important; filter: grayscale(0.85); box-shadow: none; }
+.p-button:disabled, .p-button.p-disabled {
+  background: #d9dedb !important;
+  border-color: #c4cbc7 !important;
+  color: #7d8984 !important;
+  opacity: 0.85 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  filter: grayscale(1);
+}
+.p-button.p-button-outlined:disabled, .p-button.p-button-text:disabled { background: transparent !important; }

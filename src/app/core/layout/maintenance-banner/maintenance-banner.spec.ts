@@ -17,14 +17,14 @@ describe('MaintenanceBanner', () => {
     environment.maintenance = initial;
   });
 
-  it('explains the outage and the expected recovery time while maintenance is active', async () => {
+  it('explains the outage and that there is no recovery date while maintenance is active', async () => {
     const fixture = await create(true);
     const banner = fixture.nativeElement.querySelector('[role="status"]') as HTMLElement;
     expect(banner).toBeTruthy();
-    expect(banner.textContent).toContain('Servizio temporaneamente sospeso');
+    expect(banner.textContent).toContain('Demo online sospesa');
     expect(banner.textContent).toContain('database');
     expect(banner.textContent).toContain('piano gratuito');
-    expect(banner.textContent).toContain('24–48 ore');
+    expect(banner.textContent).toContain('non c\'è una data di ripristino');
   });
 
   it('renders nothing when maintenance is off', async () => {

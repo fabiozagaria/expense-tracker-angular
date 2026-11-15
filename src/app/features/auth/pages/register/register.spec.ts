@@ -168,6 +168,20 @@ describe('Register', () => {
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
   });
 
+  it('says registration is closed on the online demo when the server answers 503', () => {
+    environment.demo = true;
+    environment.apiBaseUrl = '';
+    createForm();
+    fillForm();
+    submitForm();
+    requests.expectOne('/health').flush({ status: 'up' });
+    requests.expectOne('/auth/register').flush(null, { status: 503, statusText: 'Service Unavailable' });
+    fixture.detectChanges();
+    const alert = fixture.nativeElement.querySelector('[role="alert"]').textContent;
+    expect(alert).toContain('registrazione non è disponibile nella demo online');
+    expect(alert).toContain('Prova la demo');
+  });
+
   it('does not claim registration failed when the POST response is lost', () => {
     createForm();
     fillForm();

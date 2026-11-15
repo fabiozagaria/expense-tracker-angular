@@ -95,7 +95,10 @@ export class Register {
       return 'Risposta non ricevuta. La registrazione potrebbe essere stata completata: controlla la tua email prima di riprovare.';
     }
     if (error.status === 503) {
-      return 'Server non disponibile. Controlla la connessione e riprova più tardi.';
+      // Sulla demo online la registrazione è chiusa (database in memoria): il backend risponde 503.
+      return this.demo
+        ? 'La registrazione non è disponibile nella demo online. Usa «Prova la demo» dalla pagina di accesso.'
+        : 'Server non disponibile. Controlla la connessione e riprova più tardi.';
     }
     return 'Registrazione non riuscita. Riprova più tardi.';
   }

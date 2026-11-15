@@ -2,10 +2,9 @@
 
 ![Versione](https://img.shields.io/badge/versione-1.2.0-blue)
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)
-![Demo](https://img.shields.io/badge/demo_online-sospesa-orange)
 
-> [!WARNING]
-> **Demo online sospesa (aggiornamento del 14 novembre 2026).** Il database MySQL della demo, ospitato su Aiven, non è più disponibile perché il provider ha ritirato il piano gratuito. Accesso, registrazione e dati online non funzionano e il sito mostra un avviso fisso. Non c'è una data di ripristino: la demo resta spenta finché non sarà disponibile un database. Il codice del progetto non è interessato e resta avviabile in locale (vedi [Avvio locale](#avvio-locale)).
+> [!NOTE]
+> **Demo online ripristinata (15 novembre 2026).** Il database MySQL Aiven non è più disponibile, quindi la demo gira con un database H2 in memoria: l'account condiviso e i dati di esempio vengono ricreati a ogni avvio, quello che aggiungi si perde quando il servizio si riavvia e la registrazione è chiusa. Con un MySQL vero il progetto resta avviabile in locale (vedi [Avvio locale](#avvio-locale)).
 
 **Versione frontend corrente: 1.2.0 — aggiornamento del 10 novembre 2026.**
 
@@ -109,7 +108,7 @@ L'interceptor aggiunge il Bearer alle API e gestisce il rinnovo su 401. Il guard
 | --- | --- |
 | Frontend | Vercel: `https://gestionale-spese.vercel.app` |
 | Backend | Render: `https://expense-tracker-api-demo-plb9.onrender.com` |
-| Database | MySQL Aiven con TLS, accessibile solo dal backend |
+| Database | H2 in memoria sulla demo online (dal 15 novembre 2026); MySQL negli ambienti locali |
 | Email online | Brevo via HTTPS; SMTP/Mailpit in locale |
 
 In produzione `apiBaseUrl` è vuoto: il browser usa URL relativi. `vercel.json` inoltra `/health`, `/auth/*` e `/api/*` a Render e imposta `Cache-Control: no-store` per questi percorsi. Il cookie refresh online è HttpOnly, Secure, SameSite=Strict, Path `/auth`; il backend verifica l'Origin delle POST auth nel profilo demo.

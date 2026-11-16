@@ -128,3 +128,11 @@ Correzioni di contratto: password di registrazione limitata a 12 caratteri dal c
 
 Verifiche: 87 test Angular passati (erano 67); build production riuscita con i soli avvisi di budget già noti; controllo visivo di login, password dimenticata e nuova password (desktop chiaro, mobile scuro) su SSR locale senza overflow né errori JS. Nessun backend avviato: il percorso reale reset → email → nuova password resta da provare con Mailpit o Brevo.
 
+
+## Indicatori di caricamento — 16 novembre 2026
+
+Componenti condivisi in `src/app/core/ui/`: `MovementSkeleton` riusa gli skeleton PrimeNG con varianti card e tabella (liste spese/entrate e movimenti recenti); `LoadingSpinner` riusa ProgressSpinner con dimensioni sm/md/lg per le sezioni (verifica email). I pulsanti continuano a usare `[loading]` PrimeNG, con `aria-busy`, anche in login, logout, modifica ed eliminazione. Il login distingue l'azione demo dall'accesso con credenziali. Gli skeleton esistenti di dettaglio e profilo restano in uso; il profilo include anche lo spazio del pannello Password e la dashboard include la ripartizione degli importi.
+
+Signals e RxJS restano il sistema di stato: `finalize` e `takeUntilDestroyed` chiudono gli stati di dashboard, dettaglio, profilo e ricerche anche in caso di errore o distruzione. Le ricerche usano `switchMap`: annullare una richiesta precedente non spegne il loader di quella nuova. Nessuna nuova dipendenza, endpoint o attesa artificiale. Movimento ridotto disabilita esplicitamente shimmer e rotazione, senza cicli accelerati.
+
+Verifiche locali: test con richieste pendenti, errore HTTP, annullamento, retry e invii duplicati; Chromium con API simulate, desktop 1440 px e mobile 390 px, chiaro/scuro e movimento ridotto. Questi controlli non equivalgono a un collaudo del backend o del deploy pubblico.

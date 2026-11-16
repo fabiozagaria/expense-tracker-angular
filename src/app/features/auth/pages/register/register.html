@@ -150,7 +150,7 @@
               type="submit"
               [disabled]="loading() || maintenance"
               [loading]="loading()"
-            >
+             [attr.aria-busy]="loading()">
               <span>{{ loading() ? 'Registrazione in corso…' : 'Registrati' }}</span>
             </button>
           </div>

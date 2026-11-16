@@ -34,13 +34,13 @@
       <div><h2 id="expense-list-heading">Le tue spese</h2><p>Consulta, filtra o aggiorna un movimento.</p></div>
       <div class="ui-actions">
         @if (!loading() && !unavailable()) { <p-tag severity="secondary" [value]="totalElements() + (totalElements() === 1 ? ' spesa' : ' spese')" [rounded]="true" /> }
-        <button pButton type="button" severity="secondary" [outlined]="true" [loading]="loading()" [disabled]="loading()" (click)="reloadExpenses()"><i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i><span pButtonLabel>Aggiorna</span></button>
+        <button pButton type="button" severity="secondary" [outlined]="true" [loading]="loading()" [disabled]="loading()" (click)="reloadExpenses()" [attr.aria-busy]="loading()"><i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i><span pButtonLabel>Aggiorna</span></button>
       </div>
     </div>
 
     <div class="ui-actions" role="search" aria-label="Cerca tra le spese">
       <input pInputText type="search" maxlength="100" aria-label="Cerca per testo, importo o data" placeholder="Cerca spesa, importo o data" [value]="query()" (input)="updateQuery($event)" (keydown.enter)="searchExpenses()" />
-      <button pButton type="button" severity="secondary" [outlined]="true" [loading]="loading()" [disabled]="loading()" (click)="searchExpenses()"><i pButtonIcon class="pi pi-search" aria-hidden="true"></i><span pButtonLabel>Cerca</span></button>
+      <button pButton type="button" severity="secondary" [outlined]="true" [loading]="loading()" [disabled]="loading()" (click)="searchExpenses()" [attr.aria-busy]="loading()"><i pButtonIcon class="pi pi-search" aria-hidden="true"></i><span pButtonLabel>Cerca</span></button>
     </div>
 
     @if (error()) {

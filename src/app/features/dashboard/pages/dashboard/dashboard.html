@@ -4,32 +4,38 @@
     <a pButton [routerLink]="['/add-transaction']" class="new-movement"><i class="pi pi-plus" aria-hidden="true"></i><span>Nuovo movimento</span></a>
   </div>
   @if (error()) { <p-message severity="error" role="alert" class="status-error">{{ error() }}</p-message> }
-  <div class="metrics">
+  @if (loading()) { <span class="ui-sr-only" role="status">Caricamento riepilogo…</span> }
+  <div class="metrics" [attr.aria-busy]="loading()">
     <article class="metric balance" data-reveal><div class="metric-top"><span>Saldo disponibile</span><span class="metric-icon"><i class="pi pi-wallet" aria-hidden="true"></i></span></div>
-      @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.balance) }}</h2> }
+      @if (loading()) { <h2 aria-hidden="true"><p-skeleton width="75%" height="1.5em" /></h2> } @else { <h2>{{ euro(summary()?.balance) }}</h2> }
       <div class="metric-foot"><span class="balance-dot"></span>Il totale delle tue entrate, meno le spese</div>
     </article>
     <article class="metric" data-reveal><div class="metric-top"><span>Entrate totali</span><span class="metric-icon income-icon"><i class="pi pi-arrow-down-left" aria-hidden="true"></i></span></div>
-      @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.totalIncome) }}</h2> }
+      @if (loading()) { <h2 aria-hidden="true"><p-skeleton width="75%" height="1.5em" /></h2> } @else { <h2>{{ euro(summary()?.totalIncome) }}</h2> }
       <div class="metric-foot"><a routerLink="/incomes">Visualizza le entrate <i class="pi pi-arrow-up-right" aria-hidden="true"></i></a></div>
     </article>
     <article class="metric" data-reveal><div class="metric-top"><span>Spese totali</span><span class="metric-icon expense-icon"><i class="pi pi-arrow-up-right" aria-hidden="true"></i></span></div>
-      @if (loading()) { <p-skeleton width="75%" height="2.5rem" /> } @else { <h2>{{ euro(summary()?.totalExpense) }}</h2> }
+      @if (loading()) { <h2 aria-hidden="true"><p-skeleton width="75%" height="1.5em" /></h2> } @else { <h2>{{ euro(summary()?.totalExpense) }}</h2> }
       <div class="metric-foot"><a routerLink="/summary">Visualizza le spese <i class="pi pi-arrow-up-right" aria-hidden="true"></i></a></div>
     </article>
   </div>
   <div class="overview-grid">
-    <article class="overview-panel" data-reveal>
+    <article class="overview-panel" data-reveal [attr.aria-busy]="loading()">
       <div class="panel-title"><div><span class="section-kicker">IL QUADRO GENERALE</span><h2>Come si muovono i tuoi soldi</h2></div><span class="period-pill"><i class="pi pi-calendar" aria-hidden="true"></i>Tutti i movimenti</span></div>
+      @if (loading()) {
+        <div class="flow-labels" aria-hidden="true"><p-skeleton width="8rem" height="3.3125rem" /><p-skeleton width="8rem" height="3.3125rem" /></div>
+        <div class="flow-bar" aria-hidden="true"><p-skeleton style="flex: 1" height="14px" /></div>
+      } @else {
       <div class="flow-labels"><div><span class="legend-dot income-dot"></span>Entrate<strong>{{ euro(summary()?.totalIncome) }}</strong></div><div><span class="legend-dot expense-dot"></span>Spese<strong>{{ euro(summary()?.totalExpense) }}</strong></div></div>
       <div class="flow-bar" aria-hidden="true"><div class="flow-income" [style.width.%]="incomeShare()"></div><div class="flow-expense" [style.width.%]="summary()?.totalExpense ? 100 - incomeShare() : 0"></div></div>
+      }
       <div class="flow-note"><i class="pi pi-info-circle" aria-hidden="true"></i>Ripartizione degli importi registrati, senza limiti di periodo.</div>
     </article>
     <article class="quick-panel" data-reveal><span class="section-kicker">UN PASSO ALLA VOLTA</span><h2>Ogni movimento <br>fa chiarezza.</h2><p>Registra una spesa o un’entrata e ritrova subito il tuo equilibrio.</p><a routerLink="/add-expense" class="quick-link"><span><i class="pi pi-plus" aria-hidden="true"></i>Aggiungi una spesa</span><i class="pi pi-arrow-right" aria-hidden="true"></i></a></article>
   </div>
-  <article class="transactions-panel" data-reveal>
+  <article class="transactions-panel" data-reveal [attr.aria-busy]="movementsLoading()">
     <div class="transactions-heading"><div><span class="section-kicker">TUTTO SOTTO CONTROLLO</span><h2>Ultimi movimenti</h2></div><p-selectbutton [options]="filterOptions" [ngModel]="filter()" (ngModelChange)="filter.set($event)" optionLabel="label" optionValue="value" [allowEmpty]="false" ariaLabel="Tipo di movimento" /></div>
-    @if (movementsLoading()) { <div class="table-loading"><p-skeleton height="3rem" /><p-skeleton height="3rem" /><p-skeleton height="3rem" /></div> }
+    @if (movementsLoading()) { <app-movement-skeleton variant="table" /> }
     @else if (movementsError()) { <p class="table-state" role="alert">{{ movementsError() }}</p> }
     @else {
       <p-table [value]="visibleMovements()" [tableStyle]="{ 'min-width': '520px' }">

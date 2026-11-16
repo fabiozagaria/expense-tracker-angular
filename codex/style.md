@@ -121,3 +121,9 @@ Esempio di template, dopo aver importato `RevealDirective` nel componente:
 - Eseguire `npm run build` per modifiche al codice UI, dipendenze o stili. Se cambia il comportamento, eseguire anche i test pertinenti (`npm test -- --watch=false`). Una modifica solo a questa documentazione non richiede build o test Angular.
 - Mantenere le pagine pesanti caricate al bisogno con `loadComponent`. Non aumentare i budget di bundle o CSS solo per nascondere un errore: valutare prima import, caricamento e duplicazioni.
 - Aggiornare questa guida se vengono introdotti nuovi token, componenti condivisi o convenzioni visive.
+
+### Loader condivisi
+
+- Per liste di movimenti usare `MovementSkeleton` (`core/ui/movement-skeleton.ts`), con `variant="table"` nella dashboard. Per dati di dettaglio/profilo conservare i placeholder PrimeNG aderenti alla pagina.
+- Per operazioni nei pulsanti usare `[loading]`, `[disabled]` e `aria-busy` legati allo stato locale; per una sezione usare `LoadingSpinner` (`core/ui/loading-spinner.ts`), con `size="sm"`, `"md"` o `"lg"` e un'etichetta italiana.
+- Gli stili globali disabilitano le animazioni dei loader con movimento ridotto. Non introdurre attese minime o un overlay globale per richieste locali.

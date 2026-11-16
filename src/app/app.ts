@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationError, NavigationStart, Router, RouterOutlet } from '@angular/router';
-import { LoadingSpinner } from './core/ui/loading-spinner';
+import { LoadingPanel } from './core/ui/loading-panel';
 import { Header } from './core/layout/header/header';
 import { Footer } from './core/layout/footer/footer';
 import { MaintenanceBanner } from './core/layout/maintenance-banner/maintenance-banner';
@@ -9,7 +9,7 @@ import { AuthService } from './features/auth/services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, MaintenanceBanner, LoadingSpinner],
+  imports: [RouterOutlet, Header, Footer, MaintenanceBanner, LoadingPanel],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

@@ -1,3 +1,10 @@
+@if (loading() && !router.currentNavigation()) {
+  <app-loading-panel
+    [label]="activeAction() === 'demo' ? 'Avvio della demo…' : 'Accesso in corso…'"
+    [detail]="demo || activeAction() === 'demo' ? 'Il primo avvio del server può richiedere 2–3 minuti. Attendi il completamento.' : ''"
+  />
+}
+
 <section class="login-page" aria-labelledby="login-title" appReveal>
   <div class="login-introduction" data-reveal>
     <span class="section-eyebrow"><span aria-hidden="true"></span> IL TUO SPAZIO FINANZIARIO</span>
@@ -29,9 +36,6 @@
       </button>
       <p class="demo-explanation">Con «Prova la demo» usi un account condiviso: le modifiche sono visibili agli altri visitatori. Usa solo dati fittizi.</p>
       <div class="login-divider"><span>oppure accedi al tuo account</span></div>
-    }
-    @if (loading()) {
-      <p-message severity="info" class="login-status" role="status" aria-live="polite">Accesso in corso. Il primo avvio del server demo può richiedere 2–3 minuti.</p-message>
     }
 
     <form [attr.aria-busy]="loading()" [formGroup]="form" (ngSubmit)="submit()">

@@ -1,9 +1,7 @@
 <app-header></app-header>
 
 @if (router.currentNavigation()) {
-  <div class="route-loading">
-    <app-loading-spinner size="lg" [showLabel]="true" label="Caricamento pagina…" />
-  </div>
+  <app-loading-panel />
 }
 
 <main class="workspace-main" [attr.aria-busy]="!!router.currentNavigation()">

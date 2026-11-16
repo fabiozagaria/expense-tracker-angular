@@ -13,6 +13,9 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
       <strong class="brand">Expense Tracker</strong>
     }
     <span class="label" [class.ui-sr-only]="!showLabel()">{{ label() }}</span>
+    @if (detail()) {
+      <span class="detail">{{ detail() }}</span>
+    }
   `,
   styles: `
     :host {
@@ -59,6 +62,12 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
       font-size: 13px;
       text-align: center;
     }
+    .detail {
+      color: var(--ui-muted);
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
     @keyframes spinner-orbit {
       to {
         transform: rotate(360deg);
@@ -76,5 +85,6 @@ export class LoadingSpinner {
   readonly size = input<'sm' | 'md' | 'lg'>('md');
   readonly showLabel = input(false);
   readonly label = input('Caricamento in corso');
+  readonly detail = input('');
   readonly diameter = computed(() => ({ sm: '1rem', md: '2rem', lg: '4rem' })[this.size()]);
 }

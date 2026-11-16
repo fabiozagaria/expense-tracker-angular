@@ -1,9 +1,10 @@
-# Istruzioni UI — Gestionale Spese
+# Istruzioni UI — Expense Tracker
 
 Queste regole guidano le modifiche alla UI Angular del progetto. Leggerle prima di creare o aggiornare pagine, componenti, stili o animazioni. Le istruzioni esplicite dell'utente hanno precedenza; aggiornare questa guida quando cambia la direzione visiva condivisa.
 
 ## 1. Direzione visiva
 
+- Il nome pubblico è sempre **Expense Tracker**: usarlo in navigazione, footer, titoli pagina, messaggi e documentazione.
 - Aspetto di un gestionale finanziario: ordinato, sobrio e leggibile.
 - Sidebar verde petrolio, sfondo avorio, superfici pulite e accenti smeraldo.
 - Dare priorità a saldo, importi, movimenti e azioni utili. Una sola azione primaria per sezione.
@@ -127,3 +128,5 @@ Esempio di template, dopo aver importato `RevealDirective` nel componente:
 - Per liste di movimenti usare `MovementSkeleton` (`core/ui/movement-skeleton.ts`), con `variant="table"` nella dashboard. Per dati di dettaglio/profilo conservare i placeholder PrimeNG aderenti alla pagina.
 - Per operazioni nei pulsanti usare `[loading]`, `[disabled]` e `aria-busy` legati allo stato locale; per una sezione usare `LoadingSpinner` (`core/ui/loading-spinner.ts`), con `size="sm"`, `"md"` o `"lg"` e un'etichetta italiana.
 - Gli stili globali disabilitano le animazioni dei loader con movimento ridotto. Non introdurre attese minime o un overlay globale per richieste locali.
+
+- Lo spinner di navigazione può apparire in un pannello centrato nella viewport con superficie di tema e nome **Expense Tracker**, senza intercettare i clic. Riusa `LoadingSpinner`, con anelli CSS e icona portafoglio; segui il signal del router anche durante le guard. Il caricamento delle singole sezioni resta locale.

@@ -1,4 +1,21 @@
 :host { display: flex; flex-direction: column; min-height: 100vh; background: var(--ui-bg, #f6f7f4); }
+.route-loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1100;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  padding: 24px 32px;
+  border: 1px solid var(--ui-border);
+  border-radius: 16px;
+  background: var(--ui-surface);
+  background: color-mix(in srgb, var(--ui-surface) 96%, transparent);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.18);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
 .workspace-main { flex: 1; min-width: 0; margin-left: 236px; padding: 23px 40px 42px; }
 .demo-notice { display: flex; align-items: center; gap: 13px; margin-bottom: 29px; padding: 11px 14px; border: 1px solid var(--ui-border, #e3e7e1); border-radius: 7px; background: var(--ui-surface, #fff); color: var(--ui-muted, #77837d); }
 .demo-notice p { margin: 0; font-size: 12px; line-height: 1.6; }

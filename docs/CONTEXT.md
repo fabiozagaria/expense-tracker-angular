@@ -144,3 +144,7 @@ Il nome del sito, del progetto e del servizio è sempre **Expense Tracker**. Nav
 ## Spinner e identità — 16 novembre 2026
 
 Il caricamento di navigazione usa un pannello centrato nella viewport desktop/mobile, con sfondo di tema, bordo e ombra. `LoadingSpinner` mostra due anelli CSS intorno all'icona del portafoglio; nel pannello espone il nome completo Expense Tracker e l'etichetta di caricamento. Lo stesso componente è usato nella verifica email. Lo stato segue `Router.currentNavigation`, inclusi i controlli di sessione delle guard; fine, annullamento ed errore rimuovono il pannello. Gli errori di navigazione sono comunicati con un alert. Nessuna durata minima o blocco dei clic; le animazioni rispettano movimento ridotto. I pulsanti restano legati alle operazioni locali e gli skeleton ai dati delle sezioni.
+
+## Attesa autenticazione — 16 novembre 2026
+
+Il pannello centrale condiviso `LoadingPanel` è collegato anche agli stati locali di login, avvio demo e registrazione. Durante il risveglio del backend mostra una nota sui possibili 2–3 minuti di attesa. Rimane visibile durante i retry health e il POST finale; successo, errore, timeout e uscita dalla pagina terminano lo stato. Il pannello di navigazione prende il posto di quello auth durante un cambio route. Nessuna ripetizione automatica dei POST aggiunta. Verifica locale: 120 test e build production riusciti, con gli avvisi di budget già noti.

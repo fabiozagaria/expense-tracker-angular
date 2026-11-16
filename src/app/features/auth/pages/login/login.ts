@@ -1,6 +1,8 @@
 import { environment } from '../../../../../environments/environment';
 import { timeout } from 'rxjs';
-import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LoadingPanel } from '../../../../core/ui/loading-panel';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -15,13 +17,14 @@ import { RevealDirective } from '../../../../core/ui/reveal.directive';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, ButtonModule, InputTextModule, MessageModule, RevealDirective],
+  imports: [LoadingPanel, ReactiveFormsModule, RouterLink, ButtonModule, InputTextModule, MessageModule, RevealDirective],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
   private readonly auth = inject(AuthService);
-  private readonly router = inject(Router);
+  protected readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
 
   protected readonly demo = environment.demo;
@@ -44,7 +47,7 @@ export class Login {
     this.error.set('');
     this.emailNotVerified.set(false);
     // Do not automatically retry the POST: a retry could create another session.
-    this.auth.demoLogin().pipe(timeout(270000), finalize(() => this.loading.set(false))).subscribe({
+    this.auth.demoLogin().pipe(timeout(270000), takeUntilDestroyed(this.destroyRef), finalize(() => this.loading.set(false))).subscribe({
       next: () => { void this.router.navigateByUrl('/dashboard'); },
       error: (error: unknown) => this.error.set(
         error instanceof HttpErrorResponse && error.status === 429
@@ -64,7 +67,7 @@ export class Login {
     this.error.set('');
     this.emailNotVerified.set(false);
     const { username, password } = this.form.getRawValue();
-    this.auth.login(username, password).pipe(finalize(() => this.loading.set(false))).subscribe({
+    this.auth.login(username, password).pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.loading.set(false))).subscribe({
       next: () => {
         const requested = this.route.snapshot.queryParamMap.get('returnUrl');
         const destination = requested?.startsWith('/') && !requested.startsWith('//')

@@ -1,9 +1,10 @@
+import { LoadingPanel } from '../../../../core/ui/loading-panel';
 import { environment } from '../../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -17,6 +18,7 @@ import { maxUtf8Bytes, notBlank, PASSWORD_MAX_BYTES } from '../../../../core/api
 @Component({
   selector: 'app-register',
   imports: [
+    LoadingPanel,
     ReactiveFormsModule,
     RouterLink,
     ButtonModule,
@@ -29,6 +31,7 @@ import { maxUtf8Bytes, notBlank, PASSWORD_MAX_BYTES } from '../../../../core/api
   styleUrl: './register.css',
 })
 export class Register {
+  protected readonly router = inject(Router);
   private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   protected readonly demo = environment.demo;

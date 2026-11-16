@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { environment } from '../../../../../environments/environment';
 
 import { Login } from './login';
+import { vi } from 'vitest';
 
 describe('Login', () => {
   let component: Login;
@@ -27,6 +28,7 @@ describe('Login', () => {
     environment.demo = initialDemo;
     environment.maintenance = initialMaintenance;
     TestBed.inject(HttpTestingController).verify();
+    vi.restoreAllMocks();
   });
 
   it('should create', () => {
@@ -97,4 +99,105 @@ describe('Login', () => {
     fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
     TestBed.inject(HttpTestingController).expectNone(() => true);
   });
+  it('shows the central panel while credentials are pending and releases it after HTTP 401', () => {
+    const requests = TestBed.inject(HttpTestingController);
+    component['form'].setValue({ username: 'personaluser', password: 'wrongpass' });
+    component['submit']();
+    component['submit']();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-loading-panel app-loading-spinner')).toBeTruthy();
+    const submit = fixture.nativeElement.querySelector('.login-submit') as HTMLButtonElement;
+    expect(submit.disabled).toBe(true);
+    expect(fixture.nativeElement.querySelector('form').getAttribute('aria-busy')).toBe('true');
+    requests.expectOne(`${environment.apiBaseUrl}/auth/login`).flush(null, { status: 401, statusText: 'Unauthorized' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeNull();
+    expect(submit.disabled).toBe(false);
+    expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain('Username o password non corretti.');
+  });
+
+  it('removes the credentials panel on success and navigates once', () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+    component['form'].setValue({ username: 'personaluser', password: 'secret123' });
+    component['submit']();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeTruthy();
+    TestBed.inject(HttpTestingController).expectOne(`${environment.apiBaseUrl}/auth/login`).flush({ accessToken: 'fixture-token' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeNull();
+    expect(navigate).toHaveBeenCalledExactlyOnceWith('/dashboard');
+  });
+
+  it('keeps the demo panel through wake-up retries and sends only one login POST', async () => {
+    vi.useFakeTimers();
+    try {
+      environment.demo = true;
+      fixture = TestBed.createComponent(Login);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      const requests = TestBed.inject(HttpTestingController);
+      const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+      component['tryDemo']();
+      component['tryDemo']();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel app-loading-spinner')).toBeTruthy();
+      expect(fixture.nativeElement.querySelector('.demo-button').disabled).toBe(true);
+      expect(fixture.nativeElement.querySelector('.login-submit').disabled).toBe(true);
+      requests.expectOne(`${environment.apiBaseUrl}/health`).flush(null, { status: 503, statusText: 'Unavailable' });
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeTruthy();
+      requests.expectNone(`${environment.apiBaseUrl}/auth/demo`);
+      await vi.advanceTimersByTimeAsync(5000);
+      requests.expectOne(`${environment.apiBaseUrl}/health`).flush({ status: 'up' });
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeTruthy();
+      const login = requests.expectOne(`${environment.apiBaseUrl}/auth/demo`);
+      expect(login.request.method).toBe('POST');
+      login.flush({ accessToken: 'fixture-token' });
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeNull();
+      expect(navigate).toHaveBeenCalledExactlyOnceWith('/dashboard');
+      await vi.advanceTimersByTimeAsync(10000);
+      requests.expectNone(`${environment.apiBaseUrl}/auth/demo`);
+      requests.expectNone(`${environment.apiBaseUrl}/health`);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('ends the demo panel with an error when wake-up expires', async () => {
+    vi.useFakeTimers();
+    try {
+      component['tryDemo']();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeTruthy();
+      await vi.advanceTimersByTimeAsync(240000);
+      const requests = TestBed.inject(HttpTestingController);
+      requests.match(`${environment.apiBaseUrl}/health`).forEach(request => expect(request.cancelled).toBe(true));
+      requests.expectNone(`${environment.apiBaseUrl}/auth/demo`);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeNull();
+      expect(fixture.nativeElement.querySelector('.login-submit').disabled).toBe(false);
+      expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain('Il server demo non è ancora disponibile');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('cancels a pending health check when leaving login and never logs in later', async () => {
+    vi.useFakeTimers();
+    try {
+      const requests = TestBed.inject(HttpTestingController);
+      component['tryDemo']();
+      const health = requests.expectOne(`${environment.apiBaseUrl}/health`);
+      fixture.destroy();
+      expect(health.cancelled).toBe(true);
+      await vi.advanceTimersByTimeAsync(300000);
+      requests.expectNone(`${environment.apiBaseUrl}/health`);
+      requests.expectNone(`${environment.apiBaseUrl}/auth/demo`);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
 });

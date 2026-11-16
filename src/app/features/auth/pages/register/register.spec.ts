@@ -73,12 +73,14 @@ describe('Register', () => {
       password: 'secret123',
     });
     expect(fixture.nativeElement.textContent).not.toContain('Account creato.');
+    expect(fixture.nativeElement.querySelector('app-loading-panel app-loading-spinner')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(true);
     request.flush({ msg: 'Account creato' }, { status: 201, statusText: 'Created' });
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain(
       'Controlla la tua email e apri il link di verifica prima di accedere.',
     );
+    expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeNull();
     expect(fixture.nativeElement.querySelector('form')).toBeNull();
     expect(fixture.nativeElement.querySelector('a').getAttribute('href')).toBe('/login');
     expect(TestBed.inject(AuthService).accessToken()).toBeNull();
@@ -88,6 +90,7 @@ describe('Register', () => {
     createForm();
     submitForm();
     requests.expectNone(registrationUrl);
+    expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeNull();
     expect(fixture.nativeElement.querySelectorAll('input[aria-invalid="true"]').length).toBe(3);
     expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
   });
@@ -146,6 +149,7 @@ describe('Register', () => {
       .expectOne(registrationUrl)
       .flush({ errorName }, { status: 409, statusText: 'Conflict' });
     fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeNull();
     expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain(
       expectedMessage,
     );
@@ -271,4 +275,34 @@ describe('Register', () => {
     fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
     requests.expectNone(() => true);
   });
+  it('keeps the registration panel through backend wake-up and clears it on a rejected POST', async () => {
+    vi.useFakeTimers();
+    try {
+      environment.demo = true;
+      createForm();
+      fillForm();
+      submitForm();
+      submitForm();
+      expect(fixture.nativeElement.querySelector('app-loading-panel app-loading-spinner')).toBeTruthy();
+      requests.expectOne(`${environment.apiBaseUrl}/health`).flush(null, { status: 503, statusText: 'Unavailable' });
+      await vi.advanceTimersByTimeAsync(5000);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeTruthy();
+      requests.expectNone(registrationUrl);
+      requests.expectOne(`${environment.apiBaseUrl}/health`).flush({ status: 'up' });
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeTruthy();
+      requests.expectOne(registrationUrl).flush(null, { status: 503, statusText: 'Unavailable' });
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-loading-panel')).toBeNull();
+      expect(fixture.nativeElement.querySelector('button[type="submit"]').disabled).toBe(false);
+      expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain('registrazione non è disponibile nella demo online');
+      await vi.advanceTimersByTimeAsync(10000);
+      requests.expectNone(registrationUrl);
+      requests.expectNone(`${environment.apiBaseUrl}/health`);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
 });

@@ -1,3 +1,10 @@
+@if (loading() && !router.currentNavigation()) {
+  <app-loading-panel
+    label="Registrazione in corso…"
+    [detail]="demo ? 'Il primo avvio del server può richiedere 2–3 minuti. Attendi il completamento.' : ''"
+  />
+}
+
 <section class="ui-page register-page" appReveal aria-labelledby="register-title">
   <div class="register-layout">
     <div class="ui-panel register-introduction" data-reveal>
@@ -44,12 +51,6 @@
           <p>Tutti i campi sono obbligatori.</p>
         }
       </div>
-
-      @if (loading() && demo) {
-        <p-message class="register-message" severity="info" role="status" aria-live="polite">
-          Registrazione in corso. Il primo avvio del server può richiedere 2–3 minuti.
-        </p-message>
-      }
 
       @if (registered()) {
         <p-message class="register-message" severity="success" [attr.role]="'status'">

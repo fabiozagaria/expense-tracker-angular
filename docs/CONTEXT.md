@@ -1,4 +1,4 @@
-# Contesto tecnico — Gestionale Spese Frontend
+# Contesto tecnico — Expense Tracker Frontend
 
 ## Stato corrente — 15 novembre 2026
 
@@ -136,3 +136,11 @@ Componenti condivisi in `src/app/core/ui/`: `MovementSkeleton` riusa gli skeleto
 Signals e RxJS restano il sistema di stato: `finalize` e `takeUntilDestroyed` chiudono gli stati di dashboard, dettaglio, profilo e ricerche anche in caso di errore o distruzione. Le ricerche usano `switchMap`: annullare una richiesta precedente non spegne il loader di quella nuova. Nessuna nuova dipendenza, endpoint o attesa artificiale. Movimento ridotto disabilita esplicitamente shimmer e rotazione, senza cicli accelerati.
 
 Verifiche locali: test con richieste pendenti, errore HTTP, annullamento, retry e invii duplicati; Chromium con API simulate, desktop 1440 px e mobile 390 px, chiaro/scuro e movimento ridotto. Questi controlli non equivalgono a un collaudo del backend o del deploy pubblico.
+
+## Nome pubblico — 16 novembre 2026
+
+Il nome del sito, del progetto e del servizio è sempre **Expense Tracker**. Navigazione, footer, titolo iniziale del documento e titoli delle route usano questo nome. La convenzione è registrata in `AGENTS.md` e `codex/style.md`; gli URL e gli identificatori tecnici esistenti restano validi.
+
+## Spinner e identità — 16 novembre 2026
+
+Il caricamento di navigazione usa un pannello centrato nella viewport desktop/mobile, con sfondo di tema, bordo e ombra. `LoadingSpinner` mostra due anelli CSS intorno all'icona del portafoglio; nel pannello espone il nome completo Expense Tracker e l'etichetta di caricamento. Lo stesso componente è usato nella verifica email. Lo stato segue `Router.currentNavigation`, inclusi i controlli di sessione delle guard; fine, annullamento ed errore rimuovono il pannello. Gli errori di navigazione sono comunicati con un alert. Nessuna durata minima o blocco dei clic; le animazioni rispettano movimento ridotto. I pulsanti restano legati alle operazioni locali e gli skeleton ai dati delle sezioni.

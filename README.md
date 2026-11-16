@@ -1,4 +1,4 @@
-# Gestionale Spese — Frontend Angular
+# Expense Tracker — Frontend Angular
 
 ![Versione](https://img.shields.io/badge/versione-1.2.0-blue)
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)

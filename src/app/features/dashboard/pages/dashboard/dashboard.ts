@@ -1,4 +1,7 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { MovementSkeleton } from '../../../../core/ui/movement-skeleton';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -13,11 +16,12 @@ import { DashboardMovement, DashboardService, DashboardSummary } from '../../ser
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink, DatePipe, FormsModule, ButtonModule, TableModule, SelectButtonModule, SkeletonModule, MessageModule, RevealDirective],
+  imports: [MovementSkeleton, RouterLink, DatePipe, FormsModule, ButtonModule, TableModule, SelectButtonModule, SkeletonModule, MessageModule, RevealDirective],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly dashboardService = inject(DashboardService);
   protected readonly summary = signal<DashboardSummary | null>(null);
   protected readonly loading = signal(true);
@@ -34,13 +38,13 @@ export class Dashboard implements OnInit {
   });
 
   ngOnInit(): void {
-    this.dashboardService.getSummary().subscribe({
-      next: summary => { this.summary.set(summary); this.loading.set(false); },
-      error: () => { this.error.set('Impossibile caricare il riepilogo.'); this.loading.set(false); },
+    this.dashboardService.getSummary().pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.loading.set(false))).subscribe({
+      next: summary => { this.summary.set(summary); },
+      error: () => { this.error.set('Impossibile caricare il riepilogo.'); },
     });
-    this.dashboardService.getMovements().subscribe({
-      next: items => { this.movements.set(items); this.movementsLoading.set(false); },
-      error: () => { this.movementsError.set('Impossibile caricare i movimenti.'); this.movementsLoading.set(false); },
+    this.dashboardService.getMovements().pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.movementsLoading.set(false))).subscribe({
+      next: items => { this.movements.set(items); },
+      error: () => { this.movementsError.set('Impossibile caricare i movimenti.'); },
     });
   }
   protected euro(value: number | null | undefined): string {

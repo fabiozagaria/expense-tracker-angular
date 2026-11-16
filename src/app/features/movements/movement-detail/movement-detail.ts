@@ -1,4 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -19,6 +21,7 @@ import { Movement, MovementApiService, MovementKind } from '../movement-api.serv
   styleUrl: './movement-detail.css',
 })
 export class MovementDetail implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly api = inject(MovementApiService);
   private readonly route = inject(ActivatedRoute);
 
@@ -48,10 +51,9 @@ export class MovementDetail implements OnInit {
     }
 
     this.loading.set(true);
-    this.api.get(this.kind, id).subscribe({
+    this.api.get(this.kind, id).pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.loading.set(false))).subscribe({
       next: movement => {
         this.movement.set(movement);
-        this.loading.set(false);
       },
       error: (error: HttpErrorResponse) => {
         // 404 NOT_FOUND_EXPENSE / NOT_FOUND_INCOME: inesistente o di un altro utente.
@@ -60,7 +62,6 @@ export class MovementDetail implements OnInit {
         } else {
           this.error.set(`Impossibile caricare ${this.income ? 'l’entrata' : 'la spesa'}. Il server potrebbe essere momentaneamente non disponibile.`);
         }
-        this.loading.set(false);
       },
     });
   }

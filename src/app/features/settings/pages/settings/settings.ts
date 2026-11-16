@@ -48,14 +48,12 @@ export class Settings implements OnInit {
   protected load(): void {
     this.loading.set(true);
     this.loadFailed.set(false);
-    this.profileApi.getProfile().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.profileApi.getProfile().pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.loading.set(false))).subscribe({
       next: (profile) => {
         this.profile.set(profile);
-        this.loading.set(false);
       },
       error: () => {
         this.loadFailed.set(true);
-        this.loading.set(false);
       },
     });
   }

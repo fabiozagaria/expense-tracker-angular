@@ -1,3 +1,4 @@
+import { finalize } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ThemeService } from '../../theme.service';
 import { Component, inject, signal } from '@angular/core';
@@ -14,6 +15,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class Header {
   protected readonly maintenance = environment.maintenance;
+  protected readonly loggingOut = signal(false);
   protected readonly menuOpen = signal(false);
   readonly theme = inject(ThemeService);
   protected readonly auth = inject(AuthService);
@@ -21,8 +23,10 @@ export class Header {
   private readonly expenses = inject(ExpenseService);
 
   protected logout(): void {
+    if (this.loggingOut()) return;
+    this.loggingOut.set(true);
     this.menuOpen.set(false);
-    this.auth.logout().subscribe({
+    this.auth.logout().pipe(finalize(() => this.loggingOut.set(false))).subscribe({
       next: () => this.finishLogout(),
       error: () => this.finishLogout(),
     });

@@ -159,3 +159,11 @@ html[data-theme='dark'] app-register .register-field input.p-inputtext:focus {
   filter: grayscale(1);
 }
 .p-button.p-button-outlined:disabled, .p-button.p-button-text:disabled { background: transparent !important; }
+
+/* Shared loading accessibility: PrimeNG supplies shimmer, rotation and theme tokens. */
+.ui-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+p-skeleton { max-width: 100%; }
+.p-skeleton { --p-skeleton-background: var(--ui-border); --p-skeleton-animation-background: color-mix(in srgb, var(--ui-surface) 75%, transparent); }
+@media (prefers-reduced-motion: reduce) {
+  .p-skeleton::after, .p-button-loading-icon, .pi-spin, .p-icon-spin, .p-progressspinner-spin, .p-progressspinner-circle { animation: none !important; }
+}

@@ -26,6 +26,7 @@ export class Login {
 
   protected readonly demo = environment.demo;
   protected readonly maintenance = environment.maintenance;
+  protected readonly activeAction = signal<'demo' | 'login'>('login');
   protected readonly loading = signal(false);
   protected readonly error = signal('');
   /** 403 EMAIL_NOT_VERIFIED: la pagina offre il reinvio del link di verifica. */
@@ -38,6 +39,7 @@ export class Login {
 
   protected tryDemo(): void {
     if (this.loading() || this.maintenance) return;
+    this.activeAction.set('demo');
     this.loading.set(true);
     this.error.set('');
     this.emailNotVerified.set(false);
@@ -57,6 +59,7 @@ export class Login {
       this.form.markAllAsTouched();
       return;
     }
+    this.activeAction.set('login');
     this.loading.set(true);
     this.error.set('');
     this.emailNotVerified.set(false);

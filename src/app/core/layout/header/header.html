@@ -87,7 +87,7 @@
         <span>{{ theme.dark() ? 'Tema chiaro' : 'Tema scuro' }}</span>
       </button>
       @if (auth.accessToken()) {
-        <button pButton [text]="true" severity="secondary" type="button" class="workspace-link logout-link" (click)="logout()">
+        <button pButton [text]="true" severity="secondary" type="button" class="workspace-link logout-link" [loading]="loggingOut()" [disabled]="loggingOut()" [attr.aria-busy]="loggingOut()" (click)="logout()">
           <i class="pi pi-sign-out" aria-hidden="true"></i><span>Esci</span>
         </button>
       }

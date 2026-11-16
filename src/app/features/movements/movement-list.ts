@@ -1,3 +1,4 @@
+import { MovementSkeleton } from '../../core/ui/movement-skeleton';
 import { Component, inject, signal, DestroyRef } from '@angular/core';
 import { CurrencyPipe, DatePipe, formatDate } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -14,7 +15,7 @@ import { IncomeCategory } from '../income/models/income.model';
 import { Movement, MovementApiService, MovementKind, MovementPage } from './movement-api.service';
 @Component({
   selector: 'app-movement-list',
-  imports: [CurrencyPipe, DatePipe, RouterLink, ReactiveFormsModule, ButtonModule, InputTextModule, MessageModule],
+  imports: [MovementSkeleton, CurrencyPipe, DatePipe, RouterLink, ReactiveFormsModule, ButtonModule, InputTextModule, MessageModule],
   templateUrl: './movement-list.html', styleUrl: './movement-list.css',
 })
 export class MovementList {
@@ -48,9 +49,10 @@ export class MovementList {
     this.pages.pipe(switchMap(page => {
       this.loading.set(true); this.error.set(''); this.result.set(null);
       return this.api.search(this.kind, { ...this.filters.getRawValue(), page, size: 10 }).pipe(
-        catchError(() => { this.error.set('Caricamento non riuscito. Riprova.'); return of(null); })
+        catchError(() => { this.error.set('Caricamento non riuscito. Riprova.'); return of(null); }),
+        finalize(() => this.loading.set(false))
       );
-    }), takeUntilDestroyed(this.destroyRef)).subscribe(result => { this.result.set(result); this.loading.set(false); });
+    }), takeUntilDestroyed(this.destroyRef)).subscribe(result => { this.result.set(result); });
     this.reload();
   }
   protected reload(page = 0) { if (!this.busy() && this.filters.valid) this.pages.next(page); }

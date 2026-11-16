@@ -11,7 +11,7 @@
     <div class="verification-content" [attr.aria-busy]="state() === 'loading'">
       @if (state() === 'loading') {
         <div class="verification-loading">
-          <p-progressspinner class="verification-spinner" ariaLabel="Verifica email in corso" strokeWidth="4" />
+          <app-loading-spinner size="lg" label="Verifica email in corso" />
         </div>
         <h2>Verifica in corso</h2>
         <p-message class="verification-message" severity="secondary" [attr.role]="'status'">{{ message() }}</p-message>

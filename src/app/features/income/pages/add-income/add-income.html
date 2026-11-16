@@ -81,7 +81,7 @@
         </div>
         <div class="ui-actions form-actions">
           <a pButton severity="secondary" [outlined]="true" [routerLink]="['/add-transaction']">Annulla</a>
-          <button pButton class="ui-primary" type="submit" [disabled]="saving()" [loading]="saving()">
+          <button pButton class="ui-primary" type="submit" [disabled]="saving()" [loading]="saving()" [attr.aria-busy]="saving()">
             <span>{{ saving() ? 'Salvataggio…' : 'Aggiungi entrata' }}</span>
           </button>
         </div>

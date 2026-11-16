@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 import { vi } from 'vitest';
 
 import { Dashboard } from './dashboard';
@@ -58,4 +58,25 @@ describe('Dashboard', () => {
     expect(content.querySelector('a[href="/expenses/1"]')?.textContent).toContain('Spesa settimanale');
     expect(content.querySelector('.transactions-panel')?.textContent).toContain('Stipendio');
   });
+  it('loads summary and movements independently without keeping a failed section busy', () => {
+    const summary = new Subject<never>();
+    const movements = new Subject<never[]>();
+    vi.spyOn(TestBed.inject(DashboardService), 'getSummary').mockReturnValue(summary);
+    vi.spyOn(TestBed.inject(DashboardService), 'getMovements').mockReturnValue(movements);
+    fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    const content = fixture.nativeElement as HTMLElement;
+    expect(content.querySelector('.metrics')?.getAttribute('aria-busy')).toBe('true');
+    expect(content.querySelector('app-movement-skeleton')).toBeTruthy();
+    summary.error(new HttpErrorResponse({status: 503}));
+    fixture.detectChanges();
+    expect(content.querySelector('.metrics')?.getAttribute('aria-busy')).toBe('false');
+    expect(content.querySelector('.transactions-panel')?.getAttribute('aria-busy')).toBe('true');
+    movements.next([]);
+    movements.complete();
+    fixture.detectChanges();
+    expect(content.querySelector('app-movement-skeleton')).toBeNull();
+    expect(content.querySelector('.transactions-panel')?.getAttribute('aria-busy')).toBe('false');
+  });
+
 });

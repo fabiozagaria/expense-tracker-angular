@@ -11,6 +11,7 @@ Frontend Angular di Expense Tracker, applicazione full stack. Il repository è i
 - Preferire modifiche incrementali e tipizzate; non introdurre funzionalità non presenti nella roadmap tecnica del progetto senza richiesta esplicita.
 - Mantenere separati stato UI, chiamate HTTP e responsabilità dei componenti.
 - Prima di dichiarare completata una modifica, verificare test/build pertinenti quando disponibili.
+- **Documentazione sempre allineata.** Ogni modifica (codice, struttura, stato, decisione, versione) aggiorna nella stessa PR tutti i documenti che la riguardano: `README.md`, `docs/CONTEXT.md`, `docs/DEPLOYMENT.md`, `FUTURE.md`, `codex/style.md` se cambia lo stile, questo file e la scheda Notion del progetto. Se cambiano versione, stato, descrizione o schema del progetto, controllare anche la sua scheda nel portfolio (`fabio-zagaria-portfolio`: dati in `portfolio-angular/src/app/data`, `README.md` e `docs/CONTEXT.md`). Prima di dichiarare finito un lavoro, passare in rassegna l'elenco e dire per ciascun documento se è stato aggiornato o perché non serve. Una modifica senza documenti allineati non è Done.
 
 ## Fonti di verità
 - Il codice frontend è la verità tecnica del client.

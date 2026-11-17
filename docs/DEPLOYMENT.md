@@ -10,7 +10,7 @@
 - Pagina Impostazioni (`/settings`, solo utenti loggati, voce nel menu): username ed email da `GET /api/me`, invio del link per cambiare la password con l'email del profilo (riuso di `forgot-password` e `/reset-password`). Sull'account demo condiviso (email `portfolio-demo@example.invalid`, non raggiungibile) la scheda Password mostra solo una nota.
 - Frontend: 120 test passati (27 file) il 17 novembre 2026, con `ng test --watch=false`. La build production e gli avvisi di budget su bundle iniziale e CSS login/dashboard non sono stati rieseguiti in quella verifica; l'ultima dichiarazione era «109 test e build riusciti» (15 novembre).
 - Il percorso reale Impostazioni → email → nuova password → login è stato provato dal proprietario sul sito pubblico il 10 novembre 2026 con un'email vera e funziona: sono quindi online sia il frontend 1.2.0 sia il backend 1.2.0. Il frontend 1.2.0 richiede il backend 1.2.0, per `/api/me`.
-- Manifest a 1.2.0. Il tag Git `v1.1.0` esiste sul remoto; `v1.2.0` non esiste ancora (verificato il 17 novembre 2026): tag e relative release si creano a mano, perché la sessione non riesce a pubblicare tag. Il backend ha già `v1.2.0`.
+- Manifest a 1.2.0. Il tag Git `v1.1.0` esiste sul remoto; `v1.2.0` non esiste ancora (verificato il 17 novembre 2026): tag e relativa release si creano a mano, perché la sessione non riesce a pubblicare tag (HTTP 403). Il tag va messo sul commit `b323981` (merge della PR #29, 10 novembre 2026), non sull'ultimo commit di master, che include modifiche successive alla 1.2.0. Il backend ha già `v1.2.0`.
 - Il proprietario ha dichiarato il progetto concluso (10 novembre 2026). Unica idea futura, rinviata e a suo carico: eliminazione dell'account (vedi `FUTURE.md`).
 
 ## Cronologia e dettagli tecnici

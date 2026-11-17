@@ -169,7 +169,7 @@ I test non certificano tutti i casi limite né sostituiscono una verifica browse
 
 ## Versioning e manutenzione
 
-Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Versioni correnti: frontend **1.1.0**, backend **1.1.0**.
+Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026**. Versioni correnti: frontend **1.2.0**, backend **1.2.0**.
 
 - **PATCH** (`1.0.1`): correzioni compatibili e manutenzione/refactoring senza cambiare il contratto pubblico.
 - **MINOR** (`1.1.0`): nuove funzionalità compatibili.

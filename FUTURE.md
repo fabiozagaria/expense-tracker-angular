@@ -1,10 +1,10 @@
 # Roadmap — Expense Tracker Angular
 
-Aggiornato il 10 novembre 2026.
+Aggiornato il 19 novembre 2026.
 
 ## Stato attuale
 
-La versione **1.2.0**, compatibile con Expense Tracker API **1.2.0**, completa il perimetro funzionale attuale: il progetto è concluso. L'app consente di gestire spese ed entrate, cercare e filtrare i movimenti in liste paginate e consultare la dashboard. Sono disponibili anche la verifica email, il reinvio del link di verifica, il recupero della password e la pagina Impostazioni, dove l'utente loggato vede i dati dell'account e riceve il link per cambiare la password.
+La versione **1.2.0**, compatibile con Expense Tracker API **1.2.0** e successive (oggi 1.3.0, che porta il database su PostgreSQL Neon), completa il perimetro funzionale attuale: il progetto è concluso. L'app consente di gestire spese ed entrate, cercare e filtrare i movimenti in liste paginate e consultare la dashboard. Sono disponibili anche la verifica email, il reinvio del link di verifica, il recupero della password e la pagina Impostazioni, dove l'utente loggato vede i dati dell'account e riceve il link per cambiare la password.
 
 Per i dettagli sulle funzionalità disponibili, consulta il [README](README.md) e il [contesto tecnico](docs/CONTEXT.md).
 

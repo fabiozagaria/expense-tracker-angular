@@ -4,11 +4,11 @@
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)
 
 > [!NOTE]
-> **Database PostgreSQL (19 novembre 2026).** Il backend è passato da MySQL a PostgreSQL per poter usare Neon gratuitamente. Finché la demo non viene collegata a Neon, gira con un database H2 in memoria: l'account condiviso e i dati di esempio vengono ricreati a ogni avvio, quello che aggiungi si perde quando il servizio si riavvia e la registrazione è chiusa. In locale il progetto si avvia con PostgreSQL (vedi [Avvio locale](#avvio-locale)).
+> **Database PostgreSQL (19 novembre 2026).** Il backend è passato da MySQL a PostgreSQL per poter usare Neon gratuitamente. Dal backend 1.3.0 la demo online usa PostgreSQL su Neon: i dati restano anche dopo un riavvio del servizio (verificato il 19 novembre 2026). In locale il progetto si avvia con PostgreSQL (vedi [Avvio locale](#avvio-locale)).
 
 **Versione frontend corrente: 1.2.0 — aggiornamento del 10 novembre 2026.**
 
-Backend compatibile: **1.2.0**. La minor 1.2.0 aggiunge la pagina Impostazioni per l'utente loggato: dati dell'account e link per cambiare la password, senza riscrivere l'email (usa il nuovo `GET /api/me` del backend). La minor 1.1.0 allinea il client al contratto REST del backend: recupero password, nuovo invio del link di verifica, dettaglio delle entrate, limiti della password come sul server e messaggi per il limite di richieste.
+Backend compatibile: **1.2.0 o successivo** (oggi **1.3.0**, che cambia solo il database). La minor 1.2.0 aggiunge la pagina Impostazioni per l'utente loggato: dati dell'account e link per cambiare la password, senza riscrivere l'email (usa il nuovo `GET /api/me` del backend). La minor 1.1.0 allinea il client al contratto REST del backend: recupero password, nuovo invio del link di verifica, dettaglio delle entrate, limiti della password come sul server e messaggi per il limite di richieste.
 
 Il perimetro funzionale è completato. Sono possibili correzioni di bug, refactoring e funzionalità future, gestite con nuove versioni. Non sono previste ulteriori funzionalità per chiudere questa versione.
 
@@ -108,7 +108,7 @@ L'interceptor aggiunge il Bearer alle API e gestisce il rinnovo su 401. Il guard
 | --- | --- |
 | Frontend | Vercel: `https://gestionale-spese.vercel.app` |
 | Backend | Render: `https://expense-tracker-api-demo-plb9.onrender.com` |
-| Database | H2 in memoria sulla demo online (dal 15 novembre 2026), PostgreSQL su Neon quando collegato; PostgreSQL negli ambienti locali (MySQL fino al 19 novembre 2026) |
+| Database | PostgreSQL su Neon per la demo online (dal 19 novembre 2026; dal 15 al 19 novembre H2 in memoria); PostgreSQL negli ambienti locali (MySQL fino al 19 novembre 2026) |
 | Email online | Brevo via HTTPS; SMTP/Mailpit in locale |
 
 In produzione `apiBaseUrl` è vuoto: il browser usa URL relativi. `vercel.json` inoltra `/health`, `/auth/*` e `/api/*` a Render e imposta `Cache-Control: no-store` per questi percorsi. Il cookie refresh online è HttpOnly, Secure, SameSite=Strict, Path `/auth`; il backend verifica l'Origin delle POST auth nel profilo demo.
@@ -176,7 +176,7 @@ Prima versione funzionalmente conclusa: **1.0.0**, riferimento **25 ottobre 2026
 - **MINOR** (`1.1.0`): nuove funzionalità compatibili.
 - **MAJOR** (`2.0.0`): modifiche incompatibili del contratto pubblico.
 
-Il cambio dei manifest non crea automaticamente un tag Git o una GitHub Release.
+Il cambio dei manifest non crea automaticamente un tag Git o una GitHub Release. Tag pubblicati: `v1.0.0`, `v1.0.2`, `v1.1.0` e `v1.2.0` (sul commit `b323981` del 10 novembre 2026, con GitHub Release).
 
 ## Autore
 

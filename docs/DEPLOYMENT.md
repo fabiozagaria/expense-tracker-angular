@@ -1,11 +1,12 @@
 # Demo portfolio: Render + Vercel
 
-## Stato corrente — 15 novembre 2026
+## Stato corrente — 19 novembre 2026
 
 **Versione corrente 1.2.0** (backend compatibile 1.2.0). Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
 
+- **Backend migrato a PostgreSQL il 19 novembre 2026** (PR del backend `expense-tracker-api`), per usare Neon sul piano gratuito: il profilo `demo,neon` rende persistenti i dati della demo. Finché su Render non si attiva quel profilo, la demo resta su H2 in memoria. Il frontend non cambia: il contratto REST è identico. Unica differenza visibile: username ed email restano senza distinzione tra maiuscole e minuscole, come con MySQL.
 - **Demo online ripristinata il 15 novembre 2026, con un database H2 in memoria.** Il 12 novembre il database MySQL Aiven della demo si era spento (piano gratuito ritirato) e il sito ha mostrato un avviso fisso di sospensione con accesso e registrazione disabilitati. Il backend 1.2.0 ora usa il profilo `demo` su H2 (nessun database esterno, nessun costo): l'account condiviso e i dati di esempio vengono ricreati a ogni avvio, i dati aggiunti dai visitatori si perdono al riavvio e la registrazione è chiusa. Verificati sul backend live: `/health`, login demo, `/api/me`, dashboard, ricerca di spese ed entrate e registrazione chiusa (503). `environment.maintenance` è tornato `false` (il componente `MaintenanceBanner` resta per eventuali emergenze).
-- Frontend Vercel e backend Render; il database MySQL Aiven non è più usato dalla demo online.
+- Frontend Vercel e backend Render; il database MySQL Aiven non è più usato dalla demo online (oggi H2 in memoria, PostgreSQL su Neon col profilo `neon`).
 - Client allineato al contratto REST del backend: CRUD e ricerca di spese/entrate, dettaglio di entrambe, recupero password (`/forgot-password`, `/reset-password`), nuovo link di verifica (`/resend-verification`), messaggi `429 RATE_LIMITED`, password fino a 72 byte UTF-8.
 - Pagina Impostazioni (`/settings`, solo utenti loggati, voce nel menu): username ed email da `GET /api/me`, invio del link per cambiare la password con l'email del profilo (riuso di `forgot-password` e `/reset-password`). Sull'account demo condiviso (email `portfolio-demo@example.invalid`, non raggiungibile) la scheda Password mostra solo una nota.
 - Frontend: 120 test passati (27 file) il 17 novembre 2026, con `ng test --watch=false`. La build production e gli avvisi di budget su bundle iniziale e CSS login/dashboard non sono stati rieseguiti in quella verifica; l'ultima dichiarazione era «109 test e build riusciti» (15 novembre).
@@ -19,11 +20,10 @@ Preparazione del codice; pubblicazione e verifica nel browser ancora da completa
 
 ## Backend
 
-1. Creare un database Aiven MySQL sul piano Free, verificando disponibilità e limiti nell'account. Usare un database dedicato alla demo, senza dati personali.
-2. Configurare il certificato CA pubblico fornito da Aiven nella variabile Render `AIVEN_CA_CERT`, oppure come secret file `aiven-ca.pem` (montato in `/etc/secrets/aiven-ca.pem`). L'entrypoint crea un truststore temporaneo; Connector/J verifica CA e hostname con `VERIFY_IDENTITY`.
-3. Il Blueprint `render.yaml` usa soltanto un web service Docker Free. Impostare `DB_URL` nel formato `jdbc:mysql://HOST:PORT/defaultdb` (senza parametri che disabilitano TLS), `DB_USERNAME` e `DB_PASSWORD`. Render genera `SECRET_KEY` e `DEMO_PASSWORD`. Non copiare i segreti nel repository.
-4. Il profilo `demo` disabilita la registrazione e crea un account USER verificato e dati fittizi solo alla prima inizializzazione. Ai riavvii aggiorna la password demo ma conserva i dati. Non usare questo profilo su un database personale o di produzione.
-5. `GET /health` indica che il processo HTTP è avviato; non certifica la disponibilità del database. Controllare anche un login demo e una lettura dati.
+1. Il database e la sua configurazione sono documentati nel backend: [DEPLOYMENT del backend](https://github.com/fabiozagaria/expense-tracker-api/blob/master/docs/DEPLOYMENT.md). Dal 19 novembre 2026 il backend usa PostgreSQL: H2 in memoria col profilo `demo`, Neon (piano Free) col profilo `demo,neon`. Aiven MySQL non è più usato.
+2. Il Blueprint `render.yaml` del backend usa un web service Docker Free. Render genera `SECRET_KEY` e `DEMO_PASSWORD`. Non copiare i segreti nel repository.
+3. Il profilo `demo` crea un account USER verificato con dati fittizi; con Neon i dati restano tra un riavvio e l'altro. Non usare questo profilo su un database personale o di produzione.
+4. `GET /health` indica che il processo HTTP è avviato; non certifica la disponibilità del database. Controllare anche un login demo e una lettura dati.
 
 ## Frontend
 
@@ -41,8 +41,8 @@ In locale resta SMTP/Mailpit. La demo non invia email e blocca la registrazione.
 
 ## Verifica prima della pubblicazione
 
-- Test backend con MySQL e test Angular, più build production.
-- Render avviato senza errori, TLS MySQL verificato e nome pubblico corretto nelle rewrites.
+- Test backend con PostgreSQL (Testcontainers) e test Angular, più build production.
+- Render avviato senza errori, TLS verso il database verificato e nome pubblico corretto nelle rewrites.
 - Nel browser: Prova la demo, elenco/modifica/eliminazione spese, inserimento entrate, riepilogo.
 - Reload pagina, refresh dopo scadenza JWT, logout, riutilizzo del refresh revocato.
 - POST auth da origine non autorizzata o senza Origin rifiutata; /users e altri repository non esposti tramite Spring Data REST.

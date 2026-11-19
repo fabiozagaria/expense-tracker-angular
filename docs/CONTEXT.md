@@ -1,11 +1,12 @@
 # Contesto tecnico — Expense Tracker Frontend
 
-## Stato corrente — 15 novembre 2026
+## Stato corrente — 19 novembre 2026
 
 **Versione corrente 1.2.0** (backend compatibile 1.2.0). Questa sezione e il README descrivono lo stato attuale; le note successive conservano la cronologia e possono descrivere stati superati.
 
+- **Backend migrato a PostgreSQL il 19 novembre 2026** (PR del backend `expense-tracker-api`), per usare Neon sul piano gratuito: il profilo `demo,neon` rende persistenti i dati della demo. Finché su Render non si attiva quel profilo, la demo resta su H2 in memoria. Il frontend non cambia: il contratto REST è identico. Unica differenza visibile: username ed email restano senza distinzione tra maiuscole e minuscole, come con MySQL.
 - **Demo online ripristinata il 15 novembre 2026, con un database H2 in memoria.** Il 12 novembre il database MySQL Aiven della demo si era spento (piano gratuito ritirato) e il sito ha mostrato un avviso fisso di sospensione con accesso e registrazione disabilitati. Il backend 1.2.0 ora usa il profilo `demo` su H2 (nessun database esterno, nessun costo): l'account condiviso e i dati di esempio vengono ricreati a ogni avvio, i dati aggiunti dai visitatori si perdono al riavvio e la registrazione è chiusa. Verificati sul backend live: `/health`, login demo, `/api/me`, dashboard, ricerca di spese ed entrate e registrazione chiusa (503). `environment.maintenance` è tornato `false` (il componente `MaintenanceBanner` resta per eventuali emergenze).
-- Frontend Vercel e backend Render; il database MySQL Aiven non è più usato dalla demo online.
+- Frontend Vercel e backend Render; il database MySQL Aiven non è più usato dalla demo online (oggi H2 in memoria, PostgreSQL su Neon col profilo `neon`).
 - Client allineato al contratto REST del backend: CRUD e ricerca di spese/entrate, dettaglio di entrambe, recupero password (`/forgot-password`, `/reset-password`), nuovo link di verifica (`/resend-verification`), messaggi `429 RATE_LIMITED`, password fino a 72 byte UTF-8.
 - Pagina Impostazioni (`/settings`, solo utenti loggati, voce nel menu): username ed email da `GET /api/me`, invio del link per cambiare la password con l'email del profilo (riuso di `forgot-password` e `/reset-password`). Sull'account demo condiviso (email `portfolio-demo@example.invalid`, non raggiungibile) la scheda Password mostra solo una nota.
 - Frontend: 120 test passati (27 file) il 17 novembre 2026, con `ng test --watch=false`. La build production e gli avvisi di budget su bundle iniziale e CSS login/dashboard non sono stati rieseguiti in quella verifica; l'ultima dichiarazione era «109 test e build riusciti» (15 novembre).

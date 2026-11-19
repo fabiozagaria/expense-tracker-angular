@@ -4,7 +4,7 @@
 ![Stato](https://img.shields.io/badge/progetto-concluso-success)
 
 > [!NOTE]
-> **Demo online ripristinata (15 novembre 2026).** Il database MySQL Aiven non è più disponibile, quindi la demo gira con un database H2 in memoria: l'account condiviso e i dati di esempio vengono ricreati a ogni avvio, quello che aggiungi si perde quando il servizio si riavvia e la registrazione è chiusa. Con un MySQL vero il progetto resta avviabile in locale (vedi [Avvio locale](#avvio-locale)).
+> **Database PostgreSQL (19 novembre 2026).** Il backend è passato da MySQL a PostgreSQL per poter usare Neon gratuitamente. Finché la demo non viene collegata a Neon, gira con un database H2 in memoria: l'account condiviso e i dati di esempio vengono ricreati a ogni avvio, quello che aggiungi si perde quando il servizio si riavvia e la registrazione è chiusa. In locale il progetto si avvia con PostgreSQL (vedi [Avvio locale](#avvio-locale)).
 
 **Versione frontend corrente: 1.2.0 — aggiornamento del 10 novembre 2026.**
 
@@ -108,7 +108,7 @@ L'interceptor aggiunge il Bearer alle API e gestisce il rinnovo su 401. Il guard
 | --- | --- |
 | Frontend | Vercel: `https://gestionale-spese.vercel.app` |
 | Backend | Render: `https://expense-tracker-api-demo-plb9.onrender.com` |
-| Database | H2 in memoria sulla demo online (dal 15 novembre 2026); MySQL negli ambienti locali |
+| Database | H2 in memoria sulla demo online (dal 15 novembre 2026), PostgreSQL su Neon quando collegato; PostgreSQL negli ambienti locali (MySQL fino al 19 novembre 2026) |
 | Email online | Brevo via HTTPS; SMTP/Mailpit in locale |
 
 In produzione `apiBaseUrl` è vuoto: il browser usa URL relativi. `vercel.json` inoltra `/health`, `/auth/*` e `/api/*` a Render e imposta `Cache-Control: no-store` per questi percorsi. Il cookie refresh online è HttpOnly, Secure, SameSite=Strict, Path `/auth`; il backend verifica l'Origin delle POST auth nel profilo demo.
@@ -134,7 +134,7 @@ npm start
 
 Frontend: `http://localhost:4200`. In sviluppo `apiBaseUrl=http://localhost:8080`.
 
-Per avviare API, MySQL e Mailpit seguire il [README backend](https://github.com/fabiozagaria/expense-tracker-api#avvio-da-un-clone-pulito): compilare prima il suo `.env`, validare Compose e avviare lo stack. Il frontend va avviato separatamente. Le email locali sono consultabili in Mailpit su `http://localhost:8025`.
+Per avviare API, PostgreSQL e Mailpit seguire il [README backend](https://github.com/fabiozagaria/expense-tracker-api#avvio-da-un-clone-pulito): compilare prima il suo `.env`, validare Compose e avviare lo stack. Il frontend va avviato separatamente. Le email locali sono consultabili in Mailpit su `http://localhost:8025`.
 
 ## Verifiche
 
@@ -148,6 +148,7 @@ Esiti del **10 novembre 2026** (versione 1.2.0):
 - **96 test Angular passati**, inclusi pagina Impostazioni (profilo, invio del link, account demo, errore di caricamento, 429, consegna email fallita, avviso di avvio del server) e servizio del profilo.
 - **Build production riuscita**, con gli stessi avvisi di budget.
 - Pagina `/settings` nel browser sulla build di produzione, con risposte del backend simulate: desktop chiaro, mobile scuro con email molto lunga, invio riuscito, attesa del server, account demo e errore di caricamento, senza overflow né errori JavaScript.
+- **Backend dopo il passaggio a PostgreSQL (19 novembre 2026):** 124 test passati in locale con Java 21 e PostgreSQL 17 Testcontainers.
 - **Backend 1.2.0:** 122 test passati in locale con Java 21 e MySQL 8.0 Testcontainers.
 - **Prova reale sul sito pubblico (10 novembre 2026), confermata dal proprietario:** Impostazioni, invio del link con un'email reale, scelta della nuova password e login. Il percorso funziona.
 
